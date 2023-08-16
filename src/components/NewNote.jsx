@@ -21,7 +21,7 @@ function NewNote({ setIsDialogOpen}){
             {/* <button className="bg-red-600" onClick={handleAddNoteClick}>
                 Add a new note
             </button> */}
-            <button className="absolute top-0 right-0 bg-red-600 mr-4 mt-4" onClick={handleAddNoteClick}>
+            <button className="absolute top-0 right-0 bg-blue-600 mr-4 mt-4 text-white" onClick={handleAddNoteClick}>
                 Add a new note
             </button>
 
