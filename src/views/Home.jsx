@@ -6,6 +6,7 @@ import { useRef, useState, useEffect } from "react";
 
 function Home() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isNoteOpen, setIsNoteOpen] = useState(false);
   const containerRef = useRef(null);
 
   const defaultNotes = [
@@ -14,8 +15,8 @@ function Home() {
     // ...add more default notes
   ];
 
-    const [notes, setNotes] = useState(null);
-    const [viewNote, setNoteToOpen] = useState(null);
+  const [notes, setNotes] = useState(null);
+  const [viewNote, setNoteToOpen] = useState({});
 
   // Load notes from localStorage when the component mounts
   // useEffect(() => {
@@ -24,6 +25,7 @@ function Home() {
   // }, []);
 
   // Save notes to localStorage whenever the notes state changes
+
   useEffect(() => {
     console.log("Dependent of notes");
     // console.log(notes)
@@ -45,21 +47,23 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    console.log("useEffect it's just nuts")
+    console.log("useEffect it's just nuts");
     const handleClickOutside = (event) => {
-      if (containerRef.current && !containerRef.current.contains(event.target)) {
-        console.log("Ouch, you clicked outside of me!")
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target)
+      ) {
+        console.log("Ouch, you clicked outside of me!");
         setNoteToOpen(null);
       }
     };
 
-    document.addEventListener('click', handleClickOutside);
-    
+    document.addEventListener("click", handleClickOutside);
+
     return () => {
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, []);
-
 
   const addNewNote = (newNote) => {
     console.log("Adding a new note");
@@ -74,9 +78,24 @@ function Home() {
     console.log("Deleting a note");
   };
 
-  const watchNoteFunction = (note) =>{
+  const watchNoteFunction = (note) => {
+    console.log("It is trynnna open do something");
+    console.log(note);
     setNoteToOpen(note);
     console.log(viewNote);
+    setIsNoteOpen(true);
+  };
+
+  const editNoteTitle = (note) => {
+      //find the by the id and change the tile of that note
+      console.log("In the component Home, is trying to edit the title")
+      let updatedNotes = notes.map((n) => {
+          if(n.id === note.id){
+              n.title = "EDITED TEST";
+          }
+          return n;
+      })
+      setNotes(updatedNotes);
   }
 
   const closeDialog = () => {
@@ -85,35 +104,47 @@ function Home() {
 
   const handleBlurDivClick = (event) => {
     if (event.target === event.currentTarget) {
-        setNoteToOpen(null);
+      console.log("Setting it to null");
+      setNoteToOpen(null);
     }
   };
 
   return (
     <>
+      <div ref={containerRef} className="relative">
+        <NewNote setIsDialogOpen={setIsDialogOpen} />
 
-
-<div  ref={containerRef} className="relative">
-  <NewNote setIsDialogOpen={setIsDialogOpen} />
-  <NewNoteDialog
-    isOpen={isDialogOpen}
-    onClose={closeDialog}
-    addNewNote={addNewNote}
-    notes={notes}
-  />
-  <NoteList notes={notes} deleteNote={deleteNote} watchNoteFunction={watchNoteFunction} />
-<div >
-{viewNote && (
-    <div className="absolute inset-0 backdrop-blur-lg flex justify-center items-center " onClick={handleBlurDivClick}>
-        <div className="">
-      <Note noteToOpen={viewNote} />
-
+        <NoteList
+          notes={notes}
+          deleteNote={deleteNote}
+          watchNoteFunction={watchNoteFunction}
+        />
+        <div>
+          {/* <div
+          id="blurDiv"
+            className={
+              "absolute flex inset-0 backdrop-blur-lg justify-center items-center " + (isDialogOpen ? "block" : "hidden")
+            }
+            onClick={handleBlurDivClick}
+          > */}
+            {viewNote && 
+            <Note 
+            noteToOpen={viewNote} 
+            setNoteToOpen={setNoteToOpen} 
+            isNoteOpen={isNoteOpen} 
+            editNoteTitle={editNoteTitle}
+            />}
+            {isDialogOpen && (
+              <NewNoteDialog
+                isOpen={isDialogOpen}
+                onClose={closeDialog}
+                addNewNote={addNewNote}
+                notes={notes}
+              />
+            )}
+          {/* </div> */}
         </div>
-    </div>
-  )}
-</div>
-
-</div>
+      </div>
     </>
   );
 }

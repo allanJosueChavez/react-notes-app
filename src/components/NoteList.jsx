@@ -1,10 +1,12 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import styles from "../assets/styles/styles.module.css";
+
 import {
   faStickyNote,
   faTrash,
   faEye,
-  faPen
+  faPen,
 } from "@fortawesome/free-solid-svg-icons";
 
 function NoteList({ notes, deleteNote, watchNoteFunction }) {
@@ -15,6 +17,12 @@ function NoteList({ notes, deleteNote, watchNoteFunction }) {
     // console.log("Deleting a note");
   };
 
+  // const watchNoteFunction = (note) =>{
+  //   console.log(note);
+  //   setNoteToOpen(note);
+
+  // }
+
   return (
     <div className="p-4">
       <h1 className="font-bold text-2xl mb-4 p-8">
@@ -23,14 +31,26 @@ function NoteList({ notes, deleteNote, watchNoteFunction }) {
       </h1>
       <div className="grid grid-flow-row auto-rows-max sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-6 gap-4 ">
         {notes?.map((note, index) => (
-          <div key={index} className=" w-48 h-48 bg-gray-200 relative rounded-lg shadow-md">
-            <h3 className="text-lg font-bold m-2 flex-grow">
+          <div
+            key={index}
+            className=" w-48 h-48 bg-gray-200 relative rounded-lg shadow-md cursor-pointer"
+            onClick={() => watchNoteFunction(note)}
+          >
+            <h3
+              className="text-lg font-bold m-2 flex-grow overflow-hidden whitespace-nowrap text-overflow-ellipsis"
+              title={note.title}
+            >
               {note.title}
             </h3>
 
-            <p className="text-gray-700">{note.description}</p>
-            <div className="absolute bottom-0 flex justify-end items-end p-2  w-full">
+            <p
+              title={note.description}
+              className={`${styles["truncate-overflow"]} text-gray-700 text-clip text-justify px-4`}
+            >
+              {note.description}
+            </p>
 
+            <div className="absolute bottom-0 flex justify-end items-end p-2 w-full">
               <div
                 onClick={() => watchNoteFunction(note)}
                 className="text-center "
@@ -40,10 +60,7 @@ function NoteList({ notes, deleteNote, watchNoteFunction }) {
                   className="text-green-500 cursor-pointer m-1 "
                 />
               </div>
-              <div
-                onClick={() => deleteNote(note)}
-                className="text-center  "
-              >
+              <div onClick={() => deleteNote(note)} className="text-center  ">
                 <FontAwesomeIcon
                   icon={faTrash}
                   className=" text-red-500 cursor-pointer m-1"
