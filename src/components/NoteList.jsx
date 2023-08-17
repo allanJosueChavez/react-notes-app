@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "../assets/styles/styles.module.css";
 
@@ -10,6 +10,19 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 function NoteList({ notes, deleteNote, watchNoteFunction }) {
+  const bgNotesColors = notes?.map((note) => {
+    return "w-48 h-48 relative rounded-lg shadow-md cursor-pointer "+ note.bg_color
+  });
+
+  useEffect(() => {
+    console.log(bgNotesColors)
+  })
+
+    // const watchNoteFunction = (note) =>{
+  //   console.log(note);
+  //   setNoteToOpen(note);
+
+  // }
   const handleDeleteNote = (note) => {
     // console.log(note);
     // let newNotes = notes.filter((n) => n.id !== note.id);
@@ -17,11 +30,6 @@ function NoteList({ notes, deleteNote, watchNoteFunction }) {
     // console.log("Deleting a note");
   };
 
-  // const watchNoteFunction = (note) =>{
-  //   console.log(note);
-  //   setNoteToOpen(note);
-
-  // }
 
   return (
     <div className="p-4">
@@ -33,8 +41,8 @@ function NoteList({ notes, deleteNote, watchNoteFunction }) {
         {notes?.map((note, index) => (
           <div
             key={index}
-            className=" w-48 h-48 bg-gray-200 relative rounded-lg shadow-md cursor-pointer"
-            onClick={() => watchNoteFunction(note)}
+            className={ bgNotesColors[index] }
+           
           >
             <h3
               className="text-lg font-bold m-2 flex-grow overflow-hidden whitespace-nowrap text-overflow-ellipsis"
@@ -45,7 +53,7 @@ function NoteList({ notes, deleteNote, watchNoteFunction }) {
 
             <p
               title={note.description}
-              className={`${styles["truncate-overflow"]} text-gray-700 text-clip text-justify px-4`}
+              className={`${styles["truncate-overflow"]} text-gray-700 text-clip text-justify px-4 py-2`}
             >
               {note.description}
             </p>

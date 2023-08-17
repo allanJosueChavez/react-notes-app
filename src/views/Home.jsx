@@ -98,6 +98,19 @@ function Home() {
       setNotes(updatedNotes);
   }
 
+  const editNoteContent = (note) => {
+    //find the by the id and change the tile of that note
+    console.log("In the component Home, is trying to edit the content")
+    let updatedNotes = notes.map((n) => {
+        if(n.id === note.id){
+            n = note;
+        }
+        return n;
+    })
+    setNotes(updatedNotes);
+
+  }
+
   const closeDialog = () => {
     setIsDialogOpen(false);
   };
@@ -133,7 +146,9 @@ function Home() {
             setNoteToOpen={setNoteToOpen} 
             isNoteOpen={isNoteOpen} 
             editNoteTitle={editNoteTitle}
+            editNoteContent={editNoteContent}
             />}
+
             {isDialogOpen && (
               <NewNoteDialog
                 isOpen={isDialogOpen}

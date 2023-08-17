@@ -16,9 +16,42 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
       id: notes.length + 1,
       title: newNoteTitle,
       description: newNoteDescription,
+      bg_color: randomColor(),
     };
     addNewNote(newNote);
     onClose();
+  };
+
+  const colorsNames = [
+    "Slate",
+    "Gray",
+    "Zinc",
+    "Neutral",
+    "Stone",
+    "Red",
+    "Orange",
+    "Amber",
+    "Yellow",
+    "Lime",
+    "Green",
+    "Emerald",
+    "Teal",
+    "Cyan",
+    "Sky",
+    "Blue",
+    "Indigo",
+    "Violet",
+    "Purple",
+    "Fuchsia",
+    "Pink",
+    "Rose"
+  ];
+  
+  const randomColor = () => {
+    const randomColorName = colorsNames[Math.floor(Math.random() * colorsNames.length)];
+    const randomNumber = [200, 300, 400][Math.floor(Math.random() * 3)];
+    
+    return `bg-${randomColorName.toLowerCase()}-${randomNumber}`;
   };
 
   const handleInputChange = (event) => {

@@ -3,14 +3,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useRef, useState, useEffect } from "react";
 
-function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle }) {
+function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle, editNoteContent }) {
   const [isEditTitle, setEditTitle] = useState(false);
   const [isEditContent, setEditContent] = useState(false);
   const [newNoteTitle, setNewNoteTitle] = useState("");
+  const [newNoteContent, setNewNoteContent] = useState("");
 
   // Set initial value of newNoteTitle when noteToOpen changes
   useEffect(() => {
     setNewNoteTitle(noteToOpen?.title || "");
+    setNewNoteContent(noteToOpen?.description || "");
   }, [noteToOpen]);
 
   if (!isNoteOpen) {
@@ -42,16 +44,34 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle }) {
     setEditTitle(false);
   };
 
+  const saveContent = (note) => {
+    console.log("Saving content");
+    editNoteContent(note);
+    note.description = newNoteContent;
+    setEditContent(false);
+  }
+
   const cancelEditTitle = () => {
     console.log("it should close");
     setEditTitle(false);
   };
+
+  const cancelEditContent = () => {
+    console.log("it should close");
+    setEditContent(false);
+  }
 
   const handleTitleInputChange = (event) => {
     if (event) {
       setNewNoteTitle(event.target.value);
     }
   };
+
+  const handleContentInputChange = (event) => {
+    if (event) {
+      setNewNoteContent(event.target.value);
+    }
+  }
 
   return (
     <div
@@ -62,7 +82,7 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle }) {
       onClick={handleBlurDivClick}
     >
       <div className={"h-auto w-8/12"}>
-        <div className="note rounded-lg shadow-lg bg-cyan-200 mt-10  h-full p-6">
+        <div className={"note rounded-lg shadow-lg mt-10  h-full p-6 "+(noteToOpen.bg_color || "bg-white")}>
           <div onClick={() => closeNote()} className={"text-left"}>
             <FontAwesomeIcon
               icon={faX}
@@ -70,7 +90,7 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle }) {
             />
           </div>
           {/* <h3>This is the CURRENT note SELECTED</h3> */}
-          <div className="flex items-center">
+          <div className="flex items-center mb-4 ">
             <h3
               className={
                 "text-lg font-bold flex-grow p-4 " +
@@ -86,7 +106,7 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle }) {
               value={newNoteTitle}
               onChange={handleTitleInputChange}
               className={
-                "bg-transparent text-gray-900 text-lg font-bold rounded-lg block w-full p-2.5 focus:ring-0 focus:border-transparent focus:outline-none  flex items-center justify-center " +
+                "bg-transparent text-gray-900 text-lg font-bold rounded-lg block w-full p-2.5 focus:ring-0 focus:border-transparent  bg-white focus:outline-none  flex items-center justify-center " +
                 (isEditTitle ? "block" : "hidden")
               }
             />
@@ -148,7 +168,7 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle }) {
                 "w-4/12 px-3 py-2 right-0 bg-blue-600 text-white btn-sm  " +
                 (isEditContent ? "block" : "hidden")
               }
-              onClick={() => saveTitle(noteToOpen)}
+              onClick={() => saveContent(noteToOpen)}
             >
               Save Content
             </button>
@@ -157,14 +177,25 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle }) {
                 "px-3 py-2 right-0 bg-red-600 text-white btn-sm  " +
                 (isEditContent ? "block" : "hidden")
               }
-              onClick={() => cancelEditTitle()}
+              onClick={() => cancelEditContent()}
             >
               Cancel
             </button>
           </div>
           <span>
-            <p className="text-gray-700 my-4">{noteToOpen?.description}</p>
+            <p className={"text-gray-700 my-4 "+(!isEditContent ? "block" : "hidden") }>{noteToOpen?.description}</p>
           </span>
+          <textarea
+              type="text"
+              id="noteContentInput"
+              value={newNoteContent}
+              onChange={handleContentInputChange}
+              rows="15"
+              className={
+                "mt-2 bg-white bg-transparent text-gray-900 text-md font-semibold rounded-lg block w-full p-2.5 focus:ring-0 focus:border-transparent focus:outline-none  flex items-center justify-center " +
+                (isEditContent ? "block" : "hidden")
+              }
+            />
         </div>
         {/* <a>
   ◕‿‿◕
