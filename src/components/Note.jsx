@@ -22,10 +22,10 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle }) {
       setNoteToOpen(null);
     }
   };
-//Close note function
-    const closeNote = ()=>{
-        setNoteToOpen(null);        
-}
+  //Close note function
+  const closeNote = () => {
+    setNoteToOpen(null);
+  };
   const editTitle = () => {
     console.log("Editing note title");
     setEditTitle(true);
@@ -63,15 +63,12 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle }) {
     >
       <div className={"h-auto w-8/12"}>
         <div className="note rounded-lg shadow-lg bg-cyan-200 mt-10  h-full p-6">
-        <div
-              onClick={() => closeNote()}
-              className={"text-left"}
-            >
-              <FontAwesomeIcon
-                icon={faX}
-                className="text-black cursor-pointer m-1 w-4 h-4"
-              />
-            </div>
+          <div onClick={() => closeNote()} className={"text-left"}>
+            <FontAwesomeIcon
+              icon={faX}
+              className="text-black cursor-pointer m-1 w-4 h-4"
+            />
+          </div>
           {/* <h3>This is the CURRENT note SELECTED</h3> */}
           <div className="flex items-center">
             <h3
