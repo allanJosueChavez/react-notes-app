@@ -1,5 +1,5 @@
-//import { Input } from "@material-tailwind/react";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";//import { Input } from "@material-tailwind/react";
+import { faPen, faX } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
 function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
@@ -38,7 +38,16 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
           }
           onClick={handleBlurDivClick}
         >
-            <div className="shadow-lg bg-white rounded-lg w-80 h-72">
+            <div className="shadow-lg bg-white rounded-lg w-8/12 h-11/12">
+            <div
+              onClick={() => onClose()}
+              className={"float-right cursor-pointer mr-4 mt-2 w-4 h-4"}
+            >
+              <FontAwesomeIcon
+                icon={faX}
+                className="text-black cursor-pointer m-1 w-4 h-4"
+              />
+            </div>
                 <div className="m-6">
                     <h3 className="m-4">CREATE A NEW NOTE</h3>
 
@@ -51,8 +60,8 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
         onChange={handleInputChange}
         className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
     />
-    <label htmlFor="newNoteDescription" className="block text-gray-700 text-sm font-bold mb-2">Description</label>
-    <input 
+    <label htmlFor="newNoteDescription" className="block text-gray-700 text-sm font-bold mb-2">Content</label>
+    <textarea
         id="newNoteDescription" 
         name="newNoteDescription" 
         value={newNoteDescription}

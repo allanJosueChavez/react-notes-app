@@ -1,4 +1,4 @@
-import { faPen } from "@fortawesome/free-solid-svg-icons";
+import { faPen, faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useRef, useState, useEffect } from "react";
@@ -22,7 +22,10 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle }) {
       setNoteToOpen(null);
     }
   };
-
+//Close note function
+    const closeNote = ()=>{
+        setNoteToOpen(null);        
+}
   const editTitle = () => {
     console.log("Editing note title");
     setEditTitle(true);
@@ -59,7 +62,16 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle }) {
       onClick={handleBlurDivClick}
     >
       <div className={"h-auto w-8/12"}>
-        <div className="note rounded-lg shadow-lg bg-purple-200 mt-10  h-full p-6">
+        <div className="note rounded-lg shadow-lg bg-cyan-200 mt-10  h-full p-6">
+        <div
+              onClick={() => closeNote()}
+              className={"text-left"}
+            >
+              <FontAwesomeIcon
+                icon={faX}
+                className="text-black cursor-pointer m-1 w-4 h-4"
+              />
+            </div>
           {/* <h3>This is the CURRENT note SELECTED</h3> */}
           <div className="flex items-center">
             <h3
@@ -112,10 +124,10 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle }) {
           </div>
 
           <hr
-            className={"w-76 h-0.5 mx-2 bg-gray-400 border-0 rounded solid"}
+            className={"w-76 h-0.5 mx-2 bg-white border-0 rounded solid"}
           ></hr>
           {/* <hr class="solid"></hr> */}
-          <div className="flex items-center">
+          <div className="flex items-center justify-center mt-5">
             <span>
               <div
                 onClick={() => editContent()}
