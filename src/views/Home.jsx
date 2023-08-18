@@ -18,6 +18,9 @@ function Home() {
   const [notes, setNotes] = useState(null);
   const [viewNote, setNoteToOpen] = useState({});
 
+  const [filteredNotesVerifier, setFilteredNotesVerifier] = useState(false);
+
+
   // Load notes from localStorage when the component mounts
   // useEffect(() => {
   //     const storedNotes = JSON.parse(localStorage.getItem('notes'));
@@ -68,6 +71,11 @@ function Home() {
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
+
+  const verifyFilteredNotes = () => {
+    console.log("Checking if there's notes or not")
+    setFilteredNotesVerifier(true);
+  }
 
   const addNewNote = (newNote) => {
     console.log("Adding a new note");
@@ -128,13 +136,14 @@ function Home() {
 
   return (
     <>
-      <div ref={containerRef} className={"  h-screen w-max pb-16 "+`${ (isDialogOpen === true || isNoteOpen === true) ? 'overflow-y-hidden' : 'overflow-y-scroll'  }` }>
+      <div ref={containerRef} className={"  h-screen  pb-16 "+`${ (isDialogOpen === true || isNoteOpen === true) ? 'overflow-y-hidden' : 'overflow-y-scroll'  }` + (!filteredNotesVerifier ? " w-max ": "")}>
         <NewNote setIsDialogOpen={setIsDialogOpen} />
 
         <NoteList
           notes={notes}
           deleteNote={deleteNote}
           watchNoteFunction={watchNoteFunction}
+          setFilteredNotesVerifier={verifyFilteredNotes}
         />
         <div>
           {/* <div

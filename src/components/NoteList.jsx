@@ -9,7 +9,7 @@ import {
   faPen,
 } from "@fortawesome/free-solid-svg-icons";
 
-function NoteList({ notes, deleteNote, watchNoteFunction }) {
+function NoteList({ notes, deleteNote, watchNoteFunction, setFilteredNotesVerifier }) {
   const [filteredNotes, setFilteredNotes] = useState(null);
   //I learned how to use useState in order to use a prop and not use it directly, it's better if I create an intern state inside
   // the child component and with that I can edit the value and mutate it as I want it.
@@ -31,8 +31,6 @@ function NoteList({ notes, deleteNote, watchNoteFunction }) {
     event.preventDefault(); // Prevent the default form submission
     console.log(filteredNotes)
     const filtered = notes.filter((note) =>{
-   //   console.log(note.title.toLowerCase().includes(searchInput.toLowerCase()))
-   //   console.log(searchInput)
       if(note.title.toLowerCase().includes(searchInput.toLowerCase())){
    //     console.log("Oh yeah, one match")
         return note
@@ -44,8 +42,13 @@ function NoteList({ notes, deleteNote, watchNoteFunction }) {
     setFilteredNotes(filtered);
     console.log(notes)
     console.log(filtered)
+    if(filtered.length == 0){
+      setFilteredNotesVerifier()
+    }
     // Perform your actions here
+
     console.log('Form submitted with value:', searchInput);
+    
   };
 
   const handleInputChange = (event) => {

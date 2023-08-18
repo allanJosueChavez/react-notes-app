@@ -175,7 +175,7 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
 
           <label
             htmlFor="newNoteTitle"
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="block text-gray-700 text-sm font-bold my-4"
           >
             New note title
           </label>
