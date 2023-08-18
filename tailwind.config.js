@@ -76,6 +76,8 @@ export default {
     'bg-rose-300',
     'bg-rose-400',
     'lg:text-4xl',
+    "text-black",
+    "text-white"
   ]
   
 }

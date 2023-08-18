@@ -12,11 +12,15 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
   const handleAddNoteClick = () => {
     //it gotta has this format
     //{ title: 'Note 1', content: 'Description of note 1...' },
+    const newColor = randomColor();
+
     const newNote = {
       id: notes.length + 1,
       title: newNoteTitle,
       description: newNoteDescription,
-      bg_color: randomColor(),
+      bg_color: newColor[0],
+    //  text_color: chooseTextColor(randomColor)
+        text_color : chooseTextColor(newColor[1])
     };
     addNewNote(newNote);
     onClose();
@@ -47,11 +51,47 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
     "Rose"
   ];
   
+
+  const colorObjects = [
+    { type: "dark", color: "Slate" },
+    { type: "dark", color: "Gray" },
+    { type: "dark", color: "Zinc" },
+    { type: "dark", color: "Neutral" },
+    { type: "dark", color: "Stone" },
+    { type: "dark", color: "Red" },
+    { type: "dark", color: "Orange" },
+    { type: "dark", color: "Amber" },
+    { type: "light", color: "Yellow" },
+    { type: "light", color: "Lime" },
+    { type: "light", color: "Green" },
+    { type: "light", color: "Emerald" },
+    { type: "light", color: "Teal" },
+    { type: "light", color: "Cyan" },
+    { type: "light", color: "Sky" },
+    { type: "light", color: "Blue" },
+    { type: "light", color: "Indigo" },
+    { type: "light", color: "Violet" },
+    { type: "light", color: "Purple" },
+    { type: "light", color: "Fuchsia" },
+    { type: "light", color: "Pink" },
+    { type: "light", color: "Rose" }
+  ];
+  
+
+  const chooseTextColor = (bg_color)=>{
+    console.log("The color will be: "+bg_color)
+    if(bg_color.type == "dark"){
+        return "text-white"
+    }else if(bg_color.type == "light"){
+        return "text-black"
+    }
+  }
+
   const randomColor = () => {
-    const randomColorName = colorsNames[Math.floor(Math.random() * colorsNames.length)];
+    const randomColorName = colorObjects[Math.floor(Math.random() * colorObjects.length)];
     const randomNumber = [200, 300, 400][Math.floor(Math.random() * 3)];
     
-    return `bg-${randomColorName.toLowerCase()}-${randomNumber}`;
+    return [`bg-${randomColorName.color.toLowerCase()}-${randomNumber}`,randomColorName ];
   };
 
   const handleInputChange = (event) => {

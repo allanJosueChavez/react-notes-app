@@ -11,11 +11,11 @@ import {
 
 function NoteList({ notes, deleteNote, watchNoteFunction }) {
   const bgNotesColors = notes?.map((note) => {
-    return "w-48 h-48 relative rounded-lg shadow-md cursor-pointer "+ note.bg_color
+    return note.bg_color
   });
 
   useEffect(() => {
-    console.log(bgNotesColors)
+    console.log("bgNotesColors")
   })
 
     // const watchNoteFunction = (note) =>{
@@ -41,7 +41,7 @@ function NoteList({ notes, deleteNote, watchNoteFunction }) {
         {notes?.map((note, index) => (
           <div
             key={index}
-            className={ bgNotesColors[index] }
+            className={ "w-48 h-48 relative rounded-lg shadow-md cursor-pointer " + (bgNotesColors[index] !== undefined? bgNotesColors[index] :"bg-gray-200") }
            
           >
             <h3
@@ -53,7 +53,7 @@ function NoteList({ notes, deleteNote, watchNoteFunction }) {
 
             <p
               title={note.description}
-              className={`${styles["truncate-overflow"]} text-gray-700 text-clip text-justify px-4 py-2`}
+              className={`${styles["truncate-overflow"]} text-clip text-justify px-4 py-2 `+(note.text_color || "text_black")}
             >
               {note.description}
             </p>
