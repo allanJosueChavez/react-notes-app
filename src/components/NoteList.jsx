@@ -19,14 +19,7 @@ function NoteList({ notes, deleteNote, watchNoteFunction }) {
 
   useEffect(() => {
     console.log("it's going to set the setfilteredNotes");
-    if(filteredNotes === null){
-      console.log("Yes one time")
-      console.log(notes)
-      setFilteredNotes(notes)
-    }else{
-      console.log("no on the second time")
-
-    }
+    setFilteredNotes(notes)
   }, [notes]);
   // If I delete filterednotes from the parameters it does not work. 
   // Well, I just got it, what? I just got it, because it makes sense that whenever the fuck react wants to set the value to 
