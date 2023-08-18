@@ -10,15 +10,27 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 function NoteList({ notes, deleteNote, watchNoteFunction }) {
-  const [filteredNotes, setFilteredNotes] = useState([]);
+  const [filteredNotes, setFilteredNotes] = useState(null);
+  //I learned how to use useState in order to use a prop and not use it directly, it's better if I create an intern state inside
+  // the child component and with that I can edit the value and mutate it as I want it.
   const bgNotesColors = filteredNotes?.map((note) => {
     return note.bg_color;
   });
 
   useEffect(() => {
-    console.log("bgNotesColors");
-    setFilteredNotes(notes)
-  }, []);
+    console.log("it's going to set the setfilteredNotes");
+    if(filteredNotes === null){
+      console.log("Yes one time")
+      console.log(notes)
+      setFilteredNotes(notes)
+    }else{
+      console.log("no on the second time")
+
+    }
+  }, [notes]);
+  // If I delete filterednotes from the parameters it does not work. 
+  // Well, I just got it, what? I just got it, because it makes sense that whenever the fuck react wants to set the value to 
+  // notes it'll be exected the useEffect. So is that easy, if you wanna use a prop and set it to another state, wait for it, that simple.
 
   const [searchInput,setSearchInputValue] = useState('');
 
@@ -26,10 +38,10 @@ function NoteList({ notes, deleteNote, watchNoteFunction }) {
     event.preventDefault(); // Prevent the default form submission
     console.log(filteredNotes)
     const filtered = notes.filter((note) =>{
-      console.log(note.title.toLowerCase().includes(searchInput.toLowerCase()))
-      console.log(searchInput)
+   //   console.log(note.title.toLowerCase().includes(searchInput.toLowerCase()))
+   //   console.log(searchInput)
       if(note.title.toLowerCase().includes(searchInput.toLowerCase())){
-        console.log("Oh yeah, one match")
+   //     console.log("Oh yeah, one match")
         return note
       }
     }
@@ -49,7 +61,7 @@ function NoteList({ notes, deleteNote, watchNoteFunction }) {
 
 
   return (
-    <div className="p-4">
+    <div className="p-4 w-full">
       <h1 className="font-bold text-2xl mb-4 p-8">
         <FontAwesomeIcon icon={faStickyNote} className="mr-2" />
         MY NOTEBOOK
@@ -90,7 +102,7 @@ function NoteList({ notes, deleteNote, watchNoteFunction }) {
         </form>
       </div>
 
-      <div className="grid grid-flow-row auto-rows-max sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-6 gap-4 ">
+      <div id="notes-grid" className={" grid grid-flow-row auto-rows-max sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-6 gap-4 "+(filteredNotes && filteredNotes.length == 0 ? "w-12/12" : "")}>
         {filteredNotes?.map((note, index) => (
           <div
             key={index}
