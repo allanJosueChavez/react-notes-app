@@ -77,7 +77,7 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle, editNoteCo
     <div
       id="blurDiv"
       className={
-        "absolute inset-0 backdrop-blur-lg justify-center items-center flex"
+        "absolute inset-0 backdrop-blur-lg justify-center items-center flex overflow-y-scroll"
       }
       onClick={handleBlurDivClick}
     >
@@ -183,7 +183,7 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle, editNoteCo
             </button>
           </div>
           <span>
-            <p className={"text-gray-700 my-4 "+(!isEditContent ? "block" : "hidden") }>{noteToOpen?.description}</p>
+            <p className={"my-4 "+(!isEditContent ? "block " : "hidden ") + (noteToOpen.text_color || "text-white") }>{noteToOpen?.description}</p>
           </span>
           <textarea
               type="text"

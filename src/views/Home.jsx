@@ -44,6 +44,8 @@ function Home() {
     } else if (notes == null) {
       setNotes([]);
     }
+    console.log(isNoteOpen)
+    console.log(isDialogOpen)
   }, []);
 
   useEffect(() => {
@@ -55,6 +57,8 @@ function Home() {
       ) {
         console.log("Ouch, you clicked outside of me!");
         setNoteToOpen(null);
+        setIsDialogOpen(false)
+        setIsNoteOpen(false)
       }
     };
 
@@ -124,7 +128,7 @@ function Home() {
 
   return (
     <>
-      <div ref={containerRef} className="relative">
+      <div ref={containerRef} className={"  h-screen w-max pb-16 "+`${ (isDialogOpen === true || isNoteOpen === true) ? 'overflow-y-hidden' : 'overflow-y-scroll'  }` }>
         <NewNote setIsDialogOpen={setIsDialogOpen} />
 
         <NoteList
