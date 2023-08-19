@@ -1,11 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "../assets/styles/styles.module.css";
+import { useToast, Box } from '@chakra-ui/react'
+
 import {
   Menu,
   MenuButton,
   MenuList,
   MenuItem,
+  MenuDivider,
   IconButton,
 } from '@chakra-ui/react';
 //import { HamburgerIcon, AddIcon, ExternalLinkIcon, RepeatIcon, EditIcon } from '@chakra-ui/icons';
@@ -23,7 +26,7 @@ function NoteList({ notes, deleteNote, watchNoteFunction, setFilteredNotesVerifi
   const [contextMenuPosition, setContextMenuPosition] = useState({ left: 0, top: 0 });
   const [isContextMenuOpen, setIsContextMenuOpen] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null);
-
+  const toast = useToast()
   const parentRef = useRef(null);
   const childRef = useRef(null);
 
@@ -49,7 +52,7 @@ function NoteList({ notes, deleteNote, watchNoteFunction, setFilteredNotesVerifi
         childDiv.style.left = `${contextMenuPosition.left}px`
         childDiv.style.position = "fixed";
         childDiv.style.minWidth = "200px";
-        childDiv.style.width = "25%";
+        childDiv.style.width = "15%";
       }
     }
   }, [isContextMenuOpen])
@@ -112,6 +115,23 @@ function NoteList({ notes, deleteNote, watchNoteFunction, setFilteredNotesVerifi
   
   const watchNote = (note) => {
     watchNoteFunction(note)
+    //animation right here when opened
+
+  }
+
+  const deleteSelectedNote = (note) => {
+    try{
+      deleteNote(note)
+      toast({
+        title: 'Note deleted',
+        description: "Like you said, I threw it away!",
+        status: 'warning',
+        duration: 2500,
+        isClosable: true,
+      })
+    }catch(error){
+      console.log("There's no function to watch the note")
+    }
   }
 
   return (
@@ -196,7 +216,7 @@ function NoteList({ notes, deleteNote, watchNoteFunction, setFilteredNotesVerifi
                   className="text-green-500 cursor-pointer m-1 "
                 />
               </div>
-              <div onClick={() => deleteNote(note)} className="text-center  ">
+              <div onClick={() => deleteSelectedNote(note)} className="text-center  ">
                 <FontAwesomeIcon
                   icon={faTrash}
                   className=" text-red-500 cursor-pointer m-1"
@@ -268,22 +288,30 @@ function NoteList({ notes, deleteNote, watchNoteFunction, setFilteredNotesVerifi
       </MenuButton> */}
 
   <MenuList>
-    <MenuItem command='⌘T' onClick={()=>holi()}>
-      New Tab
+    <MenuItem command='Ctrl+N' onClick={()=>holi()}>
+      Open in a new tab
     </MenuItem>
     <MenuItem   command='⌘N'>
-      New Window
+      Select
     </MenuItem>
     <MenuItem command='⌘⇧N'>
-      Open Closed Tab
+      Share
+    </MenuItem>
+    <MenuDivider />
+    <MenuItem   command='⌘I'>
+      Info
+    </MenuItem>
+    <MenuItem   command='⌘F'>
+      Favorite
     </MenuItem>
     <MenuItem   command='⌘O'>
-      Open File...
+      Lock
     </MenuItem>
+    <MenuDivider />
     <MenuItem  onClick={() => watchNote(selectedNote)}>
       View note
     </MenuItem>
-    <MenuItem   onClick={()=>deleteNote(selectedNote)}>
+    <MenuItem   onClick={()=>deleteSelectedNote(selectedNote)}>
       Delete note
     </MenuItem>
   </MenuList>
