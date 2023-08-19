@@ -5,6 +5,7 @@ import Home from './views/Home.jsx'
 
 import './App.css'
 import { ChakraProvider } from '@chakra-ui/react'
+import { useToast } from '@chakra-ui/react'
 
 function App() {
   const [count, setCount] = useState(0)

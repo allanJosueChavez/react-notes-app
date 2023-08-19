@@ -1,11 +1,14 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; //import { Input } from "@material-tailwind/react";
 import { faPen, faX } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import { useToast, Box } from '@chakra-ui/react'
+
 
 function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
   if (!isOpen) {
     return null; // Don't render anything if isOpen is false
   }
+  const toast = useToast()
   const [newNoteTitle, setNewNoteTitle] = useState("");
   const [newNoteDescription, setNewNoteDescription] = useState("");
 
@@ -22,34 +25,31 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
       //  text_color: chooseTextColor(randomColor)
       text_color: chooseTextColor(newColor[1]),
     };
+    try{
     addNewNote(newNote);
+      toast({
+        title: 'Account created.',
+        description: "We've created your account for you.",
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+        render: () => (
+          <Box color='white' p={3} bg='blue.500'>
+            Hello World
+          </Box>
+        ),
+      })
+    }catch(error){
+      toast({
+        title: 'An error occurred.',
+        description: "We've created your account for you.",
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
+      })
+    }
     onClose();
   };
-
-  const colorsNames = [
-    "Slate",
-    "Gray",
-    "Zinc",
-    "Neutral",
-    "Stone",
-    "Red",
-    "Orange",
-    "Amber",
-    "Yellow",
-    "Lime",
-    "Green",
-    "Emerald",
-    "Teal",
-    "Cyan",
-    "Sky",
-    "Blue",
-    "Indigo",
-    "Violet",
-    "Purple",
-    "Fuchsia",
-    "Pink",
-    "Rose",
-  ];
 
   const colorObjects = [
     { type: "light", color: "bg-slate-200" },
@@ -172,12 +172,12 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
           {/* <div className="bg-white p-6 rounded-lg shadow-md"> */}
           <div id="dialog-title" className="mb-4 p-4">
           <p className="text-4xl font-semibold my-2">SOMETHING NEW?</p>
-          <p className="text-2xl ">Write a new note...</p>
+          <p className="text-xl text-gray-500">Write a new note...</p>
           </div>
           <div className="my-6">
             <label
               htmlFor="newNoteTitle"
-              className="block text-2xl text-gray-700 font-semibold my-4"
+              className="block text-2xl text-gray-500 font-semibold my-4"
             >
              Note title
             </label>
@@ -193,7 +193,7 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
           <div className="my-6">
             <label
               htmlFor="newNoteDescription"
-              className="block text-2xl text-gray-700 font-semibold my-4"
+              className="block text-2xl text-gray-500 font-semibold my-4"
             >
               Note Content
             </label>

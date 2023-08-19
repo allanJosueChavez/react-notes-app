@@ -40,9 +40,15 @@ function Home() {
 
   
   useEffect(() => {
-    if(viewNote !== {}){
+    // There was an error here, it was being set to true when the viewNote was empty
+    // But now with the help of Object.keys().length i can check if the object is empty or not
+    // I had to had viewNote because since it was null Object.keys can't read null
+    if(viewNote && Object.keys(viewNote).length !== 0){
       console.log(viewNote);
       setIsNoteOpen(true);
+    }else{
+      console.log(viewNote);
+      console.log("I don't do shit")
     }
   }, [viewNote]);
 
@@ -62,10 +68,11 @@ function Home() {
   useEffect(() => {
     console.log("useEffect it's just nuts");
     const handleClickOutside = (event) => {
+      console.log(viewNote)
       if (
         containerRef.current &&
         !containerRef.current.contains(event.target)
-        && viewNote
+        && viewNote !== null && Object.keys(viewNote).length !== 0
       ) {
         console.log("Ouch, you clicked outside of me!");
         setNoteToOpen(null);
