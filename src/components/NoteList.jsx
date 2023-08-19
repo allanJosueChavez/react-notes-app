@@ -1,7 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "../assets/styles/styles.module.css";
-
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  IconButton,
+} from '@chakra-ui/react';
+//import { HamburgerIcon, AddIcon, ExternalLinkIcon, RepeatIcon, EditIcon } from '@chakra-ui/icons';
 import {
   faStickyNote,
   faTrash,
@@ -13,6 +20,13 @@ function NoteList({ notes, deleteNote, watchNoteFunction, setFilteredNotesVerifi
   const [filteredNotes, setFilteredNotes] = useState(null);
   //I learned how to use useState in order to use a prop and not use it directly, it's better if I create an intern state inside
   // the child component and with that I can edit the value and mutate it as I want it.
+  const [contextMenuPosition, setContextMenuPosition] = useState({ left: 0, top: 0 });
+  const [isContextMenuOpen, setIsContextMenuOpen] = useState(false);
+  const [selectedNote, setSelectedNote] = useState(null);
+
+  const parentRef = useRef(null);
+  const childRef = useRef(null);
+
   const bgNotesColors = filteredNotes?.map((note) => {
     return note.bg_color;
   });
@@ -21,6 +35,24 @@ function NoteList({ notes, deleteNote, watchNoteFunction, setFilteredNotesVerifi
     console.log("it's going to set the setfilteredNotes");
     setFilteredNotes(notes)
   }, [notes]);
+
+  useEffect(()=>{
+    const parentDiv = parentRef.current;
+    if (parentDiv) {
+      console.log(parentDiv)
+      //Considering it's always css-r6z5ec, I can use it, but if it changes, I'll have to change it.
+      
+      const childDiv = parentDiv.querySelector('.css-r6z5ec'); // Replace with your child div class or selector
+      if (childDiv) {
+        childDiv.style.inset = `0 0 0 0`;
+        childDiv.style.top = `${contextMenuPosition.top }px`
+        childDiv.style.left = `${contextMenuPosition.left}px`
+        childDiv.style.position = "fixed";
+        childDiv.style.minWidth = "200px";
+        childDiv.style.width = "25%";
+      }
+    }
+  }, [isContextMenuOpen])
   // If I delete filterednotes from the parameters it does not work. 
   // Well, I just got it, what? I just got it, because it makes sense that whenever the fuck react wants to set the value to 
   // notes it'll be exected the useEffect. So is that easy, if you wanna use a prop and set it to another state, wait for it, that simple.
@@ -55,9 +87,36 @@ function NoteList({ notes, deleteNote, watchNoteFunction, setFilteredNotesVerifi
    setSearchInputValue(event.target.value);
   };
 
+  const handleRightClickOnNote = (event, note) => {
+    console.log("The selected note is: "+ note.title)
+    setSelectedNote(note);
+    // Thank God note is going to give me the note I want to manipulate so I can give it to a new state and then use it in the context menu
+
+    event.preventDefault(); // Prevent the default context menu behavior
+    // Your custom logic for handling the right-click event
+    setContextMenuPosition({ left: event.clientX, top: event.clientY });
+    console.log(contextMenuPosition)
+    console.log(event.clientX+" "+event.clientY)
+    setIsContextMenuOpen(true);
+
+    console.log('Right-click event occurred');
+  };
+
+  const closeContextMenu = () => {
+    setIsContextMenuOpen(false);
+  };
+
+  const holi = () => {
+    console.log("Holi")
+  }
+  
+  const watchNote = (note) => {
+    watchNoteFunction(note)
+  }
 
   return (
-    <div className="p-4 w-full">
+       
+        <div  className="p-4 w-full">
       <h1 className="font-bold text-2xl mb-4 p-8">
         <FontAwesomeIcon icon={faStickyNote} className="mr-2" />
         MY NOTEBOOK
@@ -101,6 +160,7 @@ function NoteList({ notes, deleteNote, watchNoteFunction, setFilteredNotesVerifi
       <div id="notes-grid" className={" grid grid-flow-row auto-rows-max sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-6 gap-4 "+(filteredNotes && filteredNotes.length == 0 ? "w-12/12" : "")}>
         {filteredNotes?.map((note, index) => (
           <div
+            onContextMenu={(event) => handleRightClickOnNote(event, note)}
             key={index}
             className={
               "w-48 h-48 relative rounded-lg shadow-md cursor-pointer " +
@@ -128,7 +188,7 @@ function NoteList({ notes, deleteNote, watchNoteFunction, setFilteredNotesVerifi
 
             <div className="absolute bottom-0 flex justify-end items-end p-2 w-full">
               <div
-                onClick={() => watchNoteFunction(note)}
+                onClick={() => watchNote(note)}
                 className="text-center "
               >
                 <FontAwesomeIcon
@@ -152,9 +212,93 @@ function NoteList({ notes, deleteNote, watchNoteFunction, setFilteredNotesVerifi
                 />
               </div> */}
             </div>
+          {/*   {isContextMenuOpen && (
+        <div
+        className="h-40 w-40 bg-red-200 relative visible  inset-1"
+        left={`${contextMenuPosition.left}px`}
+        top={`${contextMenuPosition.top}px`}
+        >
+        <Menu
+          id="noteMenu"
+          isOpen={isContextMenuOpen}
+          onClose={closeContextMenu}
+          className={"absolute"}
+          position="absolute"
+          direction="rtl"
+          
+        >
+
+
+  <MenuList>
+    <MenuItem command='⌘T'>
+      New Tab
+    </MenuItem>
+    <MenuItem   command='⌘N'>
+      New Window
+    </MenuItem>
+    <MenuItem command='⌘⇧N'>
+      Open Closed Tab
+    </MenuItem>
+    <MenuItem   command='⌘O'>
+      Open File...
+    </MenuItem>
+  </MenuList>
+        </Menu>
+
+        </div>
+      )} */}
           </div>
+          
         ))}
+
       </div>
+      {isContextMenuOpen && (
+        <div
+        id="divBeforeNoteMenu"
+
+        ref={parentRef} 
+        >
+        <Menu
+          id="noteMenu"
+          isOpen={isContextMenuOpen}
+          onClose={closeContextMenu}
+        >
+                {/* <MenuButton  as={Button} rightIcon={<ChevronDownIcon />}>
+        {isOpen ? 'Close' : 'Open'}
+      </MenuButton> */}
+
+  <MenuList>
+    <MenuItem command='⌘T' onClick={()=>holi()}>
+      New Tab
+    </MenuItem>
+    <MenuItem   command='⌘N'>
+      New Window
+    </MenuItem>
+    <MenuItem command='⌘⇧N'>
+      Open Closed Tab
+    </MenuItem>
+    <MenuItem   command='⌘O'>
+      Open File...
+    </MenuItem>
+    <MenuItem  onClick={() => watchNote(selectedNote)}>
+      View note
+    </MenuItem>
+    <MenuItem   onClick={()=>deleteNote(selectedNote)}>
+      Delete note
+    </MenuItem>
+  </MenuList>
+        </Menu>
+        {/* <Menu>
+    <>
+
+      <MenuList>
+        <MenuItem>Download</MenuItem>
+        <MenuItem onClick={() => alert('Kagebunshin')}>Create a Copy</MenuItem>
+      </MenuList>
+    </>
+</Menu> */}
+        </div>
+      )}
       {/* <div className="w-16 h-16 bg-gray-500"></div>
     <div className="w-16 h-16 bg-gray-300"></div>
     <div className="w-16 h-16 bg-gray-500"></div>

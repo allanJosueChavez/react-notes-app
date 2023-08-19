@@ -4,11 +4,13 @@ import viteLogo from '/vite.svg'
 import Home from './views/Home.jsx'
 
 import './App.css'
+import { ChakraProvider } from '@chakra-ui/react'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
+    <ChakraProvider>
     <div >
       {/* <div>
         <a href="https://vitejs.dev" target="_blank">
@@ -34,7 +36,7 @@ function App() {
       {/* <p>What's Up</p> */}
       <Home className={"overflow-y-hidden"}/>
     </div>
-    
+    </ChakraProvider>
   )
 }
 

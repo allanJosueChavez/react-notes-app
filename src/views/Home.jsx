@@ -38,6 +38,14 @@ function Home() {
     }
   }, [notes]);
 
+  
+  useEffect(() => {
+    if(viewNote !== {}){
+      console.log(viewNote);
+      setIsNoteOpen(true);
+    }
+  }, [viewNote]);
+
   useEffect(() => {
     const storedNotes = JSON.parse(localStorage.getItem("notes"));
     console.log("useEffect by default");
@@ -57,6 +65,7 @@ function Home() {
       if (
         containerRef.current &&
         !containerRef.current.contains(event.target)
+        && viewNote
       ) {
         console.log("Ouch, you clicked outside of me!");
         setNoteToOpen(null);
@@ -91,11 +100,11 @@ function Home() {
   };
 
   const watchNoteFunction = (note) => {
-    console.log("It is trynnna open do something");
+    console.log("It is trynnna open THE NOTE");
     console.log(note);
     setNoteToOpen(note);
-    console.log(viewNote);
-    setIsNoteOpen(true);
+    //console.log(viewNote);
+    //setIsNoteOpen(true);
   };
 
   const editNoteTitle = (note) => {
@@ -136,7 +145,7 @@ function Home() {
 
   return (
     <>
-      <div ref={containerRef} className={"  h-screen  pb-16 "+`${ (isDialogOpen === true || isNoteOpen === true) ? 'overflow-y-hidden' : 'overflow-y-scroll'  }` + (!filteredNotesVerifier ? " w-max ": "")}>
+      <div ref={containerRef} className={"  h-screen  py-16 "+`${ (isDialogOpen === true || isNoteOpen === true) ? 'overflow-y-hidden' : 'overflow-y-scroll'  }` + (!filteredNotesVerifier ? " w-max ": "")}>
         <NewNote setIsDialogOpen={setIsDialogOpen} />
 
         <NoteList

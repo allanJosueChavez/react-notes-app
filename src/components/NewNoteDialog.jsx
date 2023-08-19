@@ -19,8 +19,8 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
       title: newNoteTitle,
       description: newNoteDescription,
       bg_color: newColor[0],
-    //  text_color: chooseTextColor(randomColor)
-        text_color : chooseTextColor(newColor[1])
+      //  text_color: chooseTextColor(randomColor)
+      text_color: chooseTextColor(newColor[1]),
     };
     addNewNote(newNote);
     onClose();
@@ -48,9 +48,8 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
     "Purple",
     "Fuchsia",
     "Pink",
-    "Rose"
+    "Rose",
   ];
-  
 
   const colorObjects = [
     { type: "light", color: "bg-slate-200" },
@@ -118,25 +117,24 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
     { type: "dark", color: "bg-pink-400" },
     { type: "light", color: "bg-rose-200" },
     { type: "light", color: "bg-rose-300" },
-    { type: "dark", color: "bg-rose-400" }
+    { type: "dark", color: "bg-rose-400" },
   ];
-  
-  
 
-  const chooseTextColor = (bg_color)=>{
-    console.log("The color will be: "+bg_color)
-    if(bg_color.type == "dark"){
-        return "text-white"
-    }else if(bg_color.type == "light"){
-        return "text-black"
+  const chooseTextColor = (bg_color) => {
+    console.log("The color will be: " + bg_color.color+ " and the type is: "+bg_color.type);
+    if (bg_color.type == "dark") {
+      return "text-white";
+    } else if (bg_color.type == "light") {
+      return "text-black";
     }
-  }
+  };
 
   const randomColor = () => {
-    const randomColorName = colorObjects[Math.floor(Math.random() * colorObjects.length)];
+    const randomColorName =
+      colorObjects[Math.floor(Math.random() * colorObjects.length)];
     //const randomNumber = [200, 300, 400][Math.floor(Math.random() * 3)];
-    
-    return [randomColorName.color,randomColorName ];
+
+    return [randomColorName.color, randomColorName];
   };
 
   const handleInputChange = (event) => {
@@ -160,7 +158,7 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
       }
       onClick={handleBlurDivClick}
     >
-      <div className="shadow-lg bg-white rounded-lg w-8/12 h-11/12">
+      <div className="shadow-lg rounded-lg w-7/12 h-11/12 bg-gray-100">
         <div
           onClick={() => onClose()}
           className={"float-right cursor-pointer mr-4 mt-2 w-4 h-4"}
@@ -171,38 +169,46 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
           />
         </div>
         <div className="m-6">
-          <h3 className="m-4">CREATE A NEW NOTE</h3>
-
-          <label
-            htmlFor="newNoteTitle"
-            className="block text-gray-700 text-sm font-bold my-4"
-          >
-            New note title
-          </label>
-          <input
-            id="newNoteTitle"
-            name="newNoteTitle"
-            type="text"
-            value={newNoteTitle}
-            onChange={handleInputChange}
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
-          />
-          <label
-            htmlFor="newNoteDescription"
-            className="block text-gray-700 text-sm font-bold mb-2"
-          >
-            Content
-          </label>
-          <textarea
-            id="newNoteDescription"
-            name="newNoteDescription"
-            value={newNoteDescription}
-            onChange={(event) => setNewNoteDescription(event.target.value)}
-            type="text"
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
-          />
+          {/* <div className="bg-white p-6 rounded-lg shadow-md"> */}
+          <div id="dialog-title" className="mb-4 p-4">
+          <p className="text-4xl font-semibold my-2">SOMETHING NEW?</p>
+          <p className="text-2xl ">Write a new note...</p>
+          </div>
+          <div className="my-6">
+            <label
+              htmlFor="newNoteTitle"
+              className="block text-2xl text-gray-700 font-semibold my-4"
+            >
+             Note title
+            </label>
+            <input
+              id="newNoteTitle"
+              name="newNoteTitle"
+              type="text"
+              value={newNoteTitle}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+            />
+          </div>
+          <div className="my-6">
+            <label
+              htmlFor="newNoteDescription"
+              className="block text-2xl text-gray-700 font-semibold my-4"
+            >
+              Note Content
+            </label>
+            <textarea
+              id="newNoteDescription"
+              name="newNoteDescription"
+              value={newNoteDescription}
+              rows="10"
+              onChange={(event) => setNewNoteDescription(event.target.value)}
+              type="text"
+              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+            />
+          </div>
           <button
-            className="bg-blue-600 mr-4 mt-4"
+            className="bg-blue-600 mr-4 mt-4 py-2 px-4 text-white hover:text-gray-200  hover:bg-blue-700"
             onClick={handleAddNoteClick}
           >
             Create
