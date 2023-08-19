@@ -152,7 +152,7 @@ function Home() {
 
   return (
     <>
-      <div ref={containerRef} className={"  h-screen  py-16 "+`${ (isDialogOpen === true || isNoteOpen === true) ? 'overflow-y-hidden' : 'overflow-y-scroll'  }` + (!filteredNotesVerifier ? " w-max ": "")}>
+      <div ref={containerRef} className={"  h-screen  py-16 "+`${ (isDialogOpen === true  ) ? 'overflow-y-hidden' : 'overflow-y-scroll'  }` + (!filteredNotesVerifier ? " w-max ": "")}>
         <NewNote setIsDialogOpen={setIsDialogOpen} />
 
         <NoteList

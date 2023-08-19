@@ -28,16 +28,17 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
     try{
     addNewNote(newNote);
       toast({
-        title: 'Account created.',
-        description: "We've created your account for you.",
+        title: 'Note created.',
+        description: "Thank God. Your note is now safe.",
         status: 'success',
-        duration: 2000,
+        duration: 2500,
         isClosable: true,
-        render: () => (
-          <Box color='white' p={3} bg='blue.500'>
-            Hello World
-          </Box>
-        ),
+        bg:"#a3e635"
+        // render: () => (
+        //   <Box color='white' p={3} bg="#a3e635">
+        //     Hello World
+        //   </Box>
+        // ),
       })
     }catch(error){
       toast({
