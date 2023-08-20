@@ -81,24 +81,25 @@ function NoteList({
   // notes it'll be exected the useEffect. So is that easy, if you wanna use a prop and set it to another state, wait for it, that simple.
 
   const [searchInput, setSearchInputValue] = useState("");
-
+  const [lastSearchInput, setLastSearchInput] = useState("");
   const handleSubmit = (event) => {
     event.preventDefault(); // Prevent the default form submission
-    console.log(filteredNotes);
+    if (searchInput === lastSearchInput) {
+      console.log("Same search input as before, skipping processing.");
+      return;
+    }
     const filtered = notes.filter((note) => {
       if (note.title.toLowerCase().includes(searchInput.toLowerCase())) {
-        //     console.log("Oh yeah, one match")
+        console.log("Oh yeah, one match")
         return note;
       }
     });
 
     setFilteredNotes(filtered);
-    console.log(notes);
-    console.log(filtered);
+    setLastSearchInput(searchInput); // Update the last search input
     if (filtered.length == 0) {
-      setFilteredNotesVerifier();
+      setFilteredNotesVerifier(); // This is going to apply a w-max to my main div so the design is not compromised
     }
-    // Perform your actions here
 
     console.log("Form submitted with value:", searchInput);
   };
@@ -248,7 +249,7 @@ function NoteList({
                 className="text-center absolute text-slate-700"
                 title={
                   "Last update was at: " +
-                  `${note.updated_at ? note.updated_at : "Unknown"}`
+                  `${note.updated_at ? note.last_update_date : "Unknown"}`
                 }
               >
                 <p>{note.updated_at ? note.last_update_date : "Unknown"} </p>

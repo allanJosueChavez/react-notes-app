@@ -33,7 +33,7 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
         title: 'Note created.',
         description: "Thank God. Your note is now safe.",
         status: 'success',
-        duration: 2500,
+        duration:3000,
         isClosable: true,
         bg:"#a3e635"
         // render: () => (

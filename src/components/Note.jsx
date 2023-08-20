@@ -189,7 +189,7 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle, editNoteCo
           <div className="flex items-center mb-4 ">
             <h3
               className={
-                "text-lg font-bold flex-grow p-4 " +
+                "text-2xl font-bold flex-grow p-4 " +
                 (isEditTitle ? "hidden" : "block")
               }
             >
@@ -202,14 +202,14 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle, editNoteCo
               value={newNoteTitle}
               onChange={handleTitleInputChange}
               className={
-                "bg-transparent text-gray-900 text-lg font-bold rounded-lg block w-full p-2.5 focus:ring-0 focus:border-transparent  bg-white focus:outline-none  flex items-center justify-center " +
+                "bg-transparent text-gray-900 text-2xl font-bold rounded-lg block w-full p-1 mx-2 focus:ring-0 focus:border-transparent  bg-white focus:outline-none  flex items-center justify-center " +
                 (isEditTitle ? "block" : "hidden")
               }
             />
 
             <button
               className={
-                "w-4/12 px-3 py-2 right-0 bg-blue-600 text-white btn-sm  " +
+                "w-40 px-3 py-2 right-0 bg-blue-600 text-white mx-1  " +
                 (isEditTitle ? "block" : "hidden")
               }
               onClick={() => saveTitle(noteToOpen)}
@@ -218,7 +218,7 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle, editNoteCo
             </button>
             <button
               className={
-                "px-3 py-2 right-0 bg-red-600 text-white btn-sm  " +
+                "px-3 py-2 right-0 bg-red-600 text-white mx-1 " +
                 (isEditTitle ? "block" : "hidden")
               }
               onClick={() => cancelEditTitle()}
@@ -231,7 +231,7 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle, editNoteCo
             >
               <FontAwesomeIcon
                 icon={faPen}
-                className="text-blue-800 cursor-pointer m-1 w-3 h-3"
+                className="text-blue-800 cursor-pointer m-1 w-4 h-4"
               />
             </div>
 
@@ -254,7 +254,7 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle, editNoteCo
               >
                 <FontAwesomeIcon
                   icon={faPen}
-                  className="text-blue-800 cursor-pointer mt-4 w-3 h-3"
+                  className="text-blue-800 cursor-pointer mt-4 w-5 h-5 mx-1"
                 />
               </div>
 
@@ -268,7 +268,7 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle, editNoteCo
                 }>
               <FontAwesomeIcon
                 icon={faPalette}
-                className="text-blue-800 cursor-pointer mt-4 w-4 h-4"
+                className="text-blue-800 cursor-pointer mt-4 w-5 h-5"
               />
               <ReactTooltip id="edit-tooltip" effect="solid" place="bottom" />{" "}
               </div>
@@ -305,7 +305,7 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle, editNoteCo
             </span>
             <button
               className={
-                "w-2/12 h-10 right-0 bg-blue-600 text-white mx-1 " +
+                "w-32 h-10 right-0 bg-blue-600 text-white mx-1 " +
                 (isEditContent ? "block" : "hidden")
               }
               onClick={() => saveContent(noteToOpen)}
@@ -331,7 +331,7 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle, editNoteCo
               id="noteContentInput"
               value={newNoteContent}
               onChange={handleContentInputChange}
-              rows="15"
+              rows="24"
               className={
                 "mt-2 bg-white bg-transparent text-gray-900 text-md font-semibold rounded-lg block w-full p-2.5 focus:ring-0 focus:border-transparent focus:outline-none  flex items-center justify-center " +
                 (isEditContent ? "block" : "hidden")
