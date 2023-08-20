@@ -28,6 +28,7 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
       updated_at: new Date().toISOString(),
       created_at: new Date().toISOString(),
     };
+
     try{
     addNewNote(newNote);
       toast({
@@ -91,11 +92,11 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
     <div
       id="blurDiv"
       className={
-        "absolute inset-0 backdrop-blur-lg justify-center items-center flex"
+        "absolute inset-0 backdrop-blur-lg justify-center items-center flex "
       }
       onClick={handleBlurDivClick}
     >
-      <div className="shadow-lg rounded-lg w-7/12 h-11/12 bg-gray-100">
+      <div className="shadow-lg rounded-lg w-10/12 lg:w-7/12 h-6/6 bg-gray-100 lg:p-5 ">
         <div
           onClick={() => onClose()}
           className={"float-right cursor-pointer mr-4 mt-2 w-4 h-4"}
@@ -108,10 +109,10 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
         <div className="m-6">
           {/* <div className="bg-white p-6 rounded-lg shadow-md"> */}
           <div id="dialog-title" className="mb-4 p-4">
-          <p className="text-4xl font-semibold my-2">SOMETHING NEW?</p>
+          <p className="lg:text-4xl font-semibold my-2 text-2xl">SOMETHING NEW?</p>
           <p className="text-xl text-gray-500">Write a new note...</p>
           </div>
-          <div className="my-6">
+          <div className="my-8">
             <label
               htmlFor="newNoteTitle"
               className="block text-2xl text-gray-500 font-semibold my-4"
@@ -138,10 +139,10 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
               id="newNoteDescription"
               name="newNoteDescription"
               value={newNoteDescription}
-              rows="10"
+              rows="8"
               onChange={(event) => setNewNoteDescription(event.target.value)}
               type="text"
-              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300 lg:rows-20"
             />
           </div>
           <button

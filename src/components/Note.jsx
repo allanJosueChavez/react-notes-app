@@ -4,6 +4,7 @@ import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useRef, useState, useEffect } from "react";
 import { Popover, PopoverTrigger, PopoverContent, PopoverBody, SimpleGrid } from "@chakra-ui/react";
 import styles from "../assets/styles/styles.module.css";
+import animations from "../assets/styles/animations.module.css";
 import useColorStore from "../store/designStore/colorStore.js"
 
 function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
@@ -12,6 +13,7 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
   const [newNoteTitle, setNewNoteTitle] = useState("");
   const [newNoteContent, setNewNoteContent] = useState("");
   const [currentNote, setCurrentNote] = useState({});//This is the note that is currently being edited
+  const [isAnimation, setIsAnimation] = useState(false);
   const colors = useColorStore(state => state.tailwind_colors);
   // Set initial value of newNoteTitle when noteToOpen changes
   useEffect(() => {
@@ -19,6 +21,7 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
       setNewNoteTitle(noteToOpen?.title || "");
       setNewNoteContent(noteToOpen?.description || "");
       setCurrentNote(noteToOpen);
+      setIsAnimation(true);
     }
   }, [noteToOpen]);
 
@@ -32,8 +35,15 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
   }
   const handleBlurDivClick = (event) => {
     if (event.target === event.currentTarget) {
-      console.log("Setting it to null");
-      setNoteToOpen(null);
+      // const blurDiv = document.getElementById("blurDiv");
+      // blurDiv.classList.remove(`${animations["upOutFloatingPopUp"]}`);
+      // blurDiv.classList.add(`${animations["downOutFloatingPopUp"]}`);
+      setIsAnimation(false);
+      setTimeout(() => {
+        console.log("Setting it to null");
+        setNoteToOpen(null);
+      }, 500) 
+
     }
   };
   //Close note function
@@ -113,15 +123,22 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
   }
 
   return (
+
     <div
       id="blurDiv"
       className={
-        "absolute inset-0 backdrop-blur-lg justify-center items-center flex"
+        "absolute inset-0 backdrop-blur-lg justify-center items-center flex " + (isAnimation? `${animations["upOutFloatingPopUp"]}` : `${animations["downOutFloatingPopUp"]}`) 
+        // v-bind:class="{
+  //
+//   upOutFloatingPopUp: isPopupVisible,
+//   downOutFloatingPopUp: !isPopupVisible
+// }"
+// >
       // These clases are being repeated in the component NewNoteDialog
       }
       onClick={handleBlurDivClick}
     >
-      <div className={"h-full w-8/12 mb-16 pb-20"}>
+      <div className={"h-full lg:w-8/12 w-5/6 mb-16 pb-24"}>
         <div className={"note rounded-lg shadow-lg mt-10 h-full p-6 "+(currentNote.bg_color || "bg-white")}>
           <div onClick={() => closeNote()} className={"text-left"}>
             <FontAwesomeIcon
@@ -223,7 +240,7 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
           Select the color you like the most
           </p>
           <SimpleGrid
-      columns={{ sm: 8, md: 7, lg: 8 }}
+      columns={8}
       spacing={4}
       className="color-items-wrap pr-4 pl-2 py-7"
     >
@@ -287,6 +304,7 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
 </a> */}
       </div>
     </div>
+
   );
 }
 

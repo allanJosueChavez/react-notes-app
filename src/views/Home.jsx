@@ -3,11 +3,14 @@ import NewNote from "../components/NewNote";
 import NewNoteDialog from "../components/NewNoteDialog";
 import Note from "../components/Note";
 import { useRef, useState, useEffect } from "react";
+import animations from "../assets/styles/animations.module.css";
+import { CSSTransition } from 'react-transition-group';
 
 function Home() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isNoteOpen, setIsNoteOpen] = useState(false);
   const containerRef = useRef(null);
+  const [offset, setOffset] = useState(0);
 
   const defaultNotes = [
     { id: 0, title: "Note 1", description: "Description of note 1..." },
@@ -52,9 +55,6 @@ function Home() {
     if(viewNote && Object.keys(viewNote).length !== 0){
       console.log(viewNote);
       setIsNoteOpen(true);
-    }else{
-      console.log(viewNote);
-      console.log("I don't do shit")
     }
   }, [viewNote]);
 
@@ -81,6 +81,9 @@ function Home() {
         && viewNote !== null && Object.keys(viewNote).length !== 0
       ) {
         console.log("Ouch, you clicked outside of me!");
+        setTimeout(() => {
+
+        }, 3000) 
         setNoteToOpen(null);
         setIsDialogOpen(false)
         setIsNoteOpen(false)
@@ -94,6 +97,24 @@ function Home() {
     };
   }, []);
 
+
+  
+  const handleScroll = (event) => {
+    const { scrollTop, scrollHeight, clientHeight } = event.target;
+    if ((Math.round(scrollTop - scrollHeight ) * (-1)) === clientHeight) {
+        console.log("You've reached the bottom");
+    }
+};
+
+useEffect(() => {
+    const gridElement = document.getElementById('main-container');
+    gridElement.addEventListener('scroll', handleScroll);
+
+    return () => {
+        gridElement.removeEventListener('scroll', handleScroll);
+    };
+}, [offset]);
+  
   const verifyFilteredNotes = () => {
     console.log("Checking if there's notes or not")
     setFilteredNotesVerifier(true);
@@ -146,7 +167,7 @@ function Home() {
   return (
     <>
     {/*pt-16 */}
-      <div ref={containerRef} className={"  h-screen  mt-2  pb-72  "+`${ (isDialogOpen === true  ) ? ' overflow-y-hidden ' : ' overflow-y-scroll '  }` + (!filteredNotesVerifier ? " w-max ": "")}>
+      <div id="main-container" ref={containerRef} className={"  h-screen  mt-2 pb-72  "+`${ (isDialogOpen === true  ) ? ' overflow-y-hidden ' : ' overflow-y-scroll '  }` + (!filteredNotesVerifier ? " w-max ": "")}>
         <NewNote setIsDialogOpen={setIsDialogOpen} />
 
         <NoteList
@@ -164,12 +185,15 @@ function Home() {
             onClick={handleBlurDivClick}
           > */}
             {viewNote && 
+
             <Note 
             noteToOpen={viewNote} 
             setNoteToOpen={setNoteToOpen} 
             isNoteOpen={isNoteOpen} 
             editNoteSelected={saveUpdatedNote}
-            />}
+            className={"" + (!isNoteOpen? `${animations["downOutFloatingPopUp"]}` : " ")}
+            />
+            }
 
             {isDialogOpen && (
               <NewNoteDialog

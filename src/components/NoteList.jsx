@@ -46,7 +46,7 @@ function NoteList({
     console.log("it's going to set the setfilteredNotes");
 
     setFilteredNotes(notes);
-    if(notes && notes.length !== 0){
+    if (notes && notes.length !== 0) {
       notes.map((note) => {
         const isoDate = new Date(note.updated_at);
         const formattedDate = isoDate.toLocaleDateString("en-US", {
@@ -56,7 +56,6 @@ function NoteList({
         note.last_update_date = formattedDate;
       });
     }
-
   }, [notes]);
 
   useEffect(() => {
@@ -90,7 +89,7 @@ function NoteList({
     }
     const filtered = notes.filter((note) => {
       if (note.title.toLowerCase().includes(searchInput.toLowerCase())) {
-        console.log("Oh yeah, one match")
+        console.log("Oh yeah, one match");
         return note;
       }
     });
@@ -152,7 +151,7 @@ function NoteList({
   };
 
   return (
-    <div className="p-4 w-full">
+    <div id="notebook" className="p-4 w-full  mt-8 lg:mt-0">
       <h1 className="font-bold text-2xl mb-4 p-8">
         <FontAwesomeIcon icon={faStickyNote} className="mr-2" />
         MY NOTEBOOK
@@ -181,7 +180,7 @@ function NoteList({
               value={searchInput}
               onChange={handleInputChange}
               className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-transparent focus:border-transparent "
-              placeholder="Search among your notes..."
+              placeholder={"Search among your notes..."}
             />
             <button
               type="submit"
@@ -302,6 +301,16 @@ function NoteList({
           </div>
         ))}
       </div>
+      {filteredNotes && filteredNotes.length == 0 && (
+        <div className="w-full  h-5/6  my-44 text-center text-3xl">
+          <p className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+            YOU STILL DON'T HAVE ANY NOTE. <br />
+          </p>
+          <p className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-sky-500">
+            WRITE SOME!
+          </p>
+        </div>
+      )}
       {isContextMenuOpen && (
         <div id="divBeforeNoteMenu" ref={parentRef}>
           <Menu

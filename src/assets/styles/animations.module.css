@@ -1,0 +1,60 @@
+
+/* Animations for the floating popup*/
+.downOutFloatingPopUp {
+    animation: downOut 400ms ease-in-out forwards;
+    transform-origin: top center;
+  }
+  
+  @keyframes downOut {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(50%);
+    }
+  }
+  
+  .upOutFloatingPopUp {
+    animation: upOut 400ms ease-in-out forwards;
+    transform-origin: top center;
+  }
+  
+  @keyframes upOut {
+    0% {
+      opacity: 0;
+      transform: translateY(30%);
+    }
+    70% {
+      opacity: 0.4;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+
+  .upOutLowerLeftCorner {
+    animation: upOutLowerLeftCorner 300ms ease-in-out forwards;
+    transform-origin: top center;
+  }
+  
+  @keyframes upOutLowerLeftCorner {
+    0% {
+      opacity: 0;
+      transform: translateX(-30%);
+    }
+    70% {
+      opacity: 0.2;
+      transform: translateX(1%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0%);
+    }
+  }
+  .downOutLowerLeftCorner {
+    animation: downOutLowerLeftCorner 300ms ease-in-out forwards;
+    transform-origin: top center;
+  }
+  
