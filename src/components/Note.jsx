@@ -5,7 +5,7 @@ import { useRef, useState, useEffect } from "react";
 import { Popover, PopoverTrigger, PopoverContent, PopoverBody, SimpleGrid } from "@chakra-ui/react";
 import styles from "../assets/styles/styles.module.css";
 
-function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle, editNoteContent }) {
+function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
   const [isEditTitle, setEditTitle] = useState(false);
   const [isEditContent, setEditContent] = useState(false);
   const [newNoteTitle, setNewNoteTitle] = useState("");
@@ -50,14 +50,14 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle, editNoteCo
   };
 
   const saveTitle = (note) => {
-    editNoteTitle(note);
+    editNoteSelected(note);
     note.title = newNoteTitle;
     setEditTitle(false);
   };
 
   const saveContent = (note) => {
     console.log("Saving content");
-    editNoteContent(note);
+    editNoteSelected(note);
     note.description = newNoteContent;
     setEditContent(false);
   }
@@ -159,8 +159,8 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle, editNoteCo
       currentNote.bg_color = color.color;
       let updatedNote = currentNote;
       setCurrentNote({...updatedNote});
-      //editNoteContent is just looking for an id and then it updates the notes array. So I can use it for every single update. The info is being sent already updated in here.
-      editNoteContent(currentNote);
+      //editNoteSelected is just looking for an id and then it updates the notes array. So I can use it for every single update. The info is being sent already updated in here.
+      editNoteSelected(currentNote);
       //It doesn't work like this: setCurrentNote(updatedNote);
       console.log(currentNote.bg_color)
     }

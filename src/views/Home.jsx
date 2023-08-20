@@ -120,21 +120,9 @@ function Home() {
     //setIsNoteOpen(true);
   };
 
-  const editNoteTitle = (note) => {
-      //find the by the id and change the tile of that note
-      console.log("In the component Home, is trying to edit the title")
-      let updatedNotes = notes.map((n) => {
-          if(n.id === note.id){
-              n.title = "EDITED TEST";
-          }
-          return n;
-      })
-      setNotes(updatedNotes);
-  }
 
-  const editNoteContent = (note) => {
-    //find the by the id and change the tile of that note
-    console.log("In the component Home, is trying to edit the content")
+  const saveUpdatedNote = (note) => {
+    console.log("In the component Home, is trying to save the note")
     let updatedNotes = notes.map((n) => {
         if(n.id === note.id){
             n = note;
@@ -179,8 +167,7 @@ function Home() {
             noteToOpen={viewNote} 
             setNoteToOpen={setNoteToOpen} 
             isNoteOpen={isNoteOpen} 
-            editNoteTitle={editNoteTitle}
-            editNoteContent={editNoteContent}
+            editNoteSelected={saveUpdatedNote}
             />}
 
             {isDialogOpen && (
