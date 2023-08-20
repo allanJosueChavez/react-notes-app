@@ -1,20 +1,30 @@
-import { faPen, faX , faPalette } from "@fortawesome/free-solid-svg-icons";
+import { faPen, faX , faPalette, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useRef, useState, useEffect } from "react";
 import { Popover, PopoverTrigger, PopoverContent, PopoverBody, SimpleGrid } from "@chakra-ui/react";
+import styles from "../assets/styles/styles.module.css";
 
 function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle, editNoteContent }) {
   const [isEditTitle, setEditTitle] = useState(false);
   const [isEditContent, setEditContent] = useState(false);
   const [newNoteTitle, setNewNoteTitle] = useState("");
   const [newNoteContent, setNewNoteContent] = useState("");
+  const [currentNote, setCurrentNote] = useState({});//This is the note that is currently being edited
 
   // Set initial value of newNoteTitle when noteToOpen changes
   useEffect(() => {
-    setNewNoteTitle(noteToOpen?.title || "");
-    setNewNoteContent(noteToOpen?.description || "");
+    if(noteToOpen){
+      setNewNoteTitle(noteToOpen?.title || "");
+      setNewNoteContent(noteToOpen?.description || "");
+      setCurrentNote(noteToOpen);
+    }
   }, [noteToOpen]);
+
+  useEffect(() => {
+    console.log("The current note is being updated. probably for the first time")
+  }, [currentNote])
+
 
   if (!isNoteOpen) {
     return null; // Don't render anything if isOpen is false
@@ -145,6 +155,15 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle, editNoteCo
 
 
   const selectNewColor = (color) => {
+    if(color.color !== currentNote.bg_color){
+      currentNote.bg_color = color.color;
+      let updatedNote = currentNote;
+      setCurrentNote({...updatedNote});
+      //editNoteContent is just looking for an id and then it updates the notes array. So I can use it for every single update. The info is being sent already updated in here.
+      editNoteContent(currentNote);
+      //It doesn't work like this: setCurrentNote(updatedNote);
+      console.log(currentNote.bg_color)
+    }
     console.log("The color this dude wants for this note is: "+color.color)
     //update the color
   }
@@ -153,12 +172,13 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle, editNoteCo
     <div
       id="blurDiv"
       className={
-        "absolute inset-0 backdrop-blur-lg justify-center items-center flex overflow-y-scroll"
+        "absolute inset-0 backdrop-blur-lg justify-center items-center flex"
+      // These clases are being repeated in the component NewNoteDialog
       }
       onClick={handleBlurDivClick}
     >
-      <div className={"h-full w-8/12"}>
-        <div className={"note rounded-lg shadow-lg mt-10  h-full p-6 "+(noteToOpen.bg_color || "bg-white")}>
+      <div className={"h-full w-8/12  pt-12 pb-16"}>
+        <div className={"note rounded-lg shadow-lg mt-10 h-full p-6 "+(currentNote.bg_color || "bg-white")}>
           <div onClick={() => closeNote()} className={"text-left"}>
             <FontAwesomeIcon
               icon={faX}
@@ -255,7 +275,7 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle, editNoteCo
       </PopoverTrigger>
       <PopoverContent>
         <PopoverBody>
-          <p class="font-medium  text-sm mt-3">
+          <p className="font-medium  text-sm mt-3">
           Select the color you like the most
           </p>
           <SimpleGrid
@@ -265,12 +285,17 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle, editNoteCo
     >
       {colors.map((color, index) => (
         <div
-        className={"position-relative m-1 rounded-full cursor-pointer h-5 w-5 "+(color.color)}
+        className={"m-1 rounded-full cursor-pointer h-5 w-5 p-0.5 "+(color.color) + (color.color == currentNote.bg_color ? " border border-black " : "")}
         onClick={() => {
           selectNewColor(color)
         }}
         key={index}
-      />
+      >
+                      <FontAwesomeIcon
+                icon={faCheck}
+                className={"text-gray-600 cursor-pointer w-4 h-4 "+ (color.color !== currentNote.bg_color ? "hidden" : "block") }
+              />
+        </div>
       ))}
     </SimpleGrid>
         </PopoverBody>
@@ -280,7 +305,7 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle, editNoteCo
             </span>
             <button
               className={
-                "w-4/12 px-3 py-2 right-0 bg-blue-600 text-white btn-sm  " +
+                "w-2/12 h-10 right-0 bg-blue-600 text-white mx-1 " +
                 (isEditContent ? "block" : "hidden")
               }
               onClick={() => saveContent(noteToOpen)}
@@ -289,7 +314,7 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle, editNoteCo
             </button>
             <button
               className={
-                "px-3 py-2 right-0 bg-red-600 text-white btn-sm  " +
+                "w-24 h-10 right-0 bg-red-600 text-white mx-1 "  +
                 (isEditContent ? "block" : "hidden")
               }
               onClick={() => cancelEditContent()}
@@ -298,7 +323,8 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle, editNoteCo
             </button>
           </div>
           <span>
-            <p className={"my-4 "+(!isEditContent ? "block " : "hidden ") + (noteToOpen.text_color || "text-white") }>{noteToOpen?.description}</p>
+            <p className={`${styles["noteView"]}`+" my-4 overflow-y-scroll px-4  "+(!isEditContent ? "block " : "hidden ") + (noteToOpen.text_color || "text-white") }
+            >{noteToOpen?.description}</p>
           </span>
           <textarea
               type="text"

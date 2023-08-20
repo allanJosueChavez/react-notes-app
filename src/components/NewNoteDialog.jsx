@@ -24,6 +24,8 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
       bg_color: newColor[0],
       //  text_color: chooseTextColor(randomColor)
       text_color: chooseTextColor(newColor[1]),
+      updated_at: new Date().toLocaleString(),
+      created_at: new Date().toLocaleString(),
     };
     try{
     addNewNote(newNote);

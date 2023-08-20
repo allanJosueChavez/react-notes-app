@@ -181,6 +181,7 @@ function NoteList({ notes, deleteNote, watchNoteFunction, setFilteredNotesVerifi
         {filteredNotes?.map((note, index) => (
           <div
             onContextMenu={(event) => handleRightClickOnNote(event, note)}
+            onClick={() => watchNoteFunction(note)}
             key={index}
             className={
               "w-48 h-48 relative rounded-lg shadow-md cursor-pointer " +
@@ -207,7 +208,7 @@ function NoteList({ notes, deleteNote, watchNoteFunction, setFilteredNotesVerifi
             </p>
 
             <div className="absolute bottom-0 flex justify-end items-end p-2 w-full">
-              <div
+              {/* <div
                 onClick={() => watchNote(note)}
                 className="text-center "
               >
@@ -215,12 +216,15 @@ function NoteList({ notes, deleteNote, watchNoteFunction, setFilteredNotesVerifi
                   icon={faEye}
                   className="text-green-500 cursor-pointer m-1 "
                 />
-              </div>
-              <div onClick={() => deleteSelectedNote(note)} className="text-center  ">
+              </div> */}
+              {/* <div onClick={() => deleteSelectedNote(note)} className="text-center absolute" title="Delete note" >
                 <FontAwesomeIcon
                   icon={faTrash}
                   className=" text-red-500 cursor-pointer m-1"
                 />
+              </div> */}
+                            <div className="text-center absolute text-slate-700" title="Delete note" >
+              <p>Mar 27</p>
               </div>
               {/* <div
                 onClick={() => deleteNote(note)}
@@ -308,11 +312,19 @@ function NoteList({ notes, deleteNote, watchNoteFunction, setFilteredNotesVerifi
       Lock
     </MenuItem>
     <MenuDivider />
-    <MenuItem  onClick={() => watchNote(selectedNote)}>
-      View note
+    <MenuItem  onClick={() => watchNote(selectedNote)} isFocusable={false}>
+      View note 
+      <FontAwesomeIcon
+                  icon={faEye}
+                  className="text-emerald-500 cursor-pointer mx-2"
+                />
     </MenuItem>
     <MenuItem   onClick={()=>deleteSelectedNote(selectedNote)}>
       Delete note
+      <FontAwesomeIcon
+                  icon={faTrash}
+                  className="text-red-500 cursor-pointer mx-2"
+                />
     </MenuItem>
   </MenuList>
         </Menu>

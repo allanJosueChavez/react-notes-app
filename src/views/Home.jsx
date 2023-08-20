@@ -136,7 +136,6 @@ function Home() {
         return n;
     })
     setNotes(updatedNotes);
-
   }
 
   const closeDialog = () => {
@@ -152,7 +151,7 @@ function Home() {
 
   return (
     <>
-      <div ref={containerRef} className={"  h-screen  py-16 "+`${ (isDialogOpen === true  ) ? 'overflow-y-hidden' : 'overflow-y-scroll'  }` + (!filteredNotesVerifier ? " w-max ": "")}>
+      <div ref={containerRef} className={"  h-screen  pt-16 pb-72 "+`${ (isDialogOpen === true  ) ? 'overflow-y-hidden' : 'overflow-y-scroll'  }` + (!filteredNotesVerifier ? " w-max ": "")}>
         <NewNote setIsDialogOpen={setIsDialogOpen} />
 
         <NoteList
