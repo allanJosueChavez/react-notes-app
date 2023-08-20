@@ -193,7 +193,7 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle, editNoteCo
                 (isEditTitle ? "hidden" : "block")
               }
             >
-              {noteToOpen?.title}
+              {currentNote?.title}
             </h3>
             {/* <input type="text" id="default-input" class="bg-transparent text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-transparent "></input> */}
             <input
@@ -323,8 +323,8 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle, editNoteCo
             </button>
           </div>
           <span>
-            <p className={`${styles["noteView"]}`+" my-4 overflow-y-scroll px-4  "+(!isEditContent ? "block " : "hidden ") + (noteToOpen.text_color || "text-white") }
-            >{noteToOpen?.description}</p>
+            <p className={`${styles["noteView"]}`+" my-4 overflow-y-scroll px-4  "+(!isEditContent ? "block " : "hidden ") + (currentNote.text_color || "text-white") }
+            >{currentNote?.description}</p>
           </span>
           <textarea
               type="text"
