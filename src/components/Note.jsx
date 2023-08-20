@@ -177,7 +177,7 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteTitle, editNoteCo
       }
       onClick={handleBlurDivClick}
     >
-      <div className={"h-full w-8/12  pt-12 pb-16"}>
+      <div className={"h-full w-8/12 mb-16 pb-20"}>
         <div className={"note rounded-lg shadow-lg mt-10 h-full p-6 "+(currentNote.bg_color || "bg-white")}>
           <div onClick={() => closeNote()} className={"text-left"}>
             <FontAwesomeIcon

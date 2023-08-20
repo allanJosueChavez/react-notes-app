@@ -29,6 +29,12 @@ function Home() {
 
   // Save notes to localStorage whenever the notes state changes
 
+  useEffect(() =>{
+    if(!notes){
+      setFilteredNotesVerifier(true);
+    }
+  }, [filteredNotesVerifier])
+
   useEffect(() => {
     console.log("Dependent of notes");
     // console.log(notes)
@@ -151,7 +157,7 @@ function Home() {
 
   return (
     <>
-      <div ref={containerRef} className={"  h-screen  pt-16 pb-72 "+`${ (isDialogOpen === true  ) ? 'overflow-y-hidden' : 'overflow-y-scroll'  }` + (!filteredNotesVerifier ? " w-max ": "")}>
+      <div ref={containerRef} className={"  h-screen  pt-16 pb-72 "+`${ (isDialogOpen === true  ) ? ' overflow-y-hidden ' : ' overflow-y-scroll '  }` + (!filteredNotesVerifier ? " w-max ": "")}>
         <NewNote setIsDialogOpen={setIsDialogOpen} />
 
         <NoteList
