@@ -4,6 +4,7 @@ import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useRef, useState, useEffect } from "react";
 import { Popover, PopoverTrigger, PopoverContent, PopoverBody, SimpleGrid } from "@chakra-ui/react";
 import styles from "../assets/styles/styles.module.css";
+import useColorStore from "../store/designStore/colorStore.js"
 
 function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
   const [isEditTitle, setEditTitle] = useState(false);
@@ -11,7 +12,7 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
   const [newNoteTitle, setNewNoteTitle] = useState("");
   const [newNoteContent, setNewNoteContent] = useState("");
   const [currentNote, setCurrentNote] = useState({});//This is the note that is currently being edited
-
+  const colors = useColorStore(state => state.tailwind_colors);
   // Set initial value of newNoteTitle when noteToOpen changes
   useEffect(() => {
     if(noteToOpen){
@@ -50,6 +51,16 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
   };
 
   const saveTitle = (note) => {
+    // I'm going to use the same function to save the title and the content. But later
+    // I'm going to fetch this data from a node js backend but as for now I'd have to update the date when it comes. 
+    // Yi, er, san, si, wu, liu qi, ba, jiu, shi 
+    // A: ni hao
+    // B: ni hao ma
+    // A: Jīntiān gōngzuò rúhé? Jīntiān bān er shang de rúhé?
+    // B: Wǒ hěn hǎo, xièxie. Nǐ ne?
+    // A: Wǒ hěn hǎo, xièxi
+    // B: Zàijiàn
+    // A: Zàijiàn
     editNoteSelected(note);
     note.title = newNoteTitle;
     setEditTitle(false);
@@ -84,74 +95,7 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
     }
   }
 
-  const colors = [
-    { type: "light", color: "bg-slate-200" },
-    { type: "light", color: "bg-slate-300" },
-    { type: "dark", color: "bg-slate-400" },
-    { type: "light", color: "bg-gray-200" },
-    { type: "light", color: "bg-gray-300" },
-    { type: "dark", color: "bg-gray-400" },
-    { type: "light", color: "bg-zinc-200" },
-    { type: "light", color: "bg-zinc-300" },
-    { type: "dark", color: "bg-zinc-400" },
-    { type: "light", color: "bg-neutral-200" },
-    { type: "light", color: "bg-neutral-300" },
-    { type: "dark", color: "bg-neutral-400" },
-    { type: "light", color: "bg-stone-200" },
-    { type: "light", color: "bg-stone-300" },
-    { type: "dark", color: "bg-stone-400" },
-    { type: "light", color: "bg-red-200" },
-    { type: "light", color: "bg-red-300" },
-    { type: "dark", color: "bg-red-400" },
-    { type: "light", color: "bg-orange-200" },
-    { type: "light", color: "bg-orange-300" },
-    { type: "dark", color: "bg-orange-400" },
-    { type: "light", color: "bg-amber-200" },
-    { type: "light", color: "bg-amber-300" },
-    { type: "dark", color: "bg-amber-400" },
-    { type: "light", color: "bg-yellow-200" },
-    { type: "light", color: "bg-yellow-300" },
-    { type: "dark", color: "bg-yellow-400" },
-    { type: "light", color: "bg-lime-200" },
-    { type: "light", color: "bg-lime-300" },
-    { type: "dark", color: "bg-lime-400" },
-    { type: "light", color: "bg-green-200" },
-    { type: "light", color: "bg-green-300" },
-    { type: "dark", color: "bg-green-400" },
-    { type: "light", color: "bg-emerald-200" },
-    { type: "light", color: "bg-emerald-300" },
-    { type: "dark", color: "bg-emerald-400" },
-    { type: "light", color: "bg-teal-200" },
-    { type: "light", color: "bg-teal-300" },
-    { type: "dark", color: "bg-teal-400" },
-    { type: "light", color: "bg-cyan-200" },
-    { type: "light", color: "bg-cyan-300" },
-    { type: "dark", color: "bg-cyan-400" },
-    { type: "light", color: "bg-sky-200" },
-    { type: "light", color: "bg-sky-300" },
-    { type: "dark", color: "bg-sky-400" },
-    { type: "light", color: "bg-blue-200" },
-    { type: "light", color: "bg-blue-300" },
-    { type: "dark", color: "bg-blue-400" },
-    { type: "light", color: "bg-indigo-200" },
-    { type: "light", color: "bg-indigo-300" },
-    { type: "dark", color: "bg-indigo-400" },
-    { type: "light", color: "bg-violet-200" },
-    { type: "light", color: "bg-violet-300" },
-    { type: "dark", color: "bg-violet-400" },
-    { type: "light", color: "bg-purple-200" },
-    { type: "light", color: "bg-purple-300" },
-    { type: "dark", color: "bg-purple-400" },
-    { type: "light", color: "bg-fuchsia-200" },
-    { type: "light", color: "bg-fuchsia-300" },
-    { type: "dark", color: "bg-fuchsia-400" },
-    { type: "light", color: "bg-pink-200" },
-    { type: "light", color: "bg-pink-300" },
-    { type: "dark", color: "bg-pink-400" },
-    { type: "light", color: "bg-rose-200" },
-    { type: "light", color: "bg-rose-300" },
-    { type: "dark", color: "bg-rose-400" },
-  ];
+
 
 
   const selectNewColor = (color) => {

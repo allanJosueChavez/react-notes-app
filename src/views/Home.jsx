@@ -145,7 +145,8 @@ function Home() {
 
   return (
     <>
-      <div ref={containerRef} className={"  h-screen  pt-16 pb-72 "+`${ (isDialogOpen === true  ) ? ' overflow-y-hidden ' : ' overflow-y-scroll '  }` + (!filteredNotesVerifier ? " w-max ": "")}>
+    {/*pt-16 */}
+      <div ref={containerRef} className={"  h-screen  mt-2  pb-72  "+`${ (isDialogOpen === true  ) ? ' overflow-y-hidden ' : ' overflow-y-scroll '  }` + (!filteredNotesVerifier ? " w-max ": "")}>
         <NewNote setIsDialogOpen={setIsDialogOpen} />
 
         <NoteList
