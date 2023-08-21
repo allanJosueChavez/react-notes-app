@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "../assets/styles/styles.module.css";
 import { useToast, Box } from "@chakra-ui/react";
+import animations from "../assets/styles/animations.module.css";
 
 import {
   Menu,
@@ -208,7 +209,7 @@ function NoteList({
               "w-48 h-48 relative rounded-lg shadow-md cursor-pointer " +
               (bgNotesColors[index] !== undefined
                 ? bgNotesColors[index]
-                : "bg-gray-200")
+                : "bg-gray-200 ")+  (` ${animations["upOutFloatingPopUp"]}`)
             }
           >
             <h3
@@ -302,8 +303,8 @@ function NoteList({
         ))}
       </div>
       {filteredNotes && filteredNotes.length == 0 && (
-        <div className="w-full  h-5/6  my-44 text-center text-3xl">
-          <p className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+        <div className={"w-full  h-5/6  my-44 text-center text-3xl " + (`${animations["upOutLowerLeftCorner"]}`)}>
+          <p className={"font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 "  }>
             YOU STILL DON'T HAVE ANY NOTE. <br />
           </p>
           <p className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-sky-500">
