@@ -17,7 +17,13 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
     //it gotta has this format
     //{ title: 'Note 1', content: 'Description of note 1...' },
     const newColor = randomColor();
-
+    let todaysDate = new Date();
+    // const year = todaysDate.getFullYear();
+    // const month = String(todaysDate.getMonth() + 1).padStart(2, '0');
+    // const day = String(todaysDate.getDate()).padStart(2, '0');
+    
+    // const isoString = `${year}-${month}-${day}`;
+    //todaysDate = isoString;
     const newNote = {
       id: notes.length + 1,
       title: newNoteTitle,
@@ -25,8 +31,8 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
       bg_color: newColor[0],
       //  text_color: chooseTextColor(randomColor)
       text_color: chooseTextColor(newColor[1]),
-      updated_at: new Date().toISOString(),
-      created_at: new Date().toISOString(),
+      updated_at: todaysDate,
+      created_at: todaysDate,
     };
 
     try{

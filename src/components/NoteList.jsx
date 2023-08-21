@@ -49,13 +49,22 @@ function NoteList({
     setFilteredNotes(notes);
     if (notes && notes.length !== 0) {
       notes.map((note) => {
+        // Parse the note.updated_at string into a Date object
         const isoDate = new Date(note.updated_at);
-        const formattedDate = isoDate.toLocaleDateString("en-US", {
-          month: "short",
-          day: "numeric",
-        });
+        console.log(note.updated_at)
+        console.log(isoDate)
+        // Get the month and day from the Date object
+        const month = isoDate.toLocaleString("en-US", { month: "short" });
+        const day = isoDate.getDate();
+      
+        // Create the formatted date string
+        const formattedDate = `${month} ${day}`;
+        
         note.last_update_date = formattedDate;
       });
+      
+      
+      
     }
   }, [notes]);
 
@@ -332,7 +341,7 @@ function NoteList({
               <MenuDivider />
               <MenuItem command="⌘I">Info</MenuItem>
               <MenuItem command="⌘F">Favorite</MenuItem>
-              <MenuItem command="⌘O">Lock</MenuItem>
+              <MenuItem command="⌘L">Lock</MenuItem>
               <MenuDivider />
               <MenuItem
                 onClick={() => watchNote(selectedNote)}
