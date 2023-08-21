@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "../assets/styles/styles.module.css";
 import { useToast, Box } from "@chakra-ui/react";
 import animations from "../assets/styles/animations.module.css";
+import Drawer from "./drawer/InfoDrawer.jsx"
 
 import {
   Menu,
@@ -42,6 +43,7 @@ function NoteList({
   const bgNotesColors = filteredNotes?.map((note) => {
     return note.bg_color;
   });
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   useEffect(() => {
     console.log("it's going to set the setfilteredNotes");
@@ -159,6 +161,10 @@ function NoteList({
       console.log("There's no function to watch the note");
     }
   };
+
+  const showDrawerInfo = () => {
+    setIsDrawerOpen(true);
+  }
 
   return (
     <div id="notebook" className="p-4 w-full  mt-8 lg:mt-0">
@@ -339,7 +345,7 @@ function NoteList({
               <MenuItem command="⌘N">Select</MenuItem>
               <MenuItem command="⌘⇧N">Share</MenuItem>
               <MenuDivider />
-              <MenuItem command="⌘I">Info</MenuItem>
+              <MenuItem command="⌘I" onClick={() => showDrawerInfo()}>Info</MenuItem>
               <MenuItem command="⌘F">Favorite</MenuItem>
               <MenuItem command="⌘L">Lock</MenuItem>
               <MenuDivider />
@@ -415,6 +421,17 @@ function NoteList({
           </div>
         </div>
       ))} */}
+
+{isDrawerOpen && (
+  <Drawer isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen}  onDrawerClose={
+    () => setIsDrawerOpen(false)
+  }
+  selectedNote={selectedNote}
+  />
+)
+
+}
+
     </div>
   );
 }

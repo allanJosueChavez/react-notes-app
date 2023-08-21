@@ -7,6 +7,7 @@ import styles from "../assets/styles/styles.module.css";
 import animations from "../assets/styles/animations.module.css";
 import useColorStore from "../store/designStore/colorStore.js"
 
+
 function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
   const [isEditTitle, setEditTitle] = useState(false);
   const [isEditContent, setEditContent] = useState(false);
