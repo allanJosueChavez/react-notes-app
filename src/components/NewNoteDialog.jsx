@@ -3,6 +3,8 @@ import { faPen, faX } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { useToast, Box } from '@chakra-ui/react'
 import useColorStore from "../store/designStore/colorStore.js"
+import animations from "../assets/styles/animations.module.css";
+import { useEffect, useLayoutEffect } from 'react'
 
 function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
   if (!isOpen) {
@@ -12,24 +14,33 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
   const [newNoteTitle, setNewNoteTitle] = useState("");
   const [newNoteDescription, setNewNoteDescription] = useState("");
   const colors = useColorStore(state => state.tailwind_colors);
+  const [isAnimation, setIsAnimation] = useState(false);
+
+  useLayoutEffect(()=>{
+    console.log(isOpen)
+    if(isOpen === true){
+      console.log("Opening the dialog to create a new note")
+      setIsAnimation(true);
+    }
+
+  },[])
+
+  const closeDialog = () => {
+    setIsAnimation(false);
+    setTimeout(() => {
+      onClose();
+    }, 300);
+  }
 
   const handleAddNoteClick = () => {
-    //it gotta has this format
-    //{ title: 'Note 1', content: 'Description of note 1...' },
+
     const newColor = randomColor();
     let todaysDate = new Date();
-    // const year = todaysDate.getFullYear();
-    // const month = String(todaysDate.getMonth() + 1).padStart(2, '0');
-    // const day = String(todaysDate.getDate()).padStart(2, '0');
-    
-    // const isoString = `${year}-${month}-${day}`;
-    //todaysDate = isoString;
     const newNote = {
       id: notes.length + 1,
       title: newNoteTitle,
       description: newNoteDescription,
       bg_color: newColor[0],
-      //  text_color: chooseTextColor(randomColor)
       text_color: chooseTextColor(newColor[1]),
       updated_at: todaysDate,
       created_at: todaysDate,
@@ -59,7 +70,7 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
         isClosable: true,
       })
     }
-    onClose();
+    closeDialog();
   };
 
 
@@ -89,7 +100,7 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
     if (event.target === event.currentTarget) {
       console.log("Setting it to null");
       //setNoteToOpen(null);
-      onClose();
+      closeDialog();
       //onClose is getting the value of setIsDialogOpen to false
     }
   };
@@ -98,13 +109,16 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
     <div
       id="blurDiv"
       className={
-        "absolute inset-0 backdrop-blur-lg justify-center items-center flex "
+        "absolute inset-0 backdrop-blur-lg justify-center items-center flex "+ 
+        (isAnimation
+          ? `${animations["upOutFloatingPopUp"]}`
+          : `${animations["downOutFloatingPopUp"]}`)
       }
       onClick={handleBlurDivClick}
     >
-      <div className="shadow-lg rounded-lg w-10/12 lg:w-7/12 h-6/6 bg-gray-100 lg:p-5 ">
+      <div className={"shadow-lg rounded-lg w-10/12 lg:w-7/12 h-6/6 bg-gray-100 lg:p-5 " }>
         <div
-          onClick={() => onClose()}
+          onClick={() => closeDialog()}
           className={"float-right cursor-pointer mr-4 mt-2 w-4 h-4"}
         >
           <FontAwesomeIcon
@@ -112,16 +126,16 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
             className="text-black cursor-pointer m-1 w-4 h-4"
           />
         </div>
-        <div className="m-6">
+        <div className="m-6 ">
           {/* <div className="bg-white p-6 rounded-lg shadow-md"> */}
           <div id="dialog-title" className="mb-4 p-4">
-          <p className="lg:text-4xl font-semibold my-2 text-2xl">SOMETHING NEW?</p>
-          <p className="text-xl text-gray-500">Write a new note...</p>
+          <p className="lg:text-4xl font-semibold my-2 text-2xl text-blue-600">SOMETHING NEW?</p>
+          <p className="text-xl text-blue-600">Write it...</p>
           </div>
           <div className="my-8">
             <label
               htmlFor="newNoteTitle"
-              className="block text-2xl text-gray-500 font-semibold my-4"
+              className="block text-2xl text-gray-500 font-semibold my-4 text-left"
             >
              Note title
             </label>
@@ -137,7 +151,7 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
           <div className="my-6">
             <label
               htmlFor="newNoteDescription"
-              className="block text-2xl text-gray-500 font-semibold my-4"
+              className="block text-2xl text-gray-500 font-semibold my-4 text-left"
             >
               Note Content
             </label>

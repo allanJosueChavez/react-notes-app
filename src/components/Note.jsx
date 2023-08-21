@@ -1,24 +1,34 @@
-import { faPen, faX , faPalette, faCheck } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPen,
+  faX,
+  faPalette,
+  faCheck,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tooltip as ReactTooltip } from "react-tooltip";
-import { useRef, useState, useEffect } from "react";
-import { Popover, PopoverTrigger, PopoverContent, PopoverBody, SimpleGrid } from "@chakra-ui/react";
+import { useRef, useState, useEffect, useLayoutEffect } from "react";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverBody,
+  SimpleGrid,
+} from "@chakra-ui/react";
 import styles from "../assets/styles/styles.module.css";
 import animations from "../assets/styles/animations.module.css";
-import useColorStore from "../store/designStore/colorStore.js"
-
+import useColorStore from "../store/designStore/colorStore.js";
 
 function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
   const [isEditTitle, setEditTitle] = useState(false);
   const [isEditContent, setEditContent] = useState(false);
   const [newNoteTitle, setNewNoteTitle] = useState("");
   const [newNoteContent, setNewNoteContent] = useState("");
-  const [currentNote, setCurrentNote] = useState({});//This is the note that is currently being edited
+  const [currentNote, setCurrentNote] = useState({}); //This is the note that is currently being edited
   const [isAnimation, setIsAnimation] = useState(false);
-  const colors = useColorStore(state => state.tailwind_colors);
+  const colors = useColorStore((state) => state.tailwind_colors);
   // Set initial value of newNoteTitle when noteToOpen changes
   useEffect(() => {
-    if(noteToOpen){
+    if (noteToOpen) {
       setNewNoteTitle(noteToOpen?.title || "");
       setNewNoteContent(noteToOpen?.description || "");
       setCurrentNote(noteToOpen);
@@ -26,10 +36,18 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
     }
   }, [noteToOpen]);
 
-  useEffect(() => {
-    console.log("The current note is being updated. probably for the first time")
-  }, [currentNote])
+  useLayoutEffect(() => {
+    // I told Erick I had undestood was useLayoutEffect :3
+    if (noteToOpen) {
+      setIsAnimation(true);
+    }
+  }, [noteToOpen]);
 
+  useEffect(() => {
+    console.log(
+      "The current note is being updated. probably for the first time"
+    );
+  }, [currentNote]);
 
   if (!isNoteOpen) {
     return null; // Don't render anything if isOpen is false
@@ -38,13 +56,12 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
     if (event.target === event.currentTarget) {
       // const blurDiv = document.getElementById("blurDiv");
       // blurDiv.classList.remove(`${animations["upOutFloatingPopUp"]}`);
-      // blurDiv.classList.add(`${animations["downOutFloatingPopUp"]}`);
+      // blurDiv.classList.318 Word(s) , 1843 Character(s)add(`${animations["downOutFloatingPopUp"]}`);
       setIsAnimation(false);
       setTimeout(() => {
         console.log("Setting it to null");
         setNoteToOpen(null);
-      }, 500) 
-
+      }, 300);
     }
   };
   //Close note function
@@ -63,8 +80,8 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
 
   const saveTitle = (note) => {
     // I'm going to use the same function to save the title and the content. But later
-    // I'm going to fetch this data from a node js backend but as for now I'd have to update the date when it comes. 
-    // Yi, er, san, si, wu, liu qi, ba, jiu, shi 
+    // I'm going to fetch this data from a node js backend but as for now I'd have to update the date when it comes.
+    // Yi, er, san, si, wu, liu qi, ba, jiu, shi
     // A: ni hao
     // B: ni hao ma
     // A: Jīntiān gōngzuò rúhé? Jīntiān bān er shang de rúhé?
@@ -82,7 +99,7 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
     editNoteSelected(note);
     note.description = newNoteContent;
     setEditContent(false);
-  }
+  };
 
   const cancelEditTitle = () => {
     console.log("it should close");
@@ -92,7 +109,7 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
   const cancelEditContent = () => {
     console.log("it should close");
     setEditContent(false);
-  }
+  };
 
   const handleTitleInputChange = (event) => {
     if (event) {
@@ -104,43 +121,40 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
     if (event) {
       setNewNoteContent(event.target.value);
     }
-  }
-
-
-
+  };
 
   const selectNewColor = (color) => {
-    if(color.color !== currentNote.bg_color){
+    if (color.color !== currentNote.bg_color) {
       currentNote.bg_color = color.color;
       let updatedNote = currentNote;
-      setCurrentNote({...updatedNote});
+      setCurrentNote({ ...updatedNote });
       //editNoteSelected is just looking for an id and then it updates the notes array. So I can use it for every single update. The info is being sent already updated in here.
       editNoteSelected(currentNote);
       //It doesn't work like this: setCurrentNote(updatedNote);
-      console.log(currentNote.bg_color)
+      console.log(currentNote.bg_color);
     }
-    console.log("The color this dude wants for this note is: "+color.color)
+    console.log("The color this dude wants for this note is: " + color.color);
     //update the color
-  }
+  };
 
   return (
-
     <div
       id="blurDiv"
       className={
-        "absolute inset-0 backdrop-blur-lg justify-center items-center flex " + (isAnimation? `${animations["upOutFloatingPopUp"]}` : `${animations["downOutFloatingPopUp"]}`) 
-        // v-bind:class="{
-  //
-//   upOutFloatingPopUp: isPopupVisible,
-//   downOutFloatingPopUp: !isPopupVisible
-// }"
-// >
-      // These clases are being repeated in the component NewNoteDialog
+        "absolute inset-0 backdrop-blur-lg justify-center items-center flex " +
+        (isAnimation
+          ? `${animations["upOutFloatingPopUp"]}`
+          : `${animations["downOutFloatingPopUp"]}`)
       }
       onClick={handleBlurDivClick}
     >
       <div className={"h-full lg:w-8/12 w-5/6 mb-16 pb-24"}>
-        <div className={"note rounded-lg shadow-lg mt-10 h-full p-6 "+(currentNote.bg_color || "bg-white")}>
+        <div
+          className={
+            "note rounded-lg shadow-lg mt-10 h-full p-6 " +
+            (currentNote.bg_color || "bg-white")
+          }
+        >
           <div onClick={() => closeNote()} className={"text-left"}>
             <FontAwesomeIcon
               icon={faX}
@@ -196,7 +210,6 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
                 className="text-blue-800 cursor-pointer m-1 w-4 h-4"
               />
             </div>
-
           </div>
 
           <hr
@@ -222,48 +235,64 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
 
               {/* Add place attribute */}
             </span>
-            <span  className="mx-1">
-            <Popover>
-      <PopoverTrigger>
-      <div  className={
-                  "text-center " + (!isEditContent ? "block" : "hidden")
-                }>
-              <FontAwesomeIcon
-                icon={faPalette}
-                className="text-blue-800 cursor-pointer mt-4 w-5 h-5"
-              />
-              <ReactTooltip id="edit-tooltip" effect="solid" place="bottom" />{" "}
-              </div>
-      </PopoverTrigger>
-      <PopoverContent>
-        <PopoverBody>
-          <p className="font-medium  text-sm mt-3">
-          Select the color you like the most
-          </p>
-          <SimpleGrid
-      columns={8}
-      spacing={4}
-      className="color-items-wrap pr-4 pl-2 py-7"
-    >
-      {colors.map((color, index) => (
-        <div
-        className={"m-1 rounded-full cursor-pointer h-5 w-5 p-0.5 "+(color.color) + (color.color == currentNote.bg_color ? " border border-black " : "")}
-        onClick={() => {
-          selectNewColor(color)
-        }}
-        key={index}
-      >
-                      <FontAwesomeIcon
-                icon={faCheck}
-                className={"text-gray-600 cursor-pointer w-4 h-4 "+ (color.color !== currentNote.bg_color ? "hidden" : "block") }
-              />
-        </div>
-      ))}
-    </SimpleGrid>
-        </PopoverBody>
-      </PopoverContent>
-    </Popover>
-
+            <span className="mx-1">
+              <Popover>
+                <PopoverTrigger>
+                  <div
+                    className={
+                      "text-center " + (!isEditContent ? "block" : "hidden")
+                    }
+                  >
+                    <FontAwesomeIcon
+                      icon={faPalette}
+                      className="text-blue-800 cursor-pointer mt-4 w-5 h-5"
+                    />
+                    <ReactTooltip
+                      id="edit-tooltip"
+                      effect="solid"
+                      place="bottom"
+                    />{" "}
+                  </div>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <PopoverBody>
+                    <p className="font-medium  text-sm mt-3">
+                      Select the color you like the most
+                    </p>
+                    <SimpleGrid
+                      columns={8}
+                      spacing={4}
+                      className="color-items-wrap pr-4 pl-2 py-7"
+                    >
+                      {colors.map((color, index) => (
+                        <div
+                          className={
+                            "m-1 rounded-full cursor-pointer h-5 w-5 p-0.5 " +
+                            color.color +
+                            (color.color == currentNote.bg_color
+                              ? " border border-black "
+                              : "")
+                          }
+                          onClick={() => {
+                            selectNewColor(color);
+                          }}
+                          key={index}
+                        >
+                          <FontAwesomeIcon
+                            icon={faCheck}
+                            className={
+                              "text-gray-600 cursor-pointer w-4 h-4 " +
+                              (color.color !== currentNote.bg_color
+                                ? "hidden"
+                                : "block")
+                            }
+                          />
+                        </div>
+                      ))}
+                    </SimpleGrid>
+                  </PopoverBody>
+                </PopoverContent>
+              </Popover>
             </span>
             <button
               className={
@@ -276,7 +305,7 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
             </button>
             <button
               className={
-                "w-24 h-10 right-0 bg-red-600 text-white mx-1 "  +
+                "w-24 h-10 right-0 bg-red-600 text-white mx-1 " +
                 (isEditContent ? "block" : "hidden")
               }
               onClick={() => cancelEditContent()}
@@ -285,27 +314,34 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
             </button>
           </div>
           <span>
-            <p className={`${styles["noteView"]}`+" my-4 overflow-y-scroll px-4  "+(!isEditContent ? "block " : "hidden ") + (currentNote.text_color || "text-white") }
-            >{currentNote?.description}</p>
+            <p
+              className={
+                `${styles["noteView"]}` +
+                " my-4 overflow-y-scroll px-4  " +
+                (!isEditContent ? "block " : "hidden ") +
+                (currentNote.text_color || "text-white")
+              }
+            >
+              {currentNote?.description}
+            </p>
           </span>
           <textarea
-              type="text"
-              id="noteContentInput"
-              value={newNoteContent}
-              onChange={handleContentInputChange}
-              rows="24"
-              className={
-                "mt-2 bg-white bg-transparent text-gray-900 text-md font-semibold rounded-lg block w-full p-2.5 focus:ring-0 focus:border-transparent focus:outline-none  flex items-center justify-center " +
-                (isEditContent ? "block" : "hidden")
-              }
-            />
+            type="text"
+            id="noteContentInput"
+            value={newNoteContent}
+            onChange={handleContentInputChange}
+            rows="24"
+            className={
+              "mt-2 bg-white bg-transparent text-gray-900 text-md font-semibold rounded-lg block w-full p-2.5 focus:ring-0 focus:border-transparent focus:outline-none  flex items-center justify-center " +
+              (isEditContent ? "block" : "hidden")
+            }
+          />
         </div>
         {/* <a>
   ◕‿‿◕
 </a> */}
       </div>
     </div>
-
   );
 }
 

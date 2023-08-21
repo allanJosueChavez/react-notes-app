@@ -177,12 +177,8 @@ function Home() {
         id="main-container"
         ref={containerRef}
         className={
-          "  h-screen  mt-2 pb-72  " +
-          `${
-            isDialogOpen === true
-              ? " overflow-y-hidden "
-              : " overflow-y-scroll "
-          }` +
+          "  h-screen  mt-2 pb-72 overflow-y-scroll " +
+          +
           (!filteredNotesVerifier ? " w-max " : "")
         }
       >
@@ -208,10 +204,7 @@ function Home() {
               setNoteToOpen={setNoteToOpen}
               isNoteOpen={isNoteOpen}
               editNoteSelected={saveUpdatedNote}
-              className={
-                "" +
-                (!isNoteOpen ? `${animations["downOutFloatingPopUp"]}` : " ")
-              }
+              
             />
           )}
 
