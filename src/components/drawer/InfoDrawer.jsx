@@ -32,6 +32,11 @@ import {
 
 function DrawerNoteInfo({ isDrawerOpen, onDrawerClose, selectedNote }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+const [currentNote, setCurrentNote] = useState(selectedNote)
+const [textCounter, setTextCounter] = useState({
+    words: 0,
+    characters: 0,
+  });
 
   //old const firstField = React.useRef()
   const firstField = useRef(null);
@@ -44,6 +49,18 @@ function DrawerNoteInfo({ isDrawerOpen, onDrawerClose, selectedNote }) {
 
   }, []);
 
+  useEffect(() => {
+    if(currentNote){
+        // Count words by splitting the string into an array of words
+        const words = currentNote.description.split(/\s+/).filter(word => word !== ''); // Remove empty strings
+        const wordCount = words.length;
+        
+        // Count characters by removing spaces and punctuation
+        const characters = currentNote.description.replace(/[\s\.,?!]/g, ''); // Remove spaces and common punctuation
+        const characterCount = characters.length;
+        setTextCounter({ words: wordCount, characters: characterCount });
+    }
+  },[currentNote])
 
 
   const closeDrawer = () => {
@@ -95,7 +112,9 @@ function DrawerNoteInfo({ isDrawerOpen, onDrawerClose, selectedNote }) {
                   className="text-zinc-600 cursor-pointer m-1 w-4 h-4 mr-2"
                   title="Count of words and characters"
                 />
-                318 Word(s) , 1843 Character(s)
+                <p>
+                {textCounter.words} Word(s) , {textCounter.characters} Character(s) <br />
+                </p>
               </div>
               <div className="flex items-center my-3">
                 <FontAwesomeIcon
