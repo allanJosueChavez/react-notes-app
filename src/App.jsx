@@ -2,7 +2,8 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import Home from './views/Home.jsx'
-
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import NoteView from './views/NoteView.jsx'
 import './App.css'
 import { ChakraProvider } from '@chakra-ui/react'
 import { useToast } from '@chakra-ui/react'
@@ -11,8 +12,7 @@ function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <ChakraProvider>
-    <div >
+    <>
       {/* <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
@@ -35,9 +35,11 @@ function App() {
       </p> */}
         {/* <NoteList /> */}
       {/* <p>What's Up</p> */}
-      <Home className={"overflow-y-hidden"}/>
-    </div>
-    </ChakraProvider>
+            <Routes>
+                <Route path="/" element={ <Home className={"overflow-y-hidden"}/>} />
+                <Route path="note/:id" element={<NoteView />} />
+            </Routes>
+            </>
   )
 }
 

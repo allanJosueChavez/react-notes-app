@@ -39,8 +39,6 @@ function Home() {
 
   useEffect(() => {
     console.log("Dependent of notes");
-    // console.log(notes)
-    // const storedNotes = JSON.parse(localStorage.getItem('notes'));
     if (notes !== null) {
       localStorage.setItem("notes", JSON.stringify(notes));
     }

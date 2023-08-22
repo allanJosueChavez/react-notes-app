@@ -116,7 +116,7 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
       }
       onClick={handleBlurDivClick}
     >
-      <div className={"shadow-lg rounded-lg w-10/12 lg:w-7/12 h-6/6 bg-gray-100 lg:p-5 " }>
+      <div className={"shadow-lg rounded-lg w-10/12 lg:w-7/12 h-6/6 bg-teal-400 lg:p-5 " }>
         <div
           onClick={() => closeDialog()}
           className={"float-right cursor-pointer mr-4 mt-2 w-4 h-4"}
@@ -129,13 +129,13 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
         <div className="m-6 ">
           {/* <div className="bg-white p-6 rounded-lg shadow-md"> */}
           <div id="dialog-title" className="mb-4 p-4">
-          <p className="lg:text-4xl font-semibold my-2 text-2xl text-blue-600">SOMETHING NEW?</p>
-          <p className="text-xl text-blue-600">Write it...</p>
+          <p className="lg:text-5xl font-semibold my-2 text-2xl text-white">SOMETHING NEW?</p>
+          <p className="text-xl  text-white">Write it...</p>
           </div>
           <div className="my-8">
             <label
               htmlFor="newNoteTitle"
-              className="block text-2xl text-gray-500 font-semibold my-4 text-left"
+              className="block text-2xl text-gray-800 font-medium my-4 text-left"
             >
              Note title
             </label>
@@ -151,7 +151,7 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
           <div className="my-6">
             <label
               htmlFor="newNoteDescription"
-              className="block text-2xl text-gray-500 font-semibold my-4 text-left"
+              className="block text-2xl text-gray-800 font-medium my-4 text-left"
             >
               Note Content
             </label>

@@ -4,7 +4,7 @@ import styles from "../assets/styles/styles.module.css";
 import { useToast, Box } from "@chakra-ui/react";
 import animations from "../assets/styles/animations.module.css";
 import Drawer from "./drawer/InfoDrawer.jsx"
-
+import { useNavigate } from "react-router-dom";
 import {
   Menu,
   MenuButton,
@@ -44,6 +44,7 @@ function NoteList({
     return note.bg_color;
   });
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log("it's going to set the setfilteredNotes");
@@ -138,9 +139,10 @@ function NoteList({
     setIsContextMenuOpen(false);
   };
 
-  const holi = () => {
-    console.log("Holi");
-  };
+  const openInNewTab = (noteId) => {
+    const url = `/note/${noteId}`;
+    window.open(url, '_blank'); // Open in a new tab
+};
 
   const watchNote = (note) => {
     watchNoteFunction(note);
@@ -339,8 +341,9 @@ function NoteList({
       </MenuButton> */}
 
             <MenuList>
-              <MenuItem command="Ctrl+N" onClick={() => holi()}>
+              <MenuItem command="Ctrl+N" onClick={() => openInNewTab(selectedNote.id)}>
                 Open in a new tab
+
               </MenuItem>
               <MenuItem command="⌘N">Select</MenuItem>
               <MenuItem command="⌘⇧N">Share</MenuItem>
