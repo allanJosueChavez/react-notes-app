@@ -37,7 +37,7 @@ function App() {
       {/* <p>What's Up</p> */}
             <Routes>
                 <Route path="/" element={ <Home className={"overflow-y-hidden"}/>} />
-                <Route path="note/:id" element={<NoteView />} />
+                <Route path="/note/:id" element={<NoteView />} />
             </Routes>
             </>
   )

@@ -10,6 +10,18 @@ import './index.css'
 import { ChakraProvider } from "@chakra-ui/react"; // Import ChakraProvider or any other providers you're using
 import { BrowserRouter as Router } from 'react-router-dom'; // Import BrowserRouter if you're using React Router
 
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+  <ChakraProvider>
+  
+      <Router>
+          <App />
+      </Router>
+  
+  </ChakraProvider>
+</React.StrictMode>,
+)
 // const router = createBrowserRouter([
 //   {
 //     path: "/",
@@ -28,13 +40,3 @@ import { BrowserRouter as Router } from 'react-router-dom'; // Import BrowserRou
 //     ],
 //   }
 //]);
-
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-  <ChakraProvider>
-      <Router>
-          <App />
-      </Router>
-  </ChakraProvider>
-</React.StrictMode>,
-)

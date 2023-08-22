@@ -50,7 +50,7 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
     addNewNote(newNote);
       toast({
         title: 'Note created.',
-        description: "Thank God. Your note is now safe.",
+        description: "Thank God. Your thoughts are safe now.",
         status: 'success',
         duration:3000,
         isClosable: true,
