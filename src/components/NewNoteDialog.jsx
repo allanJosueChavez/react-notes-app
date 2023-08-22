@@ -116,7 +116,7 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
       }
       onClick={handleBlurDivClick}
     >
-      <div className={"shadow-lg rounded-lg w-10/12 lg:w-7/12 h-6/6 bg-teal-400 lg:p-5 " }>
+      <div className={"shadow-xl rounded-lg w-10/12 lg:w-6/12 h-4/6  bg-gradient-to-r from-emerald-400 to-sky-500  bg-teal-400 lg:p-5 " }>
         <div
           onClick={() => closeDialog()}
           className={"float-right cursor-pointer mr-4 mt-2 w-4 h-4"}
@@ -132,12 +132,12 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
           <p className="lg:text-5xl font-semibold my-2 text-2xl text-white">SOMETHING NEW?</p>
           <p className="text-xl  text-white">Write it...</p>
           </div>
-          <div className="my-8">
+          <div className="my-4">
             <label
               htmlFor="newNoteTitle"
-              className="block text-2xl text-gray-800 font-medium my-4 text-left"
+              className="block text-2xl text-white font-normal my-4 text-left"
             >
-             Note title
+             Title
             </label>
             <input
               id="newNoteTitle"
@@ -151,22 +151,22 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
           <div className="my-6">
             <label
               htmlFor="newNoteDescription"
-              className="block text-2xl text-gray-800 font-medium my-4 text-left"
+              className="block text-2xl text-white font-normal my-4 text-left"
             >
-              Note Content
+              Content
             </label>
             <textarea
               id="newNoteDescription"
               name="newNoteDescription"
               value={newNoteDescription}
-              rows="8"
+              rows="6"
               onChange={(event) => setNewNoteDescription(event.target.value)}
               type="text"
               className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300 lg:rows-20"
             />
           </div>
           <button
-            className="bg-blue-600 mr-4 mt-4 py-2 px-4 text-white hover:text-gray-200  hover:bg-blue-700"
+            className="bg-blue-700 mr-4 py-2 px-4 text-white hover:text-gray-200  hover:bg-blue-800"
             onClick={handleAddNoteClick}
           >
             Create

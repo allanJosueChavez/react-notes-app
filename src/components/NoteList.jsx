@@ -168,6 +168,18 @@ function NoteList({
     setIsDrawerOpen(true);
   }
 
+  const featureInDevelopment = () => {
+    toast({
+      title: "Sorry 😬",
+      description: "This feature is still in development!",
+      status: "info",
+      duration: 3000,
+      //icon: "👋",
+      isClosable: true,
+    });
+
+  }
+
   return (
     <div id="notebook" className="p-4 w-full  mt-8 lg:mt-0">
       <h1 className="font-bold text-2xl mb-4 p-8">
@@ -345,12 +357,12 @@ function NoteList({
                 Open in a new tab
 
               </MenuItem>
-              <MenuItem command="⌘N">Select</MenuItem>
-              <MenuItem command="⌘⇧N">Share</MenuItem>
+              <MenuItem command="⌘N" onClick={()=>featureInDevelopment()}>Select</MenuItem>
+              <MenuItem command="⌘⇧N" onClick={()=>featureInDevelopment()}>Share</MenuItem>
               <MenuDivider />
               <MenuItem command="⌘I" onClick={() => showDrawerInfo()}>Info</MenuItem>
-              <MenuItem command="⌘F">Favorite</MenuItem>
-              <MenuItem command="⌘L">Lock</MenuItem>
+              <MenuItem command="⌘F" onClick={()=>featureInDevelopment()}>Favorite</MenuItem>
+              <MenuItem command="⌘L" onClick={()=>featureInDevelopment()}>Lock</MenuItem>
               <MenuDivider />
               <MenuItem
                 onClick={() => watchNote(selectedNote)}
