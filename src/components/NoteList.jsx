@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "../assets/styles/styles.module.css";
 import { useToast, Box } from "@chakra-ui/react";
 import animations from "../assets/styles/animations.module.css";
-import Drawer from "./drawer/InfoDrawer.jsx"
+import Drawer from "./drawer/InfoDrawer.jsx";
 import { useNavigate } from "react-router-dom";
 import {
   Menu,
@@ -11,14 +11,16 @@ import {
   MenuList,
   MenuItem,
   MenuDivider,
-  IconButton,
+  Button,
 } from "@chakra-ui/react";
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 //import { HamburgerIcon, AddIcon, ExternalLinkIcon, RepeatIcon, EditIcon } from '@chakra-ui/icons';
 import {
   faStickyNote,
   faTrash,
   faEye,
   faPen,
+  faFilter,
 } from "@fortawesome/free-solid-svg-icons";
 
 function NoteList({
@@ -54,20 +56,17 @@ function NoteList({
       notes.map((note) => {
         // Parse the note.updated_at string into a Date object
         const isoDate = new Date(note.updated_at);
-        console.log(note.updated_at)
-        console.log(isoDate)
+        console.log(note.updated_at);
+        console.log(isoDate);
         // Get the month and day from the Date object
         const month = isoDate.toLocaleString("en-US", { month: "short" });
         const day = isoDate.getDate();
-      
+
         // Create the formatted date string
         const formattedDate = `${month} ${day}`;
-        
+
         note.last_update_date = formattedDate;
       });
-      
-      
-      
     }
   }, [notes]);
 
@@ -101,7 +100,7 @@ function NoteList({
       return;
     }
     const filtered = notes.filter((note) => {
-      if (note.title.toLowerCase().includes(searchInput.toLowerCase())) {
+      if (note.title.toLowerCase().includes(searchInput.toLowerCase()) || note.description.toLowerCase().includes(searchInput.toLowerCase())  ) {
         console.log("Oh yeah, one match");
         return note;
       }
@@ -141,8 +140,8 @@ function NoteList({
 
   const openInNewTab = (noteId) => {
     const url = `/note/${noteId}`;
-    window.open(url, '_blank'); // Open in a new tab
-};
+    window.open(url, "_blank"); // Open in a new tab
+  };
 
   const watchNote = (note) => {
     watchNoteFunction(note);
@@ -166,7 +165,7 @@ function NoteList({
 
   const showDrawerInfo = () => {
     setIsDrawerOpen(true);
-  }
+  };
 
   const featureInDevelopment = () => {
     toast({
@@ -177,6 +176,18 @@ function NoteList({
       //icon: "👋",
       isClosable: true,
     });
+  };
+
+  const allTheNotes = () => {
+    console.log("search in all the notes");
+  };
+
+  const searchInContents = () => {
+    console.log("search in content");
+
+  };
+
+  const searchInTitles = () => {
 
   }
 
@@ -221,6 +232,51 @@ function NoteList({
           </div>
         </form>
       </div>
+      <div className="my-5 grid grid-cols-4">
+        <div class="col-span-4 flex justify-center">
+          <Tabs>
+            <TabList>
+              <Tab onClick={() => allTheNotes()}>All</Tab>
+              <Tab onClick={() => searchInTitles()}>TItles</Tab>
+              <Tab onClick={() => searchInContents()}>Contents</Tab>
+              {/* <Tab onClick={()=> featureInDevelopment()}>Notebook</Tab> */}
+            </TabList>
+
+            {/* <TabPanels>
+      <TabPanel>
+        <p>one!</p>
+      </TabPanel>
+      <TabPanel>
+        <p>two!</p>
+      </TabPanel>
+      <TabPanel>
+        <p>three!</p>
+      </TabPanel>
+    </TabPanels> */}
+          </Tabs>
+        </div>
+      </div>
+      <div class="relative h-16 w-full">
+  {/* <div class="absolute top-0 right-0 h-16 w-16 ...">03</div> */}
+  <div className="absolute top-0 right-0 mr-4 ">
+        <Menu>
+          <MenuButton as={Button} > 
+          <FontAwesomeIcon
+                  icon={faFilter}
+                  className=" text-gray-600 cursor-pointer mx-1"
+                />Filter</MenuButton>
+          <MenuList>
+            {/* <MenuItem>Shared</MenuItem>
+            <MenuItem>Favorites </MenuItem> */}
+             <MenuDivider />
+            <MenuItem>Updated date ↑</MenuItem>
+            <MenuItem>Updated date ↓</MenuItem>
+            <MenuItem>Created date ↑</MenuItem>
+            <MenuItem>Created date ↓</MenuItem>
+          </MenuList>
+        </Menu>
+      </div>
+</div>
 
       <div
         id="notes-grid"
@@ -238,7 +294,8 @@ function NoteList({
               "w-48 h-48 relative rounded-lg shadow-md cursor-pointer " +
               (bgNotesColors[index] !== undefined
                 ? bgNotesColors[index]
-                : "bg-gray-200 ")+  (` ${animations["upOutFloatingPopUp"]}`)
+                : "bg-gray-200 ") +
+              ` ${animations["upOutFloatingPopUp"]}`
             }
           >
             <h3
@@ -332,8 +389,17 @@ function NoteList({
         ))}
       </div>
       {filteredNotes && filteredNotes.length == 0 && (
-        <div className={"w-full  h-5/6  my-44 text-center text-3xl " + (`${animations["upOutLowerLeftCorner"]}`)}>
-          <p className={"font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 "  }>
+        <div
+          className={
+            "w-full  h-5/6  my-44 text-center text-3xl " +
+            `${animations["upOutLowerLeftCorner"]}`
+          }
+        >
+          <p
+            className={
+              "font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 "
+            }
+          >
             YOU STILL DON'T HAVE ANY NOTE. <br />
           </p>
           <p className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-sky-500">
@@ -353,16 +419,28 @@ function NoteList({
       </MenuButton> */}
 
             <MenuList>
-              <MenuItem command="Ctrl+N" onClick={() => openInNewTab(selectedNote.id)}>
+              <MenuItem
+                command="Ctrl+N"
+                onClick={() => openInNewTab(selectedNote.id)}
+              >
                 Open in a new tab
-
               </MenuItem>
-              <MenuItem command="⌘N" onClick={()=>featureInDevelopment()}>Select</MenuItem>
-              <MenuItem command="⌘⇧N" onClick={()=>featureInDevelopment()}>Share</MenuItem>
+              <MenuItem command="⌘N" onClick={() => featureInDevelopment()}>
+                Select
+              </MenuItem>
+              <MenuItem command="⌘⇧N" onClick={() => featureInDevelopment()}>
+                Share
+              </MenuItem>
               <MenuDivider />
-              <MenuItem command="⌘I" onClick={() => showDrawerInfo()}>Info</MenuItem>
-              <MenuItem command="⌘F" onClick={()=>featureInDevelopment()}>Favorite</MenuItem>
-              <MenuItem command="⌘L" onClick={()=>featureInDevelopment()}>Lock</MenuItem>
+              <MenuItem command="⌘I" onClick={() => showDrawerInfo()}>
+                Info
+              </MenuItem>
+              <MenuItem command="⌘F" onClick={() => featureInDevelopment()}>
+                Favorite
+              </MenuItem>
+              <MenuItem command="⌘L" onClick={() => featureInDevelopment()}>
+                Lock
+              </MenuItem>
               <MenuDivider />
               <MenuItem
                 onClick={() => watchNote(selectedNote)}
@@ -437,16 +515,14 @@ function NoteList({
         </div>
       ))} */}
 
-{isDrawerOpen && (
-  <Drawer isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen}  onDrawerClose={
-    () => setIsDrawerOpen(false)
-  }
-  selectedNote={selectedNote}
-  />
-)
-
-}
-
+      {isDrawerOpen && (
+        <Drawer
+          isDrawerOpen={isDrawerOpen}
+          setIsDrawerOpen={setIsDrawerOpen}
+          onDrawerClose={() => setIsDrawerOpen(false)}
+          selectedNote={selectedNote}
+        />
+      )}
     </div>
   );
 }
