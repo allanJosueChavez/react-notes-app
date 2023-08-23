@@ -1,15 +1,15 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import Home from './views/Home.jsx'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import NoteView from './views/NoteView.jsx'
-import './App.css'
-import { ChakraProvider } from '@chakra-ui/react'
-import { useToast } from '@chakra-ui/react'
+import { useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import Home from "./views/Home.jsx";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import NoteView from "./views/NoteView.jsx";
+import "./App.css";
+import { ChakraProvider } from "@chakra-ui/react";
+import { useToast } from "@chakra-ui/react";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   return (
     <>
@@ -33,14 +33,19 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p> */}
-        {/* <NoteList /> */}
+      {/* <NoteList /> */}
       {/* <p>What's Up</p> */}
-            <Routes>
-                <Route path="/" element={ <Home className={"overflow-y-hidden"}/>} />
-                <Route path="/note/:id" element={<NoteView />} />
-            </Routes>
-            </>
-  )
+              {/* <Route path="/" element={ <Home className={"overflow-y-hidden"}/>} >
+                  <Route path="note/:id" element={<NoteView />} />
+                </Route> */}
+      <Routes>
+
+        <Route path="/" element={<Home className={"overflow-y-hidden"} />} />
+        <Route path="/note/:id" element={<NoteView />} />
+
+      </Routes>
+    </>
+  );
 }
 
-export default App
+export default App;
