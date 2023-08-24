@@ -38,6 +38,7 @@ function NoteList({
   });
   const [isContextMenuOpen, setIsContextMenuOpen] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null);
+  const [isThereAnyNote, setIsThereAnyNote] = useState(false); // This is going to be used to check if there's any note in the array, if there's not, then I'll show a message
   const toast = useToast();
   const parentRef = useRef(null);
   const childRef = useRef(null);
@@ -50,7 +51,7 @@ function NoteList({
 
   useEffect(() => {
     console.log("it's going to set the setfilteredNotes");
-
+    setIsThereAnyNote(true);
     setFilteredNotes(notes);
     if (notes && notes.length !== 0) {
       notes.map((note) => {
@@ -67,6 +68,9 @@ function NoteList({
 
         note.last_update_date = formattedDate;
       });
+    }else{
+      console.log("There's no notes to show");
+      setIsThereAnyNote(false);
     }
   }, [notes]);
 
@@ -180,14 +184,71 @@ function NoteList({
 
   const allTheNotes = () => {
     console.log("search in all the notes");
+    const filtered = notes.filter((note) => {
+      if (note.title.toLowerCase().includes(searchInput.toLowerCase()) || note.description.toLowerCase().includes(searchInput.toLowerCase())  ) {
+        console.log("Oh yeah, one match");
+        return note;
+      }
+    });
+
+    setFilteredNotes(filtered);
   };
 
   const searchInContents = () => {
-    console.log("search in content");
+    const filtered = notes.filter((note) => {
+      if (note.description.toLowerCase().includes(searchInput.toLowerCase())  ) {
+        console.log("Oh yeah, one match");
+        return note;
+      }
+    });
+
+    setFilteredNotes(filtered);
 
   };
 
   const searchInTitles = () => {
+    const filtered = notes.filter((note) => {
+      if (note.title.toLowerCase().includes(searchInput.toLowerCase())) {
+        console.log("Oh yeah, one match");
+        return note;
+      }
+    });
+
+    setFilteredNotes(filtered);
+  }
+
+  const sorbyUpdatedDateAsc = () => {
+    const sorted = [...notes].sort((a, b) => {
+      return new Date(a.updated_at) - new Date(b.updated_at);
+    });
+    setFilteredNotes(sorted);
+    console.log(sorted)
+  }
+
+
+  const sorbyUpdatedDateDesc = () => {
+    const sorted = [...notes].sort((a, b) => {
+      return new Date(b.updated_at) - new Date(a.updated_at);
+    });
+    setFilteredNotes(sorted);
+    console.log(sorted);
+  };
+  
+
+  const sorbyCreatedDateAsc = () => {
+    const sorted = [...notes].sort((a, b) => {
+      return new Date(a.created_at) - new Date(b.created_at);
+    });
+    setFilteredNotes(sorted);
+    console.log(sorted)
+  }
+
+  const sorbyCreatedDateDesc = () => {
+    const sorted = [...notes].sort((a, b) => {
+      return new Date(b.created_at) - new Date(a.created_at);
+    });
+    setFilteredNotes(sorted);
+    console.log(sorted)
 
   }
 
@@ -232,9 +293,9 @@ function NoteList({
           </div>
         </form>
       </div>
-      <div className="my-5 grid grid-cols-4">
-        <div class="col-span-4 flex justify-center">
-          <Tabs>
+      <div className="my-5 grid grid-cols-6">
+        <div className="col-span-6 flex justify-center">
+          <Tabs  >
             <TabList>
               <Tab onClick={() => allTheNotes()}>All</Tab>
               <Tab onClick={() => searchInTitles()}>TItles</Tab>
@@ -256,7 +317,7 @@ function NoteList({
           </Tabs>
         </div>
       </div>
-      <div class="relative h-16 w-full">
+      <div className="relative h-16 w-full">
   {/* <div class="absolute top-0 right-0 h-16 w-16 ...">03</div> */}
   <div className="absolute top-0 right-0 mr-4 ">
         <Menu>
@@ -268,11 +329,11 @@ function NoteList({
           <MenuList>
             {/* <MenuItem>Shared</MenuItem>
             <MenuItem>Favorites </MenuItem> */}
-             <MenuDivider />
-            <MenuItem>Updated date ↑</MenuItem>
-            <MenuItem>Updated date ↓</MenuItem>
-            <MenuItem>Created date ↑</MenuItem>
-            <MenuItem>Created date ↓</MenuItem>
+             {/* <MenuDivider /> */}
+            <MenuItem onClick={() => sorbyUpdatedDateAsc()}>Updated date ↑</MenuItem>
+            <MenuItem onClick={() => sorbyUpdatedDateDesc()}>Updated date ↓</MenuItem>
+            <MenuItem onClick={() => sorbyCreatedDateAsc()}>Created date ↑</MenuItem>
+            <MenuItem onClick={() => sorbyCreatedDateDesc()}>Created date ↓</MenuItem>
           </MenuList>
         </Menu>
       </div>
@@ -282,7 +343,7 @@ function NoteList({
         id="notes-grid"
         className={
           " grid grid-flow-row auto-rows-max sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-6 gap-4 " +
-          (filteredNotes && filteredNotes.length == 0 ? "w-12/12" : "")
+          (filteredNotes !== null && filteredNotes.length == 0 ? "w-12/12" : "")
         }
       >
         {filteredNotes?.map((note, index) => (
@@ -388,7 +449,7 @@ function NoteList({
           </div>
         ))}
       </div>
-      {filteredNotes && filteredNotes.length == 0 && (
+      {!isThereAnyNote && notes && notes.length == 0 && (
         <div
           className={
             "w-full  h-5/6  my-44 text-center text-3xl " +
@@ -404,6 +465,25 @@ function NoteList({
           </p>
           <p className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-sky-500">
             WRITE SOME!
+          </p>
+        </div>
+      )}
+            {isThereAnyNote  && filteredNotes && filteredNotes.length == 0 && (
+        <div
+          className={
+            "w-full  h-5/6  my-44 text-center text-3xl " +
+            `${animations["upOutLowerLeftCorner"]}`
+          }
+        >
+          <p
+            className={
+              "font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600  "
+            }
+          >
+            Oops! Seems like there's no match <br />
+          </p>
+          <p className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-sky-500">
+            {/* WRITE SOME! */}
           </p>
         </div>
       )}

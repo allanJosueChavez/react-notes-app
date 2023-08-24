@@ -1,12 +1,17 @@
 import {
   faPen,
+  faPenToSquare,
   faX,
   faPalette,
   faCheck,
+  faPaintBrush,
+  faBold,
+  faItalic,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useRef, useState, useEffect, useLayoutEffect } from "react";
+import { useToast, Box } from "@chakra-ui/react";
 import {
   Popover,
   PopoverTrigger,
@@ -17,6 +22,8 @@ import {
 import styles from "../assets/styles/styles.module.css";
 import animations from "../assets/styles/animations.module.css";
 import useColorStore from "../store/designStore/colorStore.js";
+import useTextColorStore from "../store/designStore/textColorStore.js";
+import { Tooltip } from "@chakra-ui/react";
 
 function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
   const [isEditTitle, setEditTitle] = useState(false);
@@ -26,6 +33,8 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
   const [currentNote, setCurrentNote] = useState({}); //This is the note that is currently being edited
   const [isAnimation, setIsAnimation] = useState(false);
   const colors = useColorStore((state) => state.tailwind_colors);
+  const toast = useToast();
+  const textColors = useTextColorStore((state) => state.tailwind_text_colors);
   // Set initial value of newNoteTitle when noteToOpen changes
   useEffect(() => {
     if (noteToOpen) {
@@ -137,6 +146,32 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
     //update the color
   };
 
+  const selectNewTextColor = (color) => {
+    if (color.color !== currentNote.text_color) {
+      currentNote.text_color = color.color;
+      let updatedNote = currentNote;
+      setCurrentNote({ ...updatedNote });
+      //editNoteSelected is just looking for an id and then it updates the notes array. So I can use it for every single update. The info is being sent already updated in here.
+      editNoteSelected(currentNote);
+      //It doesn't work like this: setCurrentNote(updatedNote);
+      console.log(currentNote.text_color);
+    }
+    console.log("The color this dude wants for this note is: " + color.color);
+    //update the color
+
+  }
+
+  const featureInDevelopment = () => {
+    toast({
+      title: "Sorry 😬",
+      description: "This feature is still in development!",
+      status: "info",
+      duration: 3000,
+      //icon: "👋",
+      isClosable: true,
+    });
+  };
+
   return (
     <div
       id="blurDiv"
@@ -201,15 +236,17 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
             >
               Cancel
             </button>
+            <Tooltip label="Edit title" fontSize="md" hasArrow arrowSize={15}>
             <div
               onClick={() => editTitle()}
               className={"text-center  " + (!isEditTitle ? "block" : "hidden")}
             >
               <FontAwesomeIcon
-                icon={faPen}
+                icon={faPenToSquare}
                 className="text-blue-800 cursor-pointer m-1 w-4 h-4"
               />
             </div>
+            </Tooltip>
           </div>
 
           <hr
@@ -217,7 +254,8 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
           ></hr>
           {/* <hr class="solid"></hr> */}
           <div className="flex items-center justify-center mt-5">
-            <span className="mx-1">
+            <span className="mx-2">
+            <Tooltip label="Edit content" fontSize="md" hasArrow arrowSize={15}>
               <div
                 onClick={() => editContent()}
                 className={
@@ -228,31 +266,33 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
                 data-for="edit-tooltip"
               >
                 <FontAwesomeIcon
-                  icon={faPen}
+                  icon={faPenToSquare}
                   className="text-blue-800 cursor-pointer mt-4 w-5 h-5 mx-1"
                 />
               </div>
-
+              </Tooltip>
               {/* Add place attribute */}
             </span>
-            <span className="mx-1">
+            <span className="mx-2">
               <Popover>
                 <PopoverTrigger>
-                  <div
-                    className={
-                      "text-center " + (!isEditContent ? "block" : "hidden")
-                    }
-                  >
-                    <FontAwesomeIcon
-                      icon={faPalette}
-                      className="text-blue-800 cursor-pointer mt-4 w-5 h-5"
-                    />
-                    <ReactTooltip
-                      id="edit-tooltip"
-                      effect="solid"
-                      place="bottom"
-                    />{" "}
-                  </div>
+                  {/* <Tooltip label="Change background color" fontSize="md" hasArrow arrowSize={15}> */}
+                    <div
+                      className={
+                        "text-center " + (!isEditContent ? "block" : "hidden")
+                      }
+                    >
+                      <FontAwesomeIcon
+                        icon={faPalette}
+                        className="text-blue-800 cursor-pointer mt-4 w-5 h-5"
+                      />
+                      <ReactTooltip
+                        id="edit-tooltip"
+                        effect="solid"
+                        place="bottom"
+                      />{" "}
+                    </div>
+                  {/* </Tooltip> */}
                 </PopoverTrigger>
                 <PopoverContent>
                   <PopoverBody>
@@ -294,6 +334,92 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
                 </PopoverContent>
               </Popover>
             </span>
+            <span className="mx-2">
+              <Popover>
+                <PopoverTrigger>
+                  {/* <Tooltip label="Change text color" fontSize="md" hasArrow arrowSize={15}> */}
+                    <div
+                      className={
+                        "text-center " + (!isEditContent ? "block" : "hidden")
+                      }
+                    >
+                      <FontAwesomeIcon
+                        icon={faPaintBrush}
+                        className="text-blue-800 cursor-pointer mt-4 w-5 h-5"
+                      />
+                    </div>
+                  {/* </Tooltip> */}
+                </PopoverTrigger>
+                <PopoverContent>
+                  <PopoverBody>
+                    <p className="font-medium  text-sm mt-3">
+                      Select the color you like the most
+                    </p>
+                    <SimpleGrid
+                      columns={8}
+                      spacing={4}
+                      className="color-items-wrap pr-4 pl-2 py-7"
+                    >
+                      {textColors.map((color, index) => (
+                        <div
+                          className={
+                            "m-1 rounded-full cursor-pointer h-5 w-5 p-0.5 " +
+                            color.bg +
+                            (color.color == currentNote.text_color
+                              ? " border border-black "
+                              : "")
+                          }
+                          onClick={() => {
+                            selectNewTextColor(color);
+                          }}
+                          key={index}
+                        >
+                          <FontAwesomeIcon
+                            icon={faCheck}
+                            className={
+                              "text-gray-600 cursor-pointer w-4 h-4 " +
+                              (color.color !== currentNote.text_color
+                                ? "hidden"
+                                : "block")
+                            }
+                          />
+                        </div>
+                      ))}
+                    </SimpleGrid>
+                  </PopoverBody>
+                </PopoverContent>
+              </Popover>
+            </span>
+            <span className="mx-2">
+            <Tooltip label="Bold text" fontSize="md" hasArrow arrowSize={15}>
+              <div
+                onClick={() => featureInDevelopment()}
+                className={
+                  "text-center " + (!isEditContent ? "block" : "hidden")
+                }
+              >
+                <FontAwesomeIcon
+                  icon={faBold}
+                  className="text-blue-800 cursor-pointer mt-4 w-5 h-5 mx-1"
+                />
+              </div>
+              </Tooltip>
+            </span>
+            <span className="mx-2">
+            <Tooltip label="Italic text" fontSize="md" hasArrow arrowSize={15}>
+              <div
+                onClick={() => featureInDevelopment()}
+                className={
+                  "text-center " + (!isEditContent ? "block" : "hidden")
+                }
+              >
+                <FontAwesomeIcon
+                  icon={faItalic}
+                  className="text-blue-800 cursor-pointer mt-4 w-5 h-5 mx-1"
+                />
+              </div>
+              </Tooltip>
+              </span>
             <button
               className={
                 "w-32 h-10 right-0 bg-blue-600 text-white mx-1 " +

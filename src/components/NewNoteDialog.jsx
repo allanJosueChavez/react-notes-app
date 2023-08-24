@@ -44,6 +44,7 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
       text_color: chooseTextColor(newColor[1]),
       updated_at: todaysDate,
       created_at: todaysDate,
+      font_weight: "normal",
     };
 
     try{
