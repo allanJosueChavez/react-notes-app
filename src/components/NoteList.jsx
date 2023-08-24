@@ -5,6 +5,9 @@ import { useToast, Box } from "@chakra-ui/react";
 import animations from "../assets/styles/animations.module.css";
 import Drawer from "./drawer/InfoDrawer.jsx";
 import { useNavigate } from "react-router-dom";
+import { Skeleton, SkeletonCircle, SkeletonText, Stack
+ } from '@chakra-ui/react'
+
 import {
   Menu,
   MenuButton,
@@ -22,12 +25,15 @@ import {
   faPen,
   faFilter,
 } from "@fortawesome/free-solid-svg-icons";
-
+let notesPerLoad = 10
+let showingNotes = 0
 function NoteList({
   notes,
   deleteNote,
   watchNoteFunction,
   setFilteredNotesVerifier,
+  isNotesLoading,
+  setNotesLoadingFalse
 }) {
   const [filteredNotes, setFilteredNotes] = useState(null);
   //I learned how to use useState in order to use a prop and not use it directly, it's better if I create an intern state inside
@@ -46,14 +52,20 @@ function NoteList({
   const bgNotesColors = filteredNotes?.map((note) => {
     return note.bg_color;
   });
+
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const navigate = useNavigate();
-
   useEffect(() => {
     console.log("it's going to set the setfilteredNotes");
     setIsThereAnyNote(true);
-    setFilteredNotes(notes);
+    
     if (notes && notes.length !== 0) {
+      //setFilteredNotes(notes);
+      showingNotes  = notesPerLoad
+       const notesPerReach = notes.slice(0, notesPerLoad);
+       console.log(notesPerLoad)
+      setFilteredNotes(notesPerReach);
+
       notes.map((note) => {
         // Parse the note.updated_at string into a Date object
         const isoDate = new Date(note.updated_at);
@@ -94,6 +106,29 @@ function NoteList({
   // If I delete filterednotes from the parameters it does not work.
   // Well, I just got it, what? I just got it, because it makes sense that whenever the fuck react wants to set the value to
   // notes it'll be exected the useEffect. So is that easy, if you wanna use a prop and set it to another state, wait for it, that simple.
+
+  useEffect(()=>{
+    // If hasn't reached the total of the notes
+    console.log("UPDATTTTTTEEE MORE NOTES")
+    if(notes && filteredNotes.length !== notes.length){
+
+
+      setTimeout(() => {
+        showingNotes = showingNotes + notesPerLoad
+        console.log("showing:" +showingNotes + " notes")
+        const notesPerReach = notes.slice(0, showingNotes);
+        console.log("FILTERED NOTES BY PAGE: "+notesPerReach.length)
+        setFilteredNotes(notesPerReach)
+        setNotesLoadingFalse()
+      }, "500");
+
+      //setNotesLoadingFalse()
+    }else{
+      setNotesLoadingFalse()
+    }
+
+    // setNotes(notesPerReach);
+  },[isNotesLoading])
 
   const [searchInput, setSearchInputValue] = useState("");
   const [lastSearchInput, setLastSearchInput] = useState("");
@@ -449,6 +484,22 @@ function NoteList({
           </div>
         ))}
       </div>
+      {/* <Stack>
+  <Skeleton width="30px" height='20px' />
+  <Skeleton height='20px' />
+  <Skeleton height='20px' />
+</Stack> */}
+{isNotesLoading && 
+  <div className="flex justify-center items-center mt-20">
+<SkeletonCircle size='5'className="mx-2" />
+<SkeletonCircle size='5'className="mx-2" />
+<SkeletonCircle size='5'className="mx-2" />
+<SkeletonCircle size='5'className="mx-2" />
+<SkeletonCircle size='5'className="mx-2" />
+</div>
+}
+
+
       {!isThereAnyNote && notes && notes.length == 0 && (
         <div
           className={

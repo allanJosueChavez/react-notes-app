@@ -11,7 +11,7 @@ function Home() {
   const [isNoteOpen, setIsNoteOpen] = useState(false);
   const containerRef = useRef(null);
   const [offset, setOffset] = useState(0);
-
+ 
   const defaultNotes = [
     { id: 0, title: "Note 1", description: "Description of note 1..." },
     { id: 1, title: "Note 2", description: "Description of note 2..." },
@@ -20,8 +20,12 @@ function Home() {
 
   const [notes, setNotes] = useState(null);
   const [viewNote, setNoteToOpen] = useState({});
+  const [isNotesLoading, setIsNotesLoading] = useState(false);
 
   const [filteredNotesVerifier, setFilteredNotesVerifier] = useState(false);
+  const storedNotes = JSON.parse(localStorage.getItem("notes"));
+  
+
 
   // Load notes from localStorage when the component mounts
   // useEffect(() => {
@@ -38,8 +42,9 @@ function Home() {
   }, [filteredNotesVerifier]);
 
   useEffect(() => {
-    console.log("Dependent of notes");
+    console.log("useEffect Dependent of notes");
     if (notes !== null) {
+      console.log("Updating or creating or deleting, or something");
       localStorage.setItem("notes", JSON.stringify(notes));
     }
   }, [notes]);
@@ -55,10 +60,14 @@ function Home() {
   }, [viewNote]);
 
   useEffect(() => {
-    const storedNotes = JSON.parse(localStorage.getItem("notes"));
+    //I'mma set it at the top >>> const storedNotes = JSON.parse(localStorage.getItem("notes"));
     console.log("useEffect by default");
+    console.log(storedNotes.length)
     if (notes == null && storedNotes !== null) {
       setNotes(storedNotes);
+      // showingNotes = notesPerLoad
+      //  const notesPerReach = storedNotes.slice(0, showingNotes);
+      //  setNotes(notesPerReach);
       console.log({ storedNotes });
     } else if (notes == null) {
       setNotes([]);
@@ -94,10 +103,24 @@ function Home() {
 
   const handleScroll = (event) => {
     const { scrollTop, scrollHeight, clientHeight } = event.target;
-    if (Math.round(scrollTop - scrollHeight) * -1 === clientHeight) {
+    let userPosition = Math.round(scrollTop - scrollHeight) * -1
+    console.log(userPosition+ " " +clientHeight)
+    // It has a margin of error of 3px
+    if (userPosition >= clientHeight - 5 && userPosition <= clientHeight + 3) {
       console.log("You've reached the bottom");
+      
+      setIsNotesLoading(true)
+      // showingNotes = showingNotes + notesPerLoad
+      // console.log("showing:" +notesPerLoad+ " notes")
+      // const notesPerReach = storedNotes.slice(0, showingNotes);
+      // setNotes(notesPerReach);
+      // setIsNotesLoading(false)
     }
   };
+
+  const setNotesLoadingFalse = () => {
+    setIsNotesLoading(false)
+  }
 
   useEffect(() => {
     const gridElement = document.getElementById("main-container");
@@ -175,7 +198,7 @@ function Home() {
         id="main-container"
         ref={containerRef}
         className={
-          "  h-screen  mt-2 pb-72 overflow-y-scroll " +
+          "  h-screen  mt-2 pb-48 overflow-y-scroll " +
           +
           (!filteredNotesVerifier ? " w-max " : "")
         }
@@ -187,6 +210,8 @@ function Home() {
           deleteNote={deleteNote}
           watchNoteFunction={watchNoteFunction}
           setFilteredNotesVerifier={verifyFilteredNotes}
+          isNotesLoading={isNotesLoading}
+          setNotesLoadingFalse={setNotesLoadingFalse}
         />
         <div>
           {/* <div
