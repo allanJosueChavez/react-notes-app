@@ -5,7 +5,7 @@ import Note from "../components/Note";
 import { useRef, useState, useEffect } from "react";
 import animations from "../assets/styles/animations.module.css";
 import { CSSTransition } from "react-transition-group";
-
+import styles from "../assets/styles/styles.module.css";
 function Home() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isNoteOpen, setIsNoteOpen] = useState(false);
@@ -69,6 +69,7 @@ function Home() {
       //  const notesPerReach = storedNotes.slice(0, showingNotes);
       //  setNotes(notesPerReach);
       console.log({ storedNotes });
+     // updateUrlToCloseNote()
     } else if (notes == null) {
       setNotes([]);
     }
@@ -91,6 +92,7 @@ function Home() {
         setNoteToOpen(null);
         setIsDialogOpen(false);
         setIsNoteOpen(false);
+
       }
     };
 
@@ -153,9 +155,20 @@ function Home() {
     console.log("It is trynnna open THE NOTE");
     console.log(note);
     setNoteToOpen(note);
+    updateUrlToWatchNote(note.id)
     //console.log(viewNote);
     //setIsNoteOpen(true);
   };
+
+  const updateUrlToWatchNote = (noteId) => {
+    const newUrl = `/app/notecards/${noteId}`;
+    window.history.pushState(null, null, newUrl);
+  }
+
+  const updateUrlToCloseNote = ( ) => {
+    const newUrl = `/app/notecards/`;
+    window.history.pushState(null, null, newUrl);
+  }
 
   const saveUpdatedNote = (note) => {
     console.log("In the component Home, is trying to save the note");
@@ -194,13 +207,14 @@ function Home() {
   return (
     <>
       {/*pt-16 */}
+      <div className={`${styles["main-container-notelist"]}`}>
       <div
         id="main-container"
         ref={containerRef}
         className={
-          "  h-screen  mt-2 pb-48 overflow-y-scroll " +
+          `  h-screen  mt-2 pb-48 overflow-y-scroll p-8  ` +
           +
-          (!filteredNotesVerifier ? " w-max " : "")
+(!filteredNotesVerifier ? " w-max " : "")  
         }
       >
         <NewNote setIsDialogOpen={setIsDialogOpen} />
@@ -241,6 +255,7 @@ function Home() {
           )}
           {/* </div> */}
         </div>
+      </div>
       </div>
     </>
   );

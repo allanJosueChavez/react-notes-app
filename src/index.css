@@ -19,6 +19,14 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
+
+@font-face {
+  font-family: 'Outfit';
+  src: url('/src/assets/fonts/Rubik-VariableFont_wght.ttf') format('truetype');
+  font-weight: normal; 
+  font-style: normal;
+  /* color: #001642; */
+}
 /* 
 a {
   font-weight: 500;

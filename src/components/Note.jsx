@@ -71,11 +71,20 @@ function Note({ noteToOpen, setNoteToOpen, isNoteOpen, editNoteSelected }) {
         console.log("Setting it to null");
         setNoteToOpen(null);
       }, 300);
+      updateUrlToCloseNote()
     }
   };
+
+  const updateUrlToCloseNote = ( ) => {
+    const newUrl = `/app/notecards`;
+    window.history.pushState(null, null, newUrl);
+  }
+
+
   //Close note function
   const closeNote = () => {
     setNoteToOpen(null);
+    updateUrlToCloseNote()
   };
   const editTitle = () => {
     console.log("Editing note title");

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "../assets/styles/styles.module.css";
+
 import { useToast, Box } from "@chakra-ui/react";
 import animations from "../assets/styles/animations.module.css";
 import Drawer from "./drawer/InfoDrawer.jsx";
@@ -178,7 +179,7 @@ function NoteList({
   };
 
   const openInNewTab = (noteId) => {
-    const url = `/note/${noteId}`;
+    const url = `/app/notecards/${noteId}`;
     window.open(url, "_blank"); // Open in a new tab
   };
 
@@ -385,6 +386,7 @@ function NoteList({
           <div
             onContextMenu={(event) => handleRightClickOnNote(event, note)}
             onClick={() => watchNoteFunction(note)}
+            
             key={index}
             className={
               "w-48 h-48 relative rounded-lg shadow-md cursor-pointer " +

@@ -13,7 +13,8 @@ import {
   Route,
   Link,
 } from "react-router-dom";
-
+import { Navigate } from 'react-router-dom';
+import Error404 from './views/errors/404.jsx'
 
 // ReactDOM.createRoot(document.getElementById('root')).render(
 //   <React.StrictMode>
@@ -49,12 +50,30 @@ import {
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: '/app/notecards',
     name: 'Home',
     element: <Home />,
   },
   {
-    path: 'note/:id',
+    path : '/',
+    name : 'Home',
+    element :  <Navigate to="/app/notecards"  />,
+    
+
+  },
+  {
+    path : '/app/notebooks',
+    name : 'Notebooks',
+    element :  <Navigate to="/app/notebooks"  />,
+  },
+  {
+    path: '*',
+    name: '404',
+    element: <Error404/>,    
+  },   
+
+  {
+    path: '/app/notecards/:id',
     name: 'Note',
     element: <NoteView />,
   },
