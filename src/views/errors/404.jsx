@@ -9,7 +9,7 @@ function Error404() {
     }
 
   return (
-    <div className={`${styles["container-404"]} text-white bg-gradient-to-r from-blue-600 to-teal-500  h-screen w-12/12 m-0 relative`}>
+    <div className={`${styles["container-404"]} text-white bg-gradient-to-r from-purple-900 to-teal-600  h-screen w-12/12 m-0 relative`}>
       <div className="relative h-screen w-full">
         <img
           className="h-screen w-full"
@@ -26,7 +26,7 @@ function Error404() {
         <div className="items-center text-4xl lg:text-6xl">
             <h1> 404</h1>
             <p>Page not found.</p>
-            <button onClick={() => goHome()} className="text-5xl bg-gradient-to-r from-blue-900 to-purple-900 my-12 h-20 w-64">Go home</button>
+            <button onClick={() => goHome()} className="text-5xl bg-gradient-to-r from-blue-900 to-fuchsia-900 my-12 h-20 w-64">Go home</button>
           </div>
           <img
             className={""}
