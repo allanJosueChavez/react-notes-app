@@ -113,8 +113,8 @@ function NoteList({
 
   useEffect(()=>{
     // If hasn't reached the total of the notes
-    console.log("UPDATTTTTTEEE MORE NOTES")
     if(notes && notes.length !== notes.length){
+      console.log("Give me more notesss")
 
 
       setTimeout(() => {
@@ -128,6 +128,7 @@ function NoteList({
 
       //setNotesLoadingFalse()
     }else{
+      console.log("I'm not looking for more notes")
       setNotesLoadingFalse()
     }
 
