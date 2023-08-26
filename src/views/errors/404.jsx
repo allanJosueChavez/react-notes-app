@@ -31,7 +31,7 @@ function Error404() {
           <img
             className={""}
             width="650px"
-            src="/src/assets/gifs/giphy_spidey.gif"
+            src="https://i.ibb.co/NF0YDc1/giphy-spidey.gif" 
             alt=""
           />
 
