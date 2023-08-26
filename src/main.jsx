@@ -71,7 +71,11 @@ const router = createBrowserRouter([
     name: '404',
     element: <Error404/>,    
   },   
-
+  {
+    path: '/4404',
+    name: '404',
+    element: <Error404/>,    
+  },  
   {
     path: '/app/notecards/:id',
     name: 'Note',
