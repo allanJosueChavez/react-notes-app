@@ -13,7 +13,7 @@ function Error404() {
       <div className="relative h-screen w-full">
         {/* <img
           className="h-screen w-full"
-          src="/public/bg_city.png"
+          src="https://i.ibb.co/hWSnvqs/bg-city.jpg"
           alt=""
         /> */}
       </div>
@@ -21,9 +21,9 @@ function Error404() {
       {/* <div className='relative h-40 w-40'><iframe src="https://giphy.com/embed/YWLDUhxMbpPfY831Fn" width="100%" height="100%" className='absolute' frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div><p><a href="https://giphy.com/gifs/SpiderVerseMovie-marvel-spiderman-sony-YWLDUhxMbpPfY831Fn">via GIPHY</a></p> */}
       {/* <iframe src="https://giphy.com/embed/YWLDUhxMbpPfY831Fn" width="100%" height="100%" className='absolute' frameBorder="3"   allowFullScreen></iframe> */}
       <div className="absolute bottom-0 text-center">
-        <div className="grid grid-cols-2">
-        {/* <link rel="icon" type="image/svg+xml" href="/src/assets/images/wolfie.png" /> */}
-        <div className="items-center text-6xl">
+        <div className="grid lg:grid-cols-2">
+
+        <div className="items-center text-4xl lg:text-6xl">
             <h1> 404</h1>
             <p>Page not found.</p>
             <button onClick={() => goHome()} className="text-5xl bg-gradient-to-r from-blue-900 to-fuchsia-900 my-12 h-20 w-64">Go home</button>
