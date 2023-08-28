@@ -113,7 +113,7 @@ function NoteList({
 
   useEffect(()=>{
     // If hasn't reached the total of the notes
-    if(notes && notes.length !== notes.length){
+    if(notes && notes.length > filteredNotes.length){
       console.log("Give me more notesss")
 
 
