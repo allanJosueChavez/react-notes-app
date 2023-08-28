@@ -1,6 +1,7 @@
 import NoteList from "../components/NoteList";
 import NewNote from "../components/NewNote";
 import NewNoteDialog from "../components/NewNoteDialog";
+import { useParams } from 'react-router-dom';
 import Note from "../components/Note";
 import { useRef, useState, useEffect } from "react";
 import animations from "../assets/styles/animations.module.css";
@@ -11,7 +12,7 @@ function Home() {
   const [isNoteOpen, setIsNoteOpen] = useState(false);
   const containerRef = useRef(null);
   const [offset, setOffset] = useState(0);
- 
+  const { id } = useParams();
   const defaultNotes = [
     { id: 0, title: "Note 1", description: "Description of note 1..." },
     { id: 1, title: "Note 2", description: "Description of note 2..." },
@@ -24,7 +25,7 @@ function Home() {
 
   const [filteredNotesVerifier, setFilteredNotesVerifier] = useState(false);
   const storedNotes = JSON.parse(localStorage.getItem("notes"));
-  
+  const [isShowingNote, setIsShowingNote] = useState(false);
 
 
   // Load notes from localStorage when the component mounts
@@ -48,6 +49,18 @@ function Home() {
       localStorage.setItem("notes", JSON.stringify(notes));
     }
   }, [notes]);
+
+  useEffect(() => {
+    // Use the id parameter in your component logic
+    console.log(typeof id)
+    const noteId = parseInt(id)
+    if(noteId !== undefined && noteId !== null && noteId !== "" && !isNaN(noteId)){
+      console.log("Yes, THERE IS A OPEN NOTE")
+      setIsShowingNote(true)
+      const note = storedNotes.find((note) => note.id === noteId);
+      setNoteToOpen(note);
+    } 
+  }, [id]);
 
   useEffect(() => {
     // There was an error here, it was being set to true when the viewNote was empty
