@@ -60,6 +60,7 @@ function Home() {
       const note = storedNotes.find((note) => note.id === noteId);
       setNoteToOpen(note);
     } 
+    // I just ran a "git push -set-upstream origin feat-note-new-tab" in order to stablish the relationship, so i'll try to do just a push, now that the relationship is already made and see if that works.
   }, [id]);
 
   useEffect(() => {
