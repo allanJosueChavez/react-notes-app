@@ -25,6 +25,7 @@ import {
   faEye,
   faPen,
   faFilter,
+  faCheck
 } from "@fortawesome/free-solid-svg-icons";
 let notesPerLoad = 10
 let showingNotes = 0
@@ -46,12 +47,16 @@ function NoteList({
   const [isContextMenuOpen, setIsContextMenuOpen] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null);
   const [isThereAnyNote, setIsThereAnyNote] = useState(false); // This is going to be used to check if there's any note in the array, if there's not, then I'll show a message
+  const [selectedNotes, setSelectedNotes] = useState([]); // This is going to be used to check if there's any note in the array, if there's not, then I'll show a message
   const toast = useToast();
   const parentRef = useRef(null);
   const childRef = useRef(null);
 
   const bgNotesColors = filteredNotes?.map((note) => {
-    return note.bg_color;
+    if(note){
+      return note.bg_color;
+
+    }
   });
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -288,8 +293,24 @@ function NoteList({
 
   }
 
+
+  const selectNote = (note) =>{
+    note = note.isSelected = true
+    setSelectedNotes([...selectedNotes, note])
+    console.log(selectedNotes)
+  }
+
+  const stopNotesSelection = () =>{
+    console.log("STOPPING SELECTION OF NOTES")
+    let originalNotes = filteredNotes.map((note)=>{
+      note.isSelected = false
+      return note
+    })
+    setFilteredNotes([...originalNotes])
+    setSelectedNotes([])
+  }
   return (
-    <div id="notebook" className="p-4 w-full  mt-8 lg:mt-0">
+    <div id="notebook" className="p-4 w-full  mt-8 lg:mt-0" onClick={() => stopNotesSelection()}>
       <h1 className="font-bold text-2xl mb-4 p-8">
         <FontAwesomeIcon icon={faStickyNote} className="mr-2" />
         MY NOTEBOOK
@@ -373,8 +394,15 @@ function NoteList({
           </MenuList>
         </Menu>
       </div>
-</div>
 
+</div>
+{selectedNotes?.length >0 && <div className="my-4 right-0 ">
+        <Button  borderColor={{ bg: 'red.500' }} colorScheme={{ bg: 'red.500' }} _hover={{ bg: 'red.600' }} className="bg-red-500 border-2 border-red-200 hover:bg-red-500" > 
+          <FontAwesomeIcon
+                  icon={faTrash}
+                  className=" cursor-pointer mx-1"
+                />Trash</Button>
+      </div>}
       <div
         id="notes-grid"
         className={
@@ -389,13 +417,14 @@ function NoteList({
             
             key={index}
             className={
-              "w-48 h-48 relative rounded-lg shadow-md cursor-pointer " +
+              "w-48 h-48 relative rounded-lg shadow-md cursor-pointer  " +
               (bgNotesColors[index] !== undefined
                 ? bgNotesColors[index]
-                : "bg-gray-200 ") +
-              ` ${animations["upOutFloatingPopUp"]}`
+                : "bg-gray-200") +
+              ` ${animations["upOutFloatingPopUp"]}`+ (note.isSelected?"filter brightness-50":"")
             }
           >
+
             <h3
               className="text-lg font-bold m-2 flex-grow overflow-hidden whitespace-nowrap text-overflow-ellipsis"
               title={note.title}
@@ -412,8 +441,14 @@ function NoteList({
             >
               {note.description}
             </p>
-
+            {note.isSelected && <div className="absolute bottom-70  justify-center items-center flex p-2 w-full">
+            <FontAwesomeIcon
+                  icon={faCheck}
+                  className=" text-white text-3xl cursor-pointer "
+                />
+            </div>}
             <div className="absolute bottom-0 flex justify-end items-end p-2 w-full">
+              
               {/* <div
                 onClick={() => watchNote(note)}
                 className="text-center "
@@ -558,7 +593,7 @@ function NoteList({
               >
                 Open in a new tab
               </MenuItem>
-              <MenuItem command="⌘N" onClick={() => featureInDevelopment()}>
+              <MenuItem command="⌘N" onClick={() => selectNote(selectedNote)}>
                 Select
               </MenuItem>
               <MenuItem command="⌘⇧N" onClick={() => featureInDevelopment()}>
