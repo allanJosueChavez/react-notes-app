@@ -65,7 +65,7 @@ function NoteList({
     console.log("it's going to set the setfilteredNotes");
     setIsThereAnyNote(true);
     
-    if (notes && notes.length !== 0) {
+    if (notes && notes.length > 0) {
       //setFilteredNotes(notes);
       showingNotes  = notesPerLoad
        const notesPerReach = notes.slice(0, notesPerLoad);
@@ -89,6 +89,9 @@ function NoteList({
     }else{
       console.log("There's no notes to show");
       setIsThereAnyNote(false);
+      if(notes){
+        setFilteredNotes(notes);
+      }
     }
   }, [notes]);
 
@@ -115,8 +118,8 @@ function NoteList({
 
   useEffect(()=>{
     // If hasn't reached the total of the notes
-    console.log("UPDATTTTTTEEE MORE NOTES")
-    if(notes && filteredNotes.length !== notes.length){
+    if(notes && notes.length > filteredNotes.length){
+      console.log("Give me more notesss")
 
 
       setTimeout(() => {
@@ -130,6 +133,7 @@ function NoteList({
 
       //setNotesLoadingFalse()
     }else{
+      console.log("I'm not looking for more notes")
       setNotesLoadingFalse()
     }
 

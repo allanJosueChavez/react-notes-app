@@ -117,7 +117,7 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
       }
       onClick={handleBlurDivClick}
     >
-      <div className={"shadow-xl rounded-lg w-10/12 lg:w-6/12 h-4/6  bg-gradient-to-r from-emerald-400 to-sky-500  bg-teal-400 lg:p-5 " }>
+      <div className={"shadow-xl rounded-lg w-10/12 lg:w-6/12  bg-gradient-to-r from-emerald-400 to-sky-500  bg-teal-400 lg:p-5 " }>
         <div
           onClick={() => closeDialog()}
           className={"float-right cursor-pointer mr-4 mt-2 w-4 h-4"}
@@ -167,7 +167,7 @@ function NewNoteDialog({ isOpen, onClose, addNewNote, notes }) {
             />
           </div>
           <button
-            className="bg-blue-700 mr-4 py-2 px-4 text-white hover:text-gray-200  hover:bg-blue-800"
+            className="bg-blue-700  py-2 px-4 text-white hover:text-gray-200  hover:bg-blue-800"
             onClick={handleAddNoteClick}
           >
             Create

@@ -62,7 +62,6 @@ function Home() {
   useEffect(() => {
     //I'mma set it at the top >>> const storedNotes = JSON.parse(localStorage.getItem("notes"));
     console.log("useEffect by default");
-    console.log(storedNotes.length)
     if (notes == null && storedNotes !== null) {
       setNotes(storedNotes);
       // showingNotes = notesPerLoad
