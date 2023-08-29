@@ -120,8 +120,6 @@ function NoteList({
     // If hasn't reached the total of the notes
     if(notes && notes.length > filteredNotes.length){
       console.log("Give me more notesss")
-
-
       setTimeout(() => {
         showingNotes = showingNotes + notesPerLoad
         console.log("showing:" +showingNotes + " notes")

@@ -79,7 +79,8 @@ const router = createBrowserRouter([
   {
     path: '/app/notecards/:id',
     name: 'Note',
-    element: <NoteView />,
+    // element: <NoteView />,
+    element: <Home />
   },
 ]);
 
