@@ -419,11 +419,11 @@ function NoteList({
             
             key={index}
             className={
-              "w-48 h-48 relative rounded-lg shadow-md cursor-pointer  " +
+              "w-48 h-48 relative rounded-lg shadow-md cursor-pointer " +
               (bgNotesColors[index] !== undefined
                 ? bgNotesColors[index]
                 : "bg-gray-200") +
-              ` ${animations["upOutFloatingPopUp"]}`+ (note.isSelected?"filter brightness-50":"")
+              ` ${animations["upOutFloatingPopUp"]}`+ (note.isSelected?" filter brightness-50 ":"")
             }
           >
 
@@ -578,7 +578,9 @@ function NoteList({
         </div>
       )}
       {isContextMenuOpen && (
-        <div id="divBeforeNoteMenu" ref={parentRef}>
+        <div id="divBeforeNoteMenu" ref={parentRef} 
+        // className="z-50"
+        >
           <Menu
             id="noteMenu"
             isOpen={isContextMenuOpen}
