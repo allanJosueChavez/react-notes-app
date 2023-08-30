@@ -312,7 +312,7 @@ function NoteList({
     setSelectedNotes([])
   }
   return (
-    <div id="notebook" className="p-4 w-full  mt-8 lg:mt-0" onClick={() => stopNotesSelection()}>
+    <div id="notebook" className="p-4 w-full  mt-8 lg:mt-0 z-10"  >
       <h1 className="font-bold text-2xl mb-4 p-8">
         <FontAwesomeIcon icon={faStickyNote} className="mr-2" />
         MY NOTEBOOK
@@ -321,7 +321,7 @@ function NoteList({
       <div className="my-4">
         <form onSubmit={handleSubmit}>
           <div className="relative">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none ">
               <svg
                 className="w-4 h-4 text-gray-500"
                 aria-hidden="true"
@@ -398,7 +398,7 @@ function NoteList({
       </div>
 
 </div>
-{selectedNotes?.length >0 && <div className="my-4 right-0 ">
+{selectedNotes?.length >0 && <div className="my-4 right-0 z-30">
         <Button  borderColor={{ bg: 'red.500' }} colorScheme={{ bg: 'red.500' }} _hover={{ bg: 'red.600' }} className="bg-red-500 border-2 border-red-200 hover:bg-red-500" > 
           <FontAwesomeIcon
                   icon={faTrash}
@@ -567,7 +567,7 @@ function NoteList({
         >
           <p
             className={
-              "font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600  "
+              "font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 "
             }
           >
             Oops! Seems like there's no match <br />
@@ -579,12 +579,13 @@ function NoteList({
       )}
       {isContextMenuOpen && (
         <div id="divBeforeNoteMenu" ref={parentRef} 
-        // className="z-50"
+        className="z-50"
         >
           <Menu
             id="noteMenu"
             isOpen={isContextMenuOpen}
             onClose={closeContextMenu}
+            className="z-50"
           >
             {/* <MenuButton  as={Button} rightIcon={<ChevronDownIcon />}>
         {isOpen ? 'Close' : 'Open'}
