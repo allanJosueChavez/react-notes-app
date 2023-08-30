@@ -296,10 +296,35 @@ function NoteList({
   }
 
 
-  const selectNote = (note) =>{
-    note = note.isSelected = true
-    setSelectedNotes([...selectedNotes, note])
+  const selectNote = (note) => {
+    console.log(note)
+    // Update the isSelected property of the note
+    note.isSelected = true;
+    console.log(note)
+    // Add the selected note to the selectedNotes array
+    setSelectedNotes([...selectedNotes, note]);
+    
+    // Now, the selectedNotes array has been updated, so you can log it to see the changes
+    console.log(selectedNotes);
+  };
+  
+
+  const markAsFavorite = (note)=>{
+    console.log("marking as favorite")
+  }
+
+  const deleteSelectedNotes = async () =>{
     console.log(selectedNotes)
+    if(selectedNotes && selectedNotes.length>0){
+      let notesUpdated
+      selectedNotes.forEach(async (note)=>{
+      console.log(note)
+      await deleteNote(note)
+      //  notesUpdated = notes.filter((n) => n.id !== note.id);
+      })
+      // setFilteredNotes(notesUpdated)
+      // notes = notesUpdated
+    }     
   }
 
   const stopNotesSelection = () =>{
@@ -399,7 +424,7 @@ function NoteList({
 
 </div>
 {selectedNotes?.length >0 && <div className="my-4 right-0 z-30">
-        <Button  borderColor={{ bg: 'red.500' }} colorScheme={{ bg: 'red.500' }} _hover={{ bg: 'red.600' }} className="bg-red-500 border-2 border-red-200 hover:bg-red-500" > 
+        <Button  borderColor={{ bg: 'red.500' }} colorScheme={{ bg: 'red.500' }} _hover={{ bg: 'red.600' }} className="bg-red-500 border-2 border-red-200 hover:bg-red-500" onClick={()=>deleteSelectedNotes()}> 
           <FontAwesomeIcon
                   icon={faTrash}
                   className=" cursor-pointer mx-1"
@@ -608,7 +633,7 @@ function NoteList({
               <MenuItem command="⌘I" onClick={() => showDrawerInfo()}>
                 Info
               </MenuItem>
-              <MenuItem command="⌘F" onClick={() => featureInDevelopment()}>
+              <MenuItem command="⌘F" onClick={() => markAsFavorite(selectedNote)}>
                 Favorite
               </MenuItem>
               <MenuItem command="⌘L" onClick={() => featureInDevelopment()}>
