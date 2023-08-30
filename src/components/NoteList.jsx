@@ -313,27 +313,42 @@ function NoteList({
     console.log("marking as favorite")
   }
 
-  const deleteSelectedNotes = async () =>{
-    console.log(selectedNotes)
-    if(selectedNotes && selectedNotes.length>0){
-      let notesUpdated
-      selectedNotes.forEach(async (note)=>{
-      console.log(note)
-      await deleteNote(note)
-      //  notesUpdated = notes.filter((n) => n.id !== note.id);
-      })
-      // setFilteredNotes(notesUpdated)
-      // notes = notesUpdated
-    }     
-  }
-
-  const stopNotesSelection = () =>{
+  // const deleteSelectedNotes = async () =>{
+  //   console.log(selectedNotes)
+  //   if(selectedNotes && selectedNotes.length>0){
+  //     let notesUpdated
+  //     selectedNotes.forEach(async (note)=>{
+  //     console.log(note)
+  //     // await deleteNote(note)
+  //       notesUpdated = notes.filter((n) => n.id !== note.id);
+  //     })
+  //     setFilteredNotes(notesUpdated)
+  //     // notes = notesUpdated
+  //     stopNotesSelection()
+  //   }     
+  // }
+  const deleteSelectedNotes = async () => {
+    console.log(selectedNotes);
+    if (selectedNotes && selectedNotes.length > 0) {
+      let notesUpdated = notes.filter(note => !selectedNotes.some(selectedNote => selectedNote.id === note.id));
+      setFilteredNotes(notesUpdated);
+      stopNotesSelection(notesUpdated);
+      // Update the main state.
+      // Assuming you have an async deleteNote function, you can call it here
+      // for each selected note if needed.
+      // for (const note of selectedNotes) {
+      //   await deleteNote(note);
+      // }
+    }
+  };
+  
+  const stopNotesSelection = (notesUpdated) =>{
     console.log("STOPPING SELECTION OF NOTES")
-    let originalNotes = filteredNotes.map((note)=>{
+    notesUpdated = notesUpdated.map((note)=>{
       note.isSelected = false
       return note
     })
-    setFilteredNotes([...originalNotes])
+    setFilteredNotes([...notesUpdated])
     setSelectedNotes([])
   }
   return (
