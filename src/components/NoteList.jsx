@@ -6,8 +6,12 @@ import { useToast, Box } from "@chakra-ui/react";
 import animations from "../assets/styles/animations.module.css";
 import Drawer from "./drawer/InfoDrawer.jsx";
 import { useNavigate } from "react-router-dom";
-import { Skeleton, SkeletonCircle, SkeletonText, Stack
- } from '@chakra-ui/react'
+import {
+  Skeleton,
+  SkeletonCircle,
+  SkeletonText,
+  Stack,
+} from "@chakra-ui/react";
 
 import {
   Menu,
@@ -25,17 +29,19 @@ import {
   faEye,
   faPen,
   faFilter,
-  faCheck
+  faCheck,
+  faStar,
 } from "@fortawesome/free-solid-svg-icons";
-let notesPerLoad = 10
-let showingNotes = 0
+let notesPerLoad = 10;
+let showingNotes = 0;
 function NoteList({
   notes,
   deleteNote,
   watchNoteFunction,
   setFilteredNotesVerifier,
   isNotesLoading,
-  setNotesLoadingFalse
+  setNotesLoadingFalse,
+  updateNotesFromList,
 }) {
   const [filteredNotes, setFilteredNotes] = useState(null);
   //I learned how to use useState in order to use a prop and not use it directly, it's better if I create an intern state inside
@@ -53,9 +59,8 @@ function NoteList({
   const childRef = useRef(null);
 
   const bgNotesColors = filteredNotes?.map((note) => {
-    if(note){
+    if (note) {
       return note.bg_color;
-
     }
   });
 
@@ -64,12 +69,12 @@ function NoteList({
   useEffect(() => {
     console.log("it's going to set the setfilteredNotes");
     setIsThereAnyNote(true);
-    
+
     if (notes && notes.length > 0) {
       //setFilteredNotes(notes);
-      showingNotes  = notesPerLoad
-       const notesPerReach = notes.slice(0, notesPerLoad);
-       console.log(notesPerLoad)
+      showingNotes = notesPerLoad;
+      const notesPerReach = notes.slice(0, notesPerLoad);
+      console.log(notesPerLoad);
       setFilteredNotes(notesPerReach);
 
       notes.map((note) => {
@@ -86,10 +91,10 @@ function NoteList({
 
         note.last_update_date = formattedDate;
       });
-    }else{
+    } else {
       console.log("There's no notes to show");
       setIsThereAnyNote(false);
-      if(notes){
+      if (notes) {
         setFilteredNotes(notes);
       }
     }
@@ -116,27 +121,27 @@ function NoteList({
   // Well, I just got it, what? I just got it, because it makes sense that whenever the fuck react wants to set the value to
   // notes it'll be exected the useEffect. So is that easy, if you wanna use a prop and set it to another state, wait for it, that simple.
 
-  useEffect(()=>{
+  useEffect(() => {
     // If hasn't reached the total of the notes
-    if(notes && notes.length > filteredNotes.length){
-      console.log("Give me more notesss")
+    if (notes && notes.length > filteredNotes.length) {
+      console.log("Give me more notesss");
       setTimeout(() => {
-        showingNotes = showingNotes + notesPerLoad
-        console.log("showing:" +showingNotes + " notes")
+        showingNotes = showingNotes + notesPerLoad;
+        console.log("showing:" + showingNotes + " notes");
         const notesPerReach = notes.slice(0, showingNotes);
-        console.log("FILTERED NOTES BY PAGE: "+notesPerReach.length)
-        setFilteredNotes(notesPerReach)
-        setNotesLoadingFalse()
+        console.log("FILTERED NOTES BY PAGE: " + notesPerReach.length);
+        setFilteredNotes(notesPerReach);
+        setNotesLoadingFalse();
       }, "500");
 
       //setNotesLoadingFalse()
-    }else{
-      console.log("I'm not looking for more notes")
-      setNotesLoadingFalse()
+    } else {
+      console.log("I'm not looking for more notes");
+      setNotesLoadingFalse();
     }
 
     // setNotes(notesPerReach);
-  },[isNotesLoading])
+  }, [isNotesLoading]);
 
   const [searchInput, setSearchInputValue] = useState("");
   const [lastSearchInput, setLastSearchInput] = useState("");
@@ -147,7 +152,10 @@ function NoteList({
       return;
     }
     const filtered = notes.filter((note) => {
-      if (note.title.toLowerCase().includes(searchInput.toLowerCase()) || note.description.toLowerCase().includes(searchInput.toLowerCase())  ) {
+      if (
+        note.title.toLowerCase().includes(searchInput.toLowerCase()) ||
+        note.description.toLowerCase().includes(searchInput.toLowerCase())
+      ) {
         console.log("Oh yeah, one match");
         return note;
       }
@@ -228,7 +236,10 @@ function NoteList({
   const allTheNotes = () => {
     console.log("search in all the notes");
     const filtered = notes.filter((note) => {
-      if (note.title.toLowerCase().includes(searchInput.toLowerCase()) || note.description.toLowerCase().includes(searchInput.toLowerCase())  ) {
+      if (
+        note.title.toLowerCase().includes(searchInput.toLowerCase()) ||
+        note.description.toLowerCase().includes(searchInput.toLowerCase())
+      ) {
         console.log("Oh yeah, one match");
         return note;
       }
@@ -239,14 +250,13 @@ function NoteList({
 
   const searchInContents = () => {
     const filtered = notes.filter((note) => {
-      if (note.description.toLowerCase().includes(searchInput.toLowerCase())  ) {
+      if (note.description.toLowerCase().includes(searchInput.toLowerCase())) {
         console.log("Oh yeah, one match");
         return note;
       }
     });
 
     setFilteredNotes(filtered);
-
   };
 
   const searchInTitles = () => {
@@ -258,16 +268,15 @@ function NoteList({
     });
 
     setFilteredNotes(filtered);
-  }
+  };
 
   const sorbyUpdatedDateAsc = () => {
     const sorted = [...notes].sort((a, b) => {
       return new Date(a.updated_at) - new Date(b.updated_at);
     });
     setFilteredNotes(sorted);
-    console.log(sorted)
-  }
-
+    console.log(sorted);
+  };
 
   const sorbyUpdatedDateDesc = () => {
     const sorted = [...notes].sort((a, b) => {
@@ -276,42 +285,48 @@ function NoteList({
     setFilteredNotes(sorted);
     console.log(sorted);
   };
-  
 
   const sorbyCreatedDateAsc = () => {
     const sorted = [...notes].sort((a, b) => {
       return new Date(a.created_at) - new Date(b.created_at);
     });
     setFilteredNotes(sorted);
-    console.log(sorted)
-  }
+    console.log(sorted);
+  };
 
   const sorbyCreatedDateDesc = () => {
     const sorted = [...notes].sort((a, b) => {
       return new Date(b.created_at) - new Date(a.created_at);
     });
     setFilteredNotes(sorted);
-    console.log(sorted)
-
-  }
-
+    console.log(sorted);
+  };
 
   const selectNote = (note) => {
-    console.log(note)
+    console.log(note);
     // Update the isSelected property of the note
     note.isSelected = true;
-    console.log(note)
+    console.log(note);
     // Add the selected note to the selectedNotes array
     setSelectedNotes([...selectedNotes, note]);
-    
+
     // Now, the selectedNotes array has been updated, so you can log it to see the changes
     console.log(selectedNotes);
   };
-  
 
-  const markAsFavorite = (note)=>{
-    console.log("marking as favorite")
-  }
+  const markAsFavorite = (note) => {
+    console.log("marking as favorite");
+    notes = filteredNotes.map((n) => {
+      if (n.id == note.id){
+        n.isFavorite = true;
+      }
+      return n;
+    })
+    setFilteredNotes([...notes]);
+    // I can't just update the whole notes because it's going to save only the filtered ones.
+    // I need to update the whole notes and kind of refresh the filtered ones.
+    //updateNotesFromList(notes);
+  };
 
   // const deleteSelectedNotes = async () =>{
   //   console.log(selectedNotes)
@@ -325,14 +340,18 @@ function NoteList({
   //     setFilteredNotes(notesUpdated)
   //     // notes = notesUpdated
   //     stopNotesSelection()
-  //   }     
+  //   }
   // }
   const deleteSelectedNotes = async () => {
     console.log(selectedNotes);
     if (selectedNotes && selectedNotes.length > 0) {
-      let notesUpdated = notes.filter(note => !selectedNotes.some(selectedNote => selectedNote.id === note.id));
+      let notesUpdated = notes.filter(
+        (note) =>
+          !selectedNotes.some((selectedNote) => selectedNote.id === note.id)
+      );
       setFilteredNotes(notesUpdated);
       stopNotesSelection(notesUpdated);
+      updateNotesFromList(notesUpdated);
       // Update the main state.
       // Assuming you have an async deleteNote function, you can call it here
       // for each selected note if needed.
@@ -341,18 +360,33 @@ function NoteList({
       // }
     }
   };
-  
-  const stopNotesSelection = (notesUpdated) =>{
-    console.log("STOPPING SELECTION OF NOTES")
-    notesUpdated = notesUpdated.map((note)=>{
-      note.isSelected = false
-      return note
-    })
-    setFilteredNotes([...notesUpdated])
-    setSelectedNotes([])
+
+  const stopNotesSelection = (notesUpdated) => {
+    console.log("STOPPING SELECTION OF NOTES");
+    if(notesUpdated && notesUpdated.length>0){
+      notesUpdated = notesUpdated.map((note) => {
+        note.isSelected = false;
+        return note;
+      });
+      setFilteredNotes([...notesUpdated]);
+    }
+    setSelectedNotes([]);
+  };
+
+  const cancelSelection = () => {
+    console.log("CANCELLING SELECTION OF NOTES");
+    if(filteredNotes && filteredNotes.length>0){
+      let notes =  filteredNotes.map((note) => {
+        note.isSelected = false;
+        return note;
+      });
+      setFilteredNotes([...notes]);
+    }
+    setSelectedNotes([]);
   }
+
   return (
-    <div id="notebook" className="p-4 w-full  mt-8 lg:mt-0 z-10"  >
+    <div id="notebook" className="p-4 w-full  mt-8 lg:mt-0 z-10">
       <h1 className="font-bold text-2xl mb-4 p-8">
         <FontAwesomeIcon icon={faStickyNote} className="mr-2" />
         MY NOTEBOOK
@@ -394,7 +428,7 @@ function NoteList({
       </div>
       <div className="my-5 grid grid-cols-6">
         <div className="col-span-6 flex justify-center">
-          <Tabs  >
+          <Tabs>
             <TabList>
               <Tab onClick={() => allTheNotes()}>All</Tab>
               <Tab onClick={() => searchInTitles()}>TItles</Tab>
@@ -417,34 +451,70 @@ function NoteList({
         </div>
       </div>
       <div className="relative h-16 w-full">
-  {/* <div class="absolute top-0 right-0 h-16 w-16 ...">03</div> */}
-  <div className="absolute top-0 right-0 mr-4 ">
-        <Menu>
-          <MenuButton as={Button} > 
-          <FontAwesomeIcon
-                  icon={faFilter}
-                  className=" text-gray-600 cursor-pointer mx-1"
-                />Filter</MenuButton>
-          <MenuList>
-            {/* <MenuItem>Shared</MenuItem>
+        {/* <div class="absolute top-0 right-0 h-16 w-16 ...">03</div> */}
+        <div className="absolute top-0 right-0 mr-4 ">
+          <Menu>
+            <MenuButton as={Button}>
+              <FontAwesomeIcon
+                icon={faFilter}
+                className=" text-gray-600 cursor-pointer mx-1"
+              />
+              Filter
+            </MenuButton>
+            <MenuList>
+              {/* <MenuItem>Shared</MenuItem>
             <MenuItem>Favorites </MenuItem> */}
-             {/* <MenuDivider /> */}
-            <MenuItem onClick={() => sorbyUpdatedDateAsc()}>Updated date ↑</MenuItem>
-            <MenuItem onClick={() => sorbyUpdatedDateDesc()}>Updated date ↓</MenuItem>
-            <MenuItem onClick={() => sorbyCreatedDateAsc()}>Created date ↑</MenuItem>
-            <MenuItem onClick={() => sorbyCreatedDateDesc()}>Created date ↓</MenuItem>
-          </MenuList>
-        </Menu>
+              {/* <MenuDivider /> */}
+              <MenuItem onClick={() => sorbyUpdatedDateAsc()}>
+                Updated date ↑
+              </MenuItem>
+              <MenuItem onClick={() => sorbyUpdatedDateDesc()}>
+                Updated date ↓
+              </MenuItem>
+              <MenuItem onClick={() => sorbyCreatedDateAsc()}>
+                Created date ↑
+              </MenuItem>
+              <MenuItem onClick={() => sorbyCreatedDateDesc()}>
+                Created date ↓
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        </div>
       </div>
+      {selectedNotes?.length > 0 && (
+        <div className="my-4 right-0 z-30 grid grid-cols-6">
+          <div className="col-span-1 flex justify-center">
+            <p className="text-gray-600 text-lg font-bold">
+              {selectedNotes.length} selected
+            </p>
+          </div>
+          <div className="col-span-4 flex justify-center">
+          <Button
+            borderColor={{ bg: "red.500" }}
+            colorScheme={{ bg: "red.500" }}
+            _hover={{ bg: "red.600" }}
+            className="bg-red-500 border-2 border-red-200 hover:bg-red-500 mx-2"
+            onClick={() => deleteSelectedNotes()}
+          >
+            <FontAwesomeIcon icon={faTrash} className=" cursor-pointer mx-1" />
+            Trash
+          </Button>
+          <div className="col-span-4">
 
-</div>
-{selectedNotes?.length >0 && <div className="my-4 right-0 z-30">
-        <Button  borderColor={{ bg: 'red.500' }} colorScheme={{ bg: 'red.500' }} _hover={{ bg: 'red.600' }} className="bg-red-500 border-2 border-red-200 hover:bg-red-500" onClick={()=>deleteSelectedNotes()}> 
-          <FontAwesomeIcon
-                  icon={faTrash}
-                  className=" cursor-pointer mx-1"
-                />Trash</Button>
-      </div>}
+          </div>
+
+
+        <Button
+          colorScheme='red.600' variant='outline'
+          className="bg-white-500 border-2 border-red-200 hover:bg-gray-200 text-red-500 mx-2"
+          onClick={() => cancelSelection()}
+        >
+          <FontAwesomeIcon icon={faTrash} className=" cursor-pointer mx-1" />
+          Cancel
+        </Button>
+        </div>
+      </div>
+      )}
       <div
         id="notes-grid"
         className={
@@ -456,17 +526,16 @@ function NoteList({
           <div
             onContextMenu={(event) => handleRightClickOnNote(event, note)}
             onClick={() => watchNoteFunction(note)}
-            
             key={index}
             className={
               "w-48 h-48 relative rounded-lg shadow-md cursor-pointer " +
               (bgNotesColors[index] !== undefined
                 ? bgNotesColors[index]
                 : "bg-gray-200") +
-              ` ${animations["upOutFloatingPopUp"]}`+ (note.isSelected?" filter brightness-50 ":"")
+              ` ${animations["upOutFloatingPopUp"]}` +
+              (note.isSelected ? " filter brightness-50 " : "")
             }
           >
-
             <h3
               className="text-lg font-bold m-2 flex-grow overflow-hidden whitespace-nowrap text-overflow-ellipsis"
               title={note.title}
@@ -483,14 +552,25 @@ function NoteList({
             >
               {note.description}
             </p>
-            {note.isSelected && <div className="absolute bottom-70  justify-center items-center flex p-2 w-full">
-            <FontAwesomeIcon
+            {note.isSelected && (
+              <div className="absolute bottom-70  justify-center items-center flex p-2 w-full">
+                <FontAwesomeIcon
                   icon={faCheck}
                   className=" text-white text-3xl cursor-pointer "
                 />
-            </div>}
+              </div>
+            )}
+            {note.isFavorite && (
+              <div className="absolute bottom-0 flex justify-start items-end p-2 w-full">
+                <div>
+                  <FontAwesomeIcon
+                    icon={faStar}
+                    className=" text-yellow-400 cursor-pointer m-1"
+                  />
+                </div>
+              </div>
+            )}
             <div className="absolute bottom-0 flex justify-end items-end p-2 w-full">
-              
               {/* <div
                 onClick={() => watchNote(note)}
                 className="text-center "
@@ -506,6 +586,7 @@ function NoteList({
                   className=" text-red-500 cursor-pointer m-1"
                 />
               </div> */}
+
               <div
                 className="text-center absolute text-slate-700"
                 title={
@@ -568,16 +649,15 @@ function NoteList({
   <Skeleton height='20px' />
   <Skeleton height='20px' />
 </Stack> */}
-{isNotesLoading && 
-  <div className="flex justify-center items-center mt-20">
-<SkeletonCircle size='5'className="mx-2" />
-<SkeletonCircle size='5'className="mx-2" />
-<SkeletonCircle size='5'className="mx-2" />
-<SkeletonCircle size='5'className="mx-2" />
-<SkeletonCircle size='5'className="mx-2" />
-</div>
-}
-
+      {isNotesLoading && (
+        <div className="flex justify-center items-center mt-20">
+          <SkeletonCircle size="5" className="mx-2" />
+          <SkeletonCircle size="5" className="mx-2" />
+          <SkeletonCircle size="5" className="mx-2" />
+          <SkeletonCircle size="5" className="mx-2" />
+          <SkeletonCircle size="5" className="mx-2" />
+        </div>
+      )}
 
       {!isThereAnyNote && notes && notes.length == 0 && (
         <div
@@ -598,7 +678,7 @@ function NoteList({
           </p>
         </div>
       )}
-            {isThereAnyNote  && filteredNotes && filteredNotes.length == 0 && (
+      {isThereAnyNote && filteredNotes && filteredNotes.length == 0 && (
         <div
           className={
             "w-full  h-5/6  my-44 text-center text-3xl " +
@@ -618,9 +698,7 @@ function NoteList({
         </div>
       )}
       {isContextMenuOpen && (
-        <div id="divBeforeNoteMenu" ref={parentRef} 
-        className="z-50"
-        >
+        <div id="divBeforeNoteMenu" ref={parentRef} className="z-50">
           <Menu
             id="noteMenu"
             isOpen={isContextMenuOpen}
@@ -648,8 +726,13 @@ function NoteList({
               <MenuItem command="⌘I" onClick={() => showDrawerInfo()}>
                 Info
               </MenuItem>
-              <MenuItem command="⌘F" onClick={() => markAsFavorite(selectedNote)}>
-                Favorite
+              <MenuItem
+                command="⌘F"
+                onClick={() => markAsFavorite(selectedNote)}
+              >
+                Mark as Favorite
+              <FontAwesomeIcon icon={faStar} className="text-yellow-400 mx-2" />
+
               </MenuItem>
               <MenuItem command="⌘L" onClick={() => featureInDevelopment()}>
                 Lock

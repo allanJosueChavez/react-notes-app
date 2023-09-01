@@ -217,6 +217,11 @@ function Home() {
     }
   };
 
+
+  const updateNotesFromList = (updatedNotes) => {
+    setNotes(updatedNotes)
+  }
+
   return (
     <>
       {/*pt-16 */}
@@ -239,6 +244,7 @@ function Home() {
           setFilteredNotesVerifier={verifyFilteredNotes}
           isNotesLoading={isNotesLoading}
           setNotesLoadingFalse={setNotesLoadingFalse}
+          updateNotesFromList={updateNotesFromList}
         />
         <div>
           {/* <div
