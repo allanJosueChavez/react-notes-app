@@ -67,7 +67,7 @@ function NoteList({
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
-    console.log("it's going to set the setfilteredNotes");
+    console.log("it's going to set the setfilteredNotes, because it's chaning");
     setIsThereAnyNote(true);
 
     if (notes && notes.length > 0) {
@@ -322,7 +322,14 @@ function NoteList({
       }
       return n;
     })
+    updateNotesFromList(notes);
     setFilteredNotes([...notes]);
+
+    //This code it's great, the problem comes when I call the updatenotesFromList. That updates 
+    // and that's cool, so the problem is that I need to send a flag, to the useeffect
+    // that it's in here, and when it's for favorites, do not update visually on 
+    // whatever logic it is using.
+
     // I can't just update the whole notes because it's going to save only the filtered ones.
     // I need to update the whole notes and kind of refresh the filtered ones.
     //updateNotesFromList(notes);
