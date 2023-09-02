@@ -54,6 +54,7 @@ function NoteList({
   const [selectedNote, setSelectedNote] = useState(null);
   const [isThereAnyNote, setIsThereAnyNote] = useState(false); // This is going to be used to check if there's any note in the array, if there's not, then I'll show a message
   const [selectedNotes, setSelectedNotes] = useState([]); // This is going to be used to check if there's any note in the array, if there's not, then I'll show a message
+  const [notUpdateNotes, setNotUpdateNotes] = useState(false); // This is going to be used to check if there's any note in the array, if there's not, then I'll show a message
   const toast = useToast();
   const parentRef = useRef(null);
   const childRef = useRef(null);
@@ -69,35 +70,37 @@ function NoteList({
   useEffect(() => {
     console.log("it's going to set the setfilteredNotes, because it's chaning");
     setIsThereAnyNote(true);
+if(!notUpdateNotes){
+  if (notes && notes.length > 0) {
+    //setFilteredNotes(notes);
+    showingNotes = notesPerLoad;
+    const notesPerReach = notes.slice(0, notesPerLoad);
+    console.log(notesPerLoad);
+    setFilteredNotes(notesPerReach);
 
-    if (notes && notes.length > 0) {
-      //setFilteredNotes(notes);
-      showingNotes = notesPerLoad;
-      const notesPerReach = notes.slice(0, notesPerLoad);
-      console.log(notesPerLoad);
-      setFilteredNotes(notesPerReach);
+    notes.map((note) => {
+      // Parse the note.updated_at string into a Date object
+      const isoDate = new Date(note.updated_at);
+      console.log(note.updated_at);
+      console.log(isoDate);
+      // Get the month and day from the Date object
+      const month = isoDate.toLocaleString("en-US", { month: "short" });
+      const day = isoDate.getDate();
 
-      notes.map((note) => {
-        // Parse the note.updated_at string into a Date object
-        const isoDate = new Date(note.updated_at);
-        console.log(note.updated_at);
-        console.log(isoDate);
-        // Get the month and day from the Date object
-        const month = isoDate.toLocaleString("en-US", { month: "short" });
-        const day = isoDate.getDate();
+      // Create the formatted date string
+      const formattedDate = `${month} ${day}`;
 
-        // Create the formatted date string
-        const formattedDate = `${month} ${day}`;
-
-        note.last_update_date = formattedDate;
-      });
-    } else {
-      console.log("There's no notes to show");
-      setIsThereAnyNote(false);
-      if (notes) {
-        setFilteredNotes(notes);
-      }
+      note.last_update_date = formattedDate;
+    });
+  } else {
+    console.log("There's no notes to show");
+    setIsThereAnyNote(false);
+    if (notes) {
+      setFilteredNotes(notes);
     }
+  }
+}
+setNotUpdateNotes(false)
   }, [notes]);
 
   useEffect(() => {
@@ -323,6 +326,7 @@ function NoteList({
       return n;
     })
     updateNotesFromList(notes);
+    setNotUpdateNotes(true);
     setFilteredNotes([...notes]);
 
     //This code it's great, the problem comes when I call the updatenotesFromList. That updates 
