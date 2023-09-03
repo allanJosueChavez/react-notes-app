@@ -197,7 +197,12 @@ setNotUpdateNotes(false)
   };
 
   const openInNewTab = (noteId) => {
-    const url = `/app/notecards/${noteId}`;
+    // Encode noteId to Base64
+    const base64NoteId = btoa(noteId.toString());
+  
+    // Encode it twice
+    const doubleEncodedNoteId = encodeURIComponent(base64NoteId);
+    const url = `/app/notecards/${doubleEncodedNoteId}`;
     window.open(url, "_blank"); // Open in a new tab
   };
 

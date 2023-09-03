@@ -1,7 +1,7 @@
 import NoteList from "../components/NoteList";
 import NewNote from "../components/NewNote";
 import NewNoteDialog from "../components/NewNoteDialog";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 import Note from "../components/Note";
 import { useRef, useState, useEffect } from "react";
 import animations from "../assets/styles/animations.module.css";
@@ -27,7 +27,6 @@ function Home() {
   const storedNotes = JSON.parse(localStorage.getItem("notes"));
   const [isShowingNote, setIsShowingNote] = useState(false);
 
-
   // Load notes from localStorage when the component mounts
   // useEffect(() => {
   //     const storedNotes = JSON.parse(localStorage.getItem('notes'));
@@ -52,14 +51,24 @@ function Home() {
 
   useEffect(() => {
     // Use the id parameter in your component logic
-    console.log(typeof id)
-    const noteId = parseInt(id)
-    if(noteId !== undefined && noteId !== null && noteId !== "" && !isNaN(noteId)){
-      console.log("Yes, THERE IS A OPEN NOTE")
-      setIsShowingNote(true)
+    console.log(id+" is the id")
+    if(id){
+    const encodedNoteId = id;
+    const decodedOnce = decodeURIComponent(encodedNoteId);
+    const originalNoteId = atob(decodedOnce);
+    const noteId = parseInt(originalNoteId);
+    if (
+      noteId !== undefined &&
+      noteId !== null &&
+      noteId !== "" &&
+      !isNaN(noteId)
+    ) {
+      console.log("Yes, THERE IS A OPEN NOTE");
+      setIsShowingNote(true);
       const note = storedNotes.find((note) => note.id === noteId);
       setNoteToOpen(note);
-    } 
+    }
+  }
     // I just ran a "git push -set-upstream origin feat-note-new-tab" in order to stablish the relationship, so i'll try to do just a push, now that the relationship is already made and see if that works.
   }, [id]);
 
@@ -82,7 +91,7 @@ function Home() {
       //  const notesPerReach = storedNotes.slice(0, showingNotes);
       //  setNotes(notesPerReach);
       console.log({ storedNotes });
-     // updateUrlToCloseNote()
+      // updateUrlToCloseNote()
     } else if (notes == null) {
       setNotes([]);
     }
@@ -105,7 +114,6 @@ function Home() {
         setNoteToOpen(null);
         setIsDialogOpen(false);
         setIsNoteOpen(false);
-
       }
     };
 
@@ -118,13 +126,13 @@ function Home() {
 
   const handleScroll = (event) => {
     const { scrollTop, scrollHeight, clientHeight } = event.target;
-    let userPosition = Math.round(scrollTop - scrollHeight) * -1
-    console.log(userPosition+ " " +clientHeight)
+    let userPosition = Math.round(scrollTop - scrollHeight) * -1;
+    console.log(userPosition + " " + clientHeight);
     // It has a margin of error of 3px
     if (userPosition >= clientHeight - 5 && userPosition <= clientHeight + 3) {
       console.log("You've reached the bottom");
-      
-      setIsNotesLoading(true)
+
+      setIsNotesLoading(true);
       // showingNotes = showingNotes + notesPerLoad
       // console.log("showing:" +notesPerLoad+ " notes")
       // const notesPerReach = storedNotes.slice(0, showingNotes);
@@ -134,8 +142,8 @@ function Home() {
   };
 
   const setNotesLoadingFalse = () => {
-    setIsNotesLoading(false)
-  }
+    setIsNotesLoading(false);
+  };
 
   useEffect(() => {
     const gridElement = document.getElementById("main-container");
@@ -168,25 +176,30 @@ function Home() {
     console.log("It is trynnna open THE NOTE");
     console.log(note);
     setNoteToOpen(note);
-    updateUrlToWatchNote(note.id)
+    updateUrlToWatchNote(note.id);
     //console.log(viewNote);
     //setIsNoteOpen(true);
   };
 
   const updateUrlToWatchNote = (noteId) => {
-    const newUrl = `/app/notecards/${noteId}`;
-    window.history.pushState(null, null, newUrl);
-  }
+    // Encode noteId to Base64
+    const base64NoteId = btoa(noteId);
 
-  const updateUrlToCloseNote = ( ) => {
+    // Encode it twice
+    const doubleEncodedNoteId = encodeURIComponent(base64NoteId);
+
+    const newUrl = `/app/notecards/${doubleEncodedNoteId}`;
+    window.history.pushState(null, null, newUrl);
+  };
+
+  const updateUrlToCloseNote = () => {
     const newUrl = `/app/notecards/`;
     window.history.pushState(null, null, newUrl);
-  }
+  };
 
   const saveUpdatedNote = (note) => {
     console.log("In the component Home, is trying to save the note");
     const currentDateUTC = new Date();
-
 
     let updatedNotes = notes.map((n) => {
       if (n.id === note.id) {
@@ -217,64 +230,61 @@ function Home() {
     }
   };
 
-
   const updateNotesFromList = (updatedNotes) => {
-    setNotes(updatedNotes)
-  }
+    setNotes(updatedNotes);
+  };
 
   return (
     <>
       {/*pt-16 */}
       <div className={`${styles["main-container-notelist"]}`}>
-      <div
-        id="main-container"
-        ref={containerRef}
-        className={
-          `  h-screen  mt-2 pb-48 overflow-y-scroll p-8  ` +
-          +
-(!filteredNotesVerifier ? " w-max " : "")  
-        }
-      >
-        <NewNote setIsDialogOpen={setIsDialogOpen} />
+        <div
+          id="main-container"
+          ref={containerRef}
+          className={
+            `  h-screen  mt-2 pb-48 overflow-y-scroll p-8  ` +
+            +(!filteredNotesVerifier ? " w-max " : "")
+          }
+        >
+          <NewNote setIsDialogOpen={setIsDialogOpen} />
 
-        <NoteList
-          notes={notes}
-          deleteNote={deleteNote}
-          watchNoteFunction={watchNoteFunction}
-          setFilteredNotesVerifier={verifyFilteredNotes}
-          isNotesLoading={isNotesLoading}
-          setNotesLoadingFalse={setNotesLoadingFalse}
-          updateNotesFromList={updateNotesFromList}
-        />
-        <div>
-          {/* <div
+          <NoteList
+            notes={notes}
+            deleteNote={deleteNote}
+            watchNoteFunction={watchNoteFunction}
+            setFilteredNotesVerifier={verifyFilteredNotes}
+            isNotesLoading={isNotesLoading}
+            setNotesLoadingFalse={setNotesLoadingFalse}
+            updateNotesFromList={updateNotesFromList}
+          />
+          <div>
+            {/* <div
           id="blurDiv"
             className={
               "absolute flex inset-0 backdrop-blur-lg justify-center items-center " + (isDialogOpen ? "block" : "hidden")
             }
             onClick={handleBlurDivClick}
           > */}
-          {viewNote && (
-            <Note
-              noteToOpen={viewNote}
-              setNoteToOpen={setNoteToOpen}
-              isNoteOpen={isNoteOpen}
-              editNoteSelected={saveUpdatedNote}
-              
-            />
-          )}
+            {viewNote && (
+              <Note
+                noteToOpen={viewNote}
+                setNoteToOpen={setNoteToOpen}
+                isNoteOpen={isNoteOpen}
+                editNoteSelected={saveUpdatedNote}
+              />
+            )}
 
-          {isDialogOpen && (
-            <NewNoteDialog
-              isOpen={isDialogOpen}
-              onClose={closeDialog}
-              addNewNote={addNewNote}
-              notes={notes}
-            />
-          )}
-          {/* </div> */}
+            {isDialogOpen && (
+              <NewNoteDialog
+                isOpen={isDialogOpen}
+                onClose={closeDialog}
+                addNewNote={addNewNote}
+                notes={notes}
+              />
+            )}
+            {/* </div> */}
+          </div>
         </div>
-      </div>
       </div>
     </>
   );
