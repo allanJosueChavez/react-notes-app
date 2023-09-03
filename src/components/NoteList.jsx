@@ -262,6 +262,17 @@ setNotUpdateNotes(false)
     setFilteredNotes(filtered);
   };
 
+  const searchInFavorites = () =>{
+    const filtered = notes.filter((note) => {
+      if (note.isFavorite) {
+        console.log("Oh yeah, one match");
+        return note;
+      }
+    });
+
+    setFilteredNotes(filtered);con
+  }
+
   const searchInTitles = () => {
     const filtered = notes.filter((note) => {
       if (note.title.toLowerCase().includes(searchInput.toLowerCase())) {
@@ -444,6 +455,7 @@ setNotUpdateNotes(false)
               <Tab onClick={() => allTheNotes()}>All</Tab>
               <Tab onClick={() => searchInTitles()}>TItles</Tab>
               <Tab onClick={() => searchInContents()}>Contents</Tab>
+              <Tab onClick={() => searchInFavorites()}>Favorites</Tab>
               {/* <Tab onClick={()=> featureInDevelopment()}>Notebook</Tab> */}
             </TabList>
 
