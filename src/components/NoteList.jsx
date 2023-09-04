@@ -126,60 +126,38 @@ setNotUpdateNotes(false)
   // notes it'll be exected the useEffect. So is that easy, if you wanna use a prop and set it to another state, wait for it, that simple.
 
   useEffect(() => {
-    // If hasn't reached the total of the notes
     if (notes && notes.length > filteredNotes.length && filteredNotes.length !== notes.length) {
-      console.log("Give me more notesss");
+      console.log("Give me more notes");
       setTimeout(() => {
         showingNotes = showingNotes + notesPerLoad;
-        console.log("showing:" + showingNotes + " notes");
+        console.log("showing: " + showingNotes + " notes");
         let notesPerReach = notes.slice(0, showingNotes);
-        // in here filter by the tab that the user selected.
-        if(filterTabSelected !== null){
-          if(filterTabSelected == "all"){
-            setNotesLoadingFalse();
-            return
-          }else {
-            console.log(filterTabSelected)
-
-
+  
+        if (filterTabSelected !== null) {
+          // if (filterTabSelected === "all") {
+          //   setNotesLoadingFalse();
+          // } else if (filterTabSelected === "contents") {
+          //   notesPerReach = notesPerReach.filter(note => note.description.toLowerCase().includes(searchInput.toLowerCase()));
+          // } else if (filterTabSelected === "titles") {
+          //   notesPerReach = notesPerReach.filter(note => note.title.toLowerCase().includes(searchInput.toLowerCase()));
+          // } else if (filterTabSelected === "favorites") {
+          //   notesPerReach = notesPerReach.filter(note => note.isFavorite);
+          // } else {
+          //   console.log("No valid filter selected.");
+          // }
           
-            switch (filterTabSelected) {
-              // case "contents":
-              //   console.log("whattt")
-              //   notesPerReach = notesPerReach.filter(note => note.description.toLowerCase().includes(searchInput.toLowerCase()));
-              //   break;
-              // case "titles" :
-              //   console.log("jejeje")
-              //   notesPerReach = notesPerReach.filter(note => note.title.toLowerCase().includes(searchInput.toLowerCase()));
-              //   break;
-              // case "favorites":
-              //   console.log("ggggggg")
-           //     notesPerReach = notesPerReach.filter(note => note.isFavorite );
-          //  //This is not working and I don't know why.
-
-          //       break;
-          //     default:
-          //       console.log("Noup.");
-            }
-            
-
-            
-
-          }
         }
+  
         console.log("FILTERED NOTES BY PAGE: " + notesPerReach.length);
         setFilteredNotes(notesPerReach);
         setNotesLoadingFalse();
-      }, "500");
-
-      //setNotesLoadingFalse()
+      }, 500);
     } else {
       console.log("I'm not looking for more notes");
       setNotesLoadingFalse();
     }
-
-    // setNotes(notesPerReach);
   }, [isNotesLoading]);
+  
 
   const [searchInput, setSearchInputValue] = useState("");
   const [lastSearchInput, setLastSearchInput] = useState("");
