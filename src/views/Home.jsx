@@ -127,7 +127,7 @@ function Home() {
   const handleScroll = (event) => {
     const { scrollTop, scrollHeight, clientHeight } = event.target;
     let userPosition = Math.round(scrollTop - scrollHeight) * -1;
-    console.log(userPosition + " " + clientHeight);
+   // console.log(userPosition + " " + clientHeight);
     // It has a margin of error of 3px
     if (userPosition >= clientHeight - 5 && userPosition <= clientHeight + 3) {
       console.log("You've reached the bottom");

@@ -55,6 +55,7 @@ function NoteList({
   const [isThereAnyNote, setIsThereAnyNote] = useState(false); // This is going to be used to check if there's any note in the array, if there's not, then I'll show a message
   const [selectedNotes, setSelectedNotes] = useState([]); // This is going to be used to check if there's any note in the array, if there's not, then I'll show a message
   const [notUpdateNotes, setNotUpdateNotes] = useState(false); // This is going to be used to check if there's any note in the array, if there's not, then I'll show a message
+  const [filterTabSelected, setFilterTabSelected] = useState(null); // This is going to be used to check if there's any note in the array, if there's not, then I'll show a message
   const toast = useToast();
   const parentRef = useRef(null);
   const childRef = useRef(null);
@@ -81,8 +82,8 @@ if(!notUpdateNotes){
     notes.map((note) => {
       // Parse the note.updated_at string into a Date object
       const isoDate = new Date(note.updated_at);
-      console.log(note.updated_at);
-      console.log(isoDate);
+      // console.log(note.updated_at);
+      // console.log(isoDate);
       // Get the month and day from the Date object
       const month = isoDate.toLocaleString("en-US", { month: "short" });
       const day = isoDate.getDate();
@@ -126,12 +127,46 @@ setNotUpdateNotes(false)
 
   useEffect(() => {
     // If hasn't reached the total of the notes
-    if (notes && notes.length > filteredNotes.length) {
+    if (notes && notes.length > filteredNotes.length && filteredNotes.length !== notes.length) {
       console.log("Give me more notesss");
       setTimeout(() => {
         showingNotes = showingNotes + notesPerLoad;
         console.log("showing:" + showingNotes + " notes");
-        const notesPerReach = notes.slice(0, showingNotes);
+        let notesPerReach = notes.slice(0, showingNotes);
+        // in here filter by the tab that the user selected.
+        if(filterTabSelected !== null){
+          if(filterTabSelected == "all"){
+            setNotesLoadingFalse();
+            return
+          }else {
+            console.log(filterTabSelected)
+
+
+          
+            switch (filterTabSelected) {
+              // case "contents":
+              //   console.log("whattt")
+              //   notesPerReach = notesPerReach.filter(note => note.description.toLowerCase().includes(searchInput.toLowerCase()));
+              //   break;
+              // case "titles" :
+              //   console.log("jejeje")
+              //   notesPerReach = notesPerReach.filter(note => note.title.toLowerCase().includes(searchInput.toLowerCase()));
+              //   break;
+              // case "favorites":
+              //   console.log("ggggggg")
+           //     notesPerReach = notesPerReach.filter(note => note.isFavorite );
+          //  //This is not working and I don't know why.
+
+          //       break;
+          //     default:
+          //       console.log("Noup.");
+            }
+            
+
+            
+
+          }
+        }
         console.log("FILTERED NOTES BY PAGE: " + notesPerReach.length);
         setFilteredNotes(notesPerReach);
         setNotesLoadingFalse();
@@ -243,12 +278,12 @@ setNotUpdateNotes(false)
 
   const allTheNotes = () => {
     console.log("search in all the notes");
+    setFilterTabSelected("all");
     const filtered = notes.filter((note) => {
       if (
         note.title.toLowerCase().includes(searchInput.toLowerCase()) ||
         note.description.toLowerCase().includes(searchInput.toLowerCase())
       ) {
-        console.log("Oh yeah, one match");
         return note;
       }
     });
@@ -257,9 +292,9 @@ setNotUpdateNotes(false)
   };
 
   const searchInContents = () => {
+    setFilterTabSelected("contents");
     const filtered = notes.filter((note) => {
       if (note.description.toLowerCase().includes(searchInput.toLowerCase())) {
-        console.log("Oh yeah, one match");
         return note;
       }
     });
@@ -268,20 +303,20 @@ setNotUpdateNotes(false)
   };
 
   const searchInFavorites = () =>{
+    setFilterTabSelected("favorites");
     const filtered = notes.filter((note) => {
       if (note.isFavorite) {
-        console.log("Oh yeah, one match");
         return note;
       }
     });
 
-    setFilteredNotes(filtered);con
+    setFilteredNotes(filtered);
   }
 
   const searchInTitles = () => {
+    setFilterTabSelected("titles");
     const filtered = notes.filter((note) => {
       if (note.title.toLowerCase().includes(searchInput.toLowerCase())) {
-        console.log("Oh yeah, one match");
         return note;
       }
     });
@@ -294,7 +329,6 @@ setNotUpdateNotes(false)
       return new Date(a.updated_at) - new Date(b.updated_at);
     });
     setFilteredNotes(sorted);
-    console.log(sorted);
   };
 
   const sorbyUpdatedDateDesc = () => {
@@ -302,7 +336,6 @@ setNotUpdateNotes(false)
       return new Date(b.updated_at) - new Date(a.updated_at);
     });
     setFilteredNotes(sorted);
-    console.log(sorted);
   };
 
   const sorbyCreatedDateAsc = () => {
@@ -310,7 +343,6 @@ setNotUpdateNotes(false)
       return new Date(a.created_at) - new Date(b.created_at);
     });
     setFilteredNotes(sorted);
-    console.log(sorted);
   };
 
   const sorbyCreatedDateDesc = () => {
@@ -318,19 +350,13 @@ setNotUpdateNotes(false)
       return new Date(b.created_at) - new Date(a.created_at);
     });
     setFilteredNotes(sorted);
-    console.log(sorted);
   };
 
   const selectNote = (note) => {
-    console.log(note);
     // Update the isSelected property of the note
     note.isSelected = true;
-    console.log(note);
     // Add the selected note to the selectedNotes array
     setSelectedNotes([...selectedNotes, note]);
-
-    // Now, the selectedNotes array has been updated, so you can log it to see the changes
-    console.log(selectedNotes);
   };
 
   const markAsFavorite = (note) => {
@@ -551,7 +577,7 @@ setNotUpdateNotes(false)
         }
       >
         {filteredNotes?.map((note, index) => (
-          <div
+           <div
             onContextMenu={(event) => handleRightClickOnNote(event, note)}
             onClick={() => watchNoteFunction(note)}
             key={index}
@@ -561,26 +587,26 @@ setNotUpdateNotes(false)
                 ? bgNotesColors[index]
                 : "bg-gray-200") +
               ` ${animations["upOutFloatingPopUp"]}` +
-              (note.isSelected ? " filter brightness-50 " : "")
+              (note?.isSelected ? " filter brightness-50 " : "")
             }
           >
             <h3
               className="text-lg font-bold m-2 flex-grow overflow-hidden whitespace-nowrap text-overflow-ellipsis"
-              title={note.title}
+              title={note?.title}
             >
-              {note.title}
+              {note?.title}
             </h3>
 
             <p
-              title={note.description}
+              title={note?.description}
               className={
                 `${styles["truncate-overflow"]} text-clip text-justify px-4 py-2 ` +
-                (note.text_color || "text_black")
+                (note?.text_color || "text_black")
               }
             >
-              {note.description}
+              {note?.description}
             </p>
-            {note.isSelected && (
+            {note?.isSelected && (
               <div className="absolute bottom-70  justify-center items-center flex p-2 w-full">
                 <FontAwesomeIcon
                   icon={faCheck}
@@ -588,7 +614,7 @@ setNotUpdateNotes(false)
                 />
               </div>
             )}
-            {note.isFavorite && (
+            {note?.isFavorite && (
               <div className="absolute bottom-0 flex justify-start items-end p-2 w-full">
                 <div>
                   <FontAwesomeIcon
@@ -619,10 +645,10 @@ setNotUpdateNotes(false)
                 className="text-center absolute text-slate-700"
                 title={
                   "Last update was at: " +
-                  `${note.updated_at ? note.last_update_date : "Unknown"}`
+                  `${note?.updated_at ? note.last_update_date : "Unknown"}`
                 }
               >
-                <p>{note.updated_at ? note.last_update_date : "Unknown"} </p>
+                <p>{note?.updated_at ? note.last_update_date : "Unknown"} </p>
               </div>
               {/* <div
                 onClick={() => deleteNote(note)}
@@ -670,6 +696,7 @@ setNotUpdateNotes(false)
         </div>
       )} */}
           </div>
+
         ))}
       </div>
       {/* <Stack>
