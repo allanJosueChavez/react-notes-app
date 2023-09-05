@@ -550,7 +550,7 @@ setNotUpdateNotes(false)
       <div
         id="notes-grid"
         className={
-          " grid grid-flow-row auto-rows-max sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-6 gap-4 " +
+          " grid grid-flow-row auto-rows-max grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-6 gap-4 " +
           (filteredNotes !== null && filteredNotes.length == 0 ? "w-12/12" : "")
         }
       >
@@ -560,7 +560,7 @@ setNotUpdateNotes(false)
             onClick={() => watchNoteFunction(note)}
             key={index}
             className={
-              "w-48 h-48 relative rounded-lg shadow-md cursor-pointer " +
+              "w-68 h-48 lg:w-48 lg:h-48 relative rounded-lg shadow-md cursor-pointer " +
               (bgNotesColors[index] !== undefined
                 ? bgNotesColors[index]
                 : "bg-gray-200") +
