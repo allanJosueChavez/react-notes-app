@@ -154,6 +154,14 @@ function Home() {
     };
   }, [offset]);
 
+  useEffect(()=>{
+    askForMoreNotes()
+  },[isNotesLoading])
+
+
+  const askForMoreNotes = () => {
+    // Call a function that it's in the child component
+  }
   const verifyFilteredNotes = () => {
     console.log("Checking if there's notes or not");
     setFilteredNotesVerifier(true);

@@ -126,32 +126,43 @@ setNotUpdateNotes(false)
   // notes it'll be exected the useEffect. So is that easy, if you wanna use a prop and set it to another state, wait for it, that simple.
 
   useEffect(() => {
+
+    // THis is validating if notes exists and the lenght is bigger than the filteredNotes and that aren't the same.
     if (notes && notes.length > filteredNotes.length && filteredNotes.length !== notes.length) {
       console.log("Give me more notes");
-      setTimeout(() => {
-        showingNotes = showingNotes + notesPerLoad;
-        console.log("showing: " + showingNotes + " notes");
-        let notesPerReach = notes.slice(0, showingNotes);
-  
-        if (filterTabSelected !== null) {
-          // if (filterTabSelected === "all") {
-          //   setNotesLoadingFalse();
-          // } else if (filterTabSelected === "contents") {
-          //   notesPerReach = notesPerReach.filter(note => note.description.toLowerCase().includes(searchInput.toLowerCase()));
-          // } else if (filterTabSelected === "titles") {
-          //   notesPerReach = notesPerReach.filter(note => note.title.toLowerCase().includes(searchInput.toLowerCase()));
-          // } else if (filterTabSelected === "favorites") {
-          //   notesPerReach = notesPerReach.filter(note => note.isFavorite);
-          // } else {
-          //   console.log("No valid filter selected.");
-          // }
-          
+
+      showingNotes = showingNotes + notesPerLoad;
+      console.log("showing: " + showingNotes + " notes");
+      let notesPerReach = notes.slice(0, showingNotes);
+
+      if (filterTabSelected !== null) {
+        console.log(filterTabSelected)
+        if (filterTabSelected === "all") {
+          //setNotesLoadingFalse();
+        } else if (filterTabSelected === "contents") {
+          notesPerReach = notesPerReach.filter(note => note.description.toLowerCase().includes(searchInput.toLowerCase()));
+        } else if (filterTabSelected === "titles") {
+          notesPerReach = notesPerReach.filter(note => note.title.toLowerCase().includes(searchInput.toLowerCase()));
+        } else if (filterTabSelected === "favorites") {
+          notesPerReach = notesPerReach.filter(note => note.isFavorite);
+        } else {
+          console.log("No valid filter selected.");
         }
-  
-        console.log("FILTERED NOTES BY PAGE: " + notesPerReach.length);
+        
+      }
+      console.log("FILTERED NOTES BY PAGE: " + notesPerReach.length);
+
+      // if()
+      // Normally this function it's useful to show more notes, but when they are less than the original array has.
+      //  That is it. I just need to validate when it's minor than the original array, and then, I won't set the filtered notes or animation. I don't know what is exactly causing the probleM.
+
+      setTimeout(() => {
+      
         setFilteredNotes(notesPerReach);
+        // You idiot this is the exact problem. You are setting something inside the useEffect dependent of the same state.
+        // Another solution would be use maybe another state to control the skeleton.
         setNotesLoadingFalse();
-      }, 500);
+      }, 1000);
     } else {
       console.log("I'm not looking for more notes");
       setNotesLoadingFalse();
