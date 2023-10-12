@@ -150,6 +150,9 @@ setNotUpdateNotes(false)
       //   }
         
       // }
+      // 1. Analyze what it's been triggered when you get to the bottom. break it down .
+      // 
+      // THe problem that i'm trying to solve by adding this condition with filterTabSelected is that when I'm filtering the notes by titles, contents, favorites, etc.
       // The problem here is that when I try to fetch more notes, the filters are not being applied correctly which is resulting in issues, like.
       console.log("FILTERED NOTES BY PAGE: " + notesPerReach.length);
 
