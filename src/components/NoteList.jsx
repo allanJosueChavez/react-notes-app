@@ -135,21 +135,22 @@ setNotUpdateNotes(false)
       console.log("showing: " + showingNotes + " notes");
       let notesPerReach = notes.slice(0, showingNotes);
 
-      if (filterTabSelected !== null) {
-        console.log(filterTabSelected)
-        if (filterTabSelected === "all") {
-          //setNotesLoadingFalse();
-        } else if (filterTabSelected === "contents") {
-          notesPerReach = notesPerReach.filter(note => note.description.toLowerCase().includes(searchInput.toLowerCase()));
-        } else if (filterTabSelected === "titles") {
-          notesPerReach = notesPerReach.filter(note => note.title.toLowerCase().includes(searchInput.toLowerCase()));
-        } else if (filterTabSelected === "favorites") {
-          notesPerReach = notesPerReach.filter(note => note.isFavorite);
-        } else {
-          console.log("No valid filter selected.");
-        }
+      // if (filterTabSelected !== null) {
+      //   console.log(filterTabSelected)
+      //   if (filterTabSelected === "all") {
+      //     //setNotesLoadingFalse();
+      //   } else if (filterTabSelected === "contents") {
+      //     notesPerReach = notesPerReach.filter(note => note.description.toLowerCase().includes(searchInput.toLowerCase()));
+      //   } else if (filterTabSelected === "titles") {
+      //     notesPerReach = notesPerReach.filter(note => note.title.toLowerCase().includes(searchInput.toLowerCase()));
+      //   } else if (filterTabSelected === "favorites") {
+      //     notesPerReach = notesPerReach.filter(note => note.isFavorite);
+      //   } else {
+      //     console.log("No valid filter selected.");
+      //   }
         
-      }
+      // }
+      // The problem here is that when I try to fetch more notes, the filters are not being applied correctly which is resulting in issues, like.
       console.log("FILTERED NOTES BY PAGE: " + notesPerReach.length);
 
       // if()
