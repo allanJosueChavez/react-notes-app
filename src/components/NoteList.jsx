@@ -127,46 +127,7 @@ setNotUpdateNotes(false)
 
   useEffect(() => {
 
-    // THis is validating if notes exists and the lenght is bigger than the filteredNotes and that aren't the same.
-    if (notes && notes.length > filteredNotes.length && filteredNotes.length !== notes.length) {
-      console.log("Give me more notes");
-
-      showingNotes = showingNotes + notesPerLoad;
-      console.log("showing: " + showingNotes + " notes");
-      let notesPerReach = notes.slice(0, showingNotes);
-
-      if (filterTabSelected !== null) {
-        console.log(filterTabSelected)
-        if (filterTabSelected === "all") {
-          //setNotesLoadingFalse();
-        } else if (filterTabSelected === "contents") {
-          notesPerReach = notesPerReach.filter(note => note.description.toLowerCase().includes(searchInput.toLowerCase()));
-        } else if (filterTabSelected === "titles") {
-          notesPerReach = notesPerReach.filter(note => note.title.toLowerCase().includes(searchInput.toLowerCase()));
-        } else if (filterTabSelected === "favorites") {
-          notesPerReach = notesPerReach.filter(note => note.isFavorite);
-        } else {
-          console.log("No valid filter selected.");
-        }
-        
-      }
-      console.log("FILTERED NOTES BY PAGE: " + notesPerReach.length);
-
-      // if()
-      // Normally this function it's useful to show more notes, but when they are less than the original array has.
-      //  That is it. I just need to validate when it's minor than the original array, and then, I won't set the filtered notes or animation. I don't know what is exactly causing the probleM.
-
-      setTimeout(() => {
-      
-        setFilteredNotes(notesPerReach);
-        // You idiot this is the exact problem. You are setting something inside the useEffect dependent of the same state.
-        // Another solution would be use maybe another state to control the skeleton.
-        setNotesLoadingFalse();
-      }, 1000);
-    } else {
-      console.log("I'm not looking for more notes");
-      setNotesLoadingFalse();
-    }
+    getMoreNotes()
   }, [isNotesLoading]);
   
 
@@ -196,6 +157,59 @@ setNotUpdateNotes(false)
 
     console.log("Form submitted with value:", searchInput);
   };
+
+  const getMoreNotes = async () => {
+    // THis is validating if notes exists and the lenght is bigger than the filteredNotes and that aren't the same.
+    if (notes && notes.length > filteredNotes.length && filteredNotes.length !== notes.length) {
+      showingNotes = showingNotes + notesPerLoad;
+      console.log("showing: " + showingNotes + " notes");
+      let notesPerReach = await notes.slice(0, showingNotes);
+
+      if (filterTabSelected !== null) {
+        console.log(filterTabSelected)
+        if (filterTabSelected === "all") {
+          //setNotesLoadingFalse();
+        } else if (filterTabSelected === "contents") {
+          notesPerReach = await notesPerReach.filter(note => note.description.toLowerCase().includes(searchInput.toLowerCase()));
+        } else if (filterTabSelected === "titles") {
+          notesPerReach = await notesPerReach.filter(note => note.title.toLowerCase().includes(searchInput.toLowerCase()));
+        } else if (filterTabSelected === "favorites") {
+          notesPerReach = await notesPerReach.filter(note => note.isFavorite);
+        } else {
+          console.log("No valid filter selected.");
+        }
+        setFilteredNotes(notesPerReach);
+      }
+      await setNotesLoadingFalse();
+      // 1. Analyze what it's been triggered when you get to the bottom. break it down .
+      // 
+      // THe problem that i'm trying to solve by adding this condition with filterTabSelected is that when I'm filtering the notes by titles, contents, favorites, etc.
+      // The problem here is that when I try to fetch more notes, the filters are not being applied correctly which is resulting in issues, like.
+      console.log("FILTERED NOTES BY PAGE: " + notesPerReach.length);
+
+      // if()
+      // Normally this function it's useful to show more notes, but when they are less than the original array has.
+      //  That is it. I just need to validate when it's minor than the original array, and then, I won't set the filtered notes or animation. I don't know what is exactly causing the probleM.
+
+      
+      
+
+
+
+
+      // setTimeout(() => {
+      
+      //   setFilteredNotes(notesPerReach);
+      //   // You idiot this is the exact problem. You are setting something inside the useEffect dependent of the same state.
+      //   // Another solution would be use maybe another state to control the skeleton.
+      //   setNotesLoadingFalse();
+      // }, 1000);
+    } else {
+      console.log("I'm not looking for more notes");
+      setNotesLoadingFalse();
+    }
+
+  }
 
   const handleInputChange = (event) => {
     setSearchInputValue(event.target.value);
