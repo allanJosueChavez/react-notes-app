@@ -42,7 +42,6 @@ function App() {
 
         <Route path="/" element={<Home className={"overflow-y-hidden"} />} />
         <Route path="/note/:id" element={<NoteView />} />
-
       </Routes>
     </>
   );

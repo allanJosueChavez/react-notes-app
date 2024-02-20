@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import NoteView  from './views/NoteView.jsx'
 import Home from './views/Home.jsx'
+import Signup from './views/app/Signup.jsx'
+import Login from './views/app/Login.jsx'
 
 import './index.css'
 import { ChakraProvider } from "@chakra-ui/react"; // Import ChakraProvider or any other providers you're using
@@ -15,6 +17,8 @@ import {
 } from "react-router-dom";
 import { Navigate } from 'react-router-dom';
 import Error404 from './views/errors/404.jsx'
+
+
 
 // ReactDOM.createRoot(document.getElementById('root')).render(
 //   <React.StrictMode>
@@ -59,7 +63,6 @@ const router = createBrowserRouter([
     name : 'Home',
     element :  <Navigate to="/app/notecards"  />,
     
-
   },
   {
     path : '/app/notebooks',
@@ -82,6 +85,18 @@ const router = createBrowserRouter([
     // element: <NoteView />,
     element: <Home />
   },
+  {
+    path: 'signup',
+    name: 'Signup',
+    element: <Signup />,
+  }
+  ,
+  {
+    path: 'login',
+    name: 'Login',
+    element: <Login />,
+    }
+
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
